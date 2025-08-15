@@ -42,3 +42,7 @@ yarn-error.log*
 # turbo
 .turbo
 .vercel
+
+# local env files
+.env*
+apps/native/.env*
