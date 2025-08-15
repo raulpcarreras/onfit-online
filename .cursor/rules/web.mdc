@@ -1,0 +1,24 @@
+---
+description: Next 15 + Tailwind 3 (apps/web)
+globs:
+  - "apps/web/**"
+alwaysApply: false
+---
+# Convenciones
+- App Router en `apps/web/app/**`.
+- `app/layout.tsx` importa `./globals.css`.
+- Estilos: **Tailwind 3** (no Tailwind 4, no CSS-in-JS pesado).
+
+# Accesibilidad
+- Usar `<button>`/`<a>` reales + `aria-*`.
+- Evitar `div` clicables.
+
+# Antipatrones
+- Render-props sin invocar: si `children` puede ser función, usar:
+  ```tsx
+  {typeof children === 'function' ? (children as any)() : children}
+  ```
+- `pointerEvents` como prop → usar `style={{ pointerEvents: 'none' }}`.
+
+# Librerías
+- shadcn/ui: opcional y minimal, sin romper Tailwind 3.

@@ -12,6 +12,8 @@
   "packageManager": "pnpm@10.12.4",
   "workspaces": [],
   "scripts": {
+    "dev:web": "NODE_OPTIONS=--no-deprecation pnpm --filter web dev",
+    "dev:native": "NODE_OPTIONS=--no-deprecation pnpm --filter native dev",
     "build": "node scripts/run.mjs build",
     "dev": "node scripts/run.mjs dev",
     "test": "node scripts/run.mjs test",

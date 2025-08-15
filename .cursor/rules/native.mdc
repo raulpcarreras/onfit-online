@@ -1,0 +1,32 @@
+---
+description: Expo 53 + NativeWind 4 + Reanimated 3 + Expo Router (apps/native)
+globs:
+  - "apps/native/**"
+alwaysApply: false
+---
+# Estructura (Expo Router)
+- Rutas en `apps/native/app/**`.
+- Requeridos:
+  - `_layout.tsx` → `export default function RootLayout(){ return <Stack /> }`
+  - `index.tsx` → pantalla Home.
+  - `[...missing].tsx` → fallback 404.
+
+# Estilos
+- **NativeWind** con `className`. `global.css` con `@tailwind` e import en `_layout.tsx`.
+
+# Config obligatoria
+- `babel.config.js`: `['nativewind/babel','react-native-reanimated/plugin']` (**Reanimated al final**).
+- `tailwind.config.js` (CommonJS):
+  ```js
+  const { preset } = require('nativewind/preset');
+  module.exports = { presets:[preset], content:['./app/**/*.{ts,tsx}','./App.tsx'] };
+  ```
+- `metro.config.js`: `withNativeWind({ input: './global.css' })`.
+
+# Dev modes
+- **Expo Go** (sin compilar): `pnpm --filter native exec expo start --go`.
+- **Dev Client** (compilado): `pnpm --filter native run ios|android` y luego `pnpm --filter native dev`.
+
+# Errores típicos
+- “Cannot find native module …” → usa Dev Client.
+- “missing default export” en rutas → export por defecto en cada archivo de `app/**`.

@@ -1,0 +1,29 @@
+---
+description: Reglas globales del monorepo (PHO + pnpm + Next 15 + Expo 53)
+globs:
+  - "**/*"
+alwaysApply: true
+---
+# Stack y normas
+- Gestor: **pnpm** (Corepack). NO migrar a Yarn/NPM/Bun.
+- Node: **20/22**.
+- Web: **Next.js 15** + Tailwind 3.
+- Native: **Expo SDK 53** (RN 0.79) + NativeWind 4 + Reanimated 3 + Expo Router.
+- Commits: Conventional Commits (`feat:`, `fix:`, …).
+
+# Comandos (desde raíz)
+- Web (Next): `pnpm --filter web dev`
+- Native (Expo Go): `pnpm --filter native exec expo start --go`
+- Native (Dev Client): `pnpm --filter native run ios|android` (una vez) y luego `pnpm --filter native dev`
+- Ver scripts: `pnpm --filter <pkg> run`
+
+# Reglas duras
+- No subir React a 19 en **native** (Expo 53 usa React 18.x).
+- No tocar el gestor de paquetes del template.
+- Mantener apps en `apps/web` y `apps/native`.
+- Env: usar `.env.*` (dotenv ya integrado).
+
+# Errores típicos
+- **DEP0169 url.parse**: warning de Node; siléncialo con `NODE_OPTIONS=--no-deprecation` si molesta.
+- **No development build installed**: usa `expo start --go` o instala Dev Client con `expo run:ios/android`.
+- **Cannot find native module …**: necesitas Dev Client (compilar nativo).

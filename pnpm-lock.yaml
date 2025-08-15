@@ -4,6 +4,48 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@types/react':
+      specifier: 19.0.12
+      version: 19.0.12
+    babel-jest:
+      specifier: 29.7.0
+      version: 29.7.0
+    react-dom:
+      specifier: 19.0.0
+      version: 19.0.0
+    react-native:
+      specifier: 0.79.4
+      version: 0.79.4
+    react-native-edge-to-edge:
+      specifier: 1.6.2
+      version: 1.6.2
+    react-native-gesture-handler:
+      specifier: 2.26.0
+      version: 2.26.0
+    react-native-reanimated:
+      specifier: 3.17.4
+      version: 3.17.4
+    react-native-safe-area-context:
+      specifier: 5.5.0
+      version: 5.5.0
+    react-native-screens:
+      specifier: 4.11.1
+      version: 4.11.1
+    react-native-webview:
+      specifier: 13.15.0
+      version: 13.15.0
+    react-test-renderer:
+      specifier: 19.0.0
+      version: 19.0.0
+    recharts:
+      specifier: 2.15.4
+      version: 2.15.4
+    tailwindcss:
+      specifier: 3.4.17
+      version: 3.4.17
+
 overrides:
   react: 19.0.0
   lightningcss: 1.27.0
@@ -213,6 +255,9 @@ importers:
       critters:
         specifier: 0.0.25
         version: 0.0.25
+      cross-env:
+        specifier: 7.0.3
+        version: 7.0.3
       postcss:
         specifier: 8.5.6
         version: 8.5.6
@@ -8982,12 +9027,12 @@ snapshots:
 
   '@babel/helper-environment-visitor@7.24.7':
     dependencies:
-      '@babel/types': 7.27.6
+      '@babel/types': 7.27.7
 
   '@babel/helper-member-expression-to-functions@7.27.1':
     dependencies:
       '@babel/traverse': 7.27.7
-      '@babel/types': 7.27.6
+      '@babel/types': 7.27.7
     transitivePeerDependencies:
       - supports-color
 
@@ -9018,7 +9063,7 @@ snapshots:
 
   '@babel/helper-optimise-call-expression@7.27.1':
     dependencies:
-      '@babel/types': 7.27.6
+      '@babel/types': 7.27.7
 
   '@babel/helper-plugin-utils@7.27.1': {}
 
@@ -9094,7 +9139,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.27.7
       '@babel/helper-plugin-utils': 7.27.1
-      '@babel/traverse': 7.27.4
+      '@babel/traverse': 7.27.7
     transitivePeerDependencies:
       - supports-color
 
@@ -9121,7 +9166,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.27.7
       '@babel/helper-plugin-utils': 7.27.1
-      '@babel/traverse': 7.27.4
+      '@babel/traverse': 7.27.7
     transitivePeerDependencies:
       - supports-color
 
@@ -9314,7 +9359,7 @@ snapshots:
       '@babel/core': 7.27.7
       '@babel/helper-plugin-utils': 7.27.1
       '@babel/helper-remap-async-to-generator': 7.27.1(@babel/core@7.27.7)
-      '@babel/traverse': 7.27.4
+      '@babel/traverse': 7.27.7
     transitivePeerDependencies:
       - supports-color
 
@@ -9824,7 +9869,7 @@ snapshots:
     dependencies:
       '@babel/core': 7.27.7
       '@babel/helper-plugin-utils': 7.27.1
-      '@babel/types': 7.27.6
+      '@babel/types': 7.27.7
       esutils: 2.0.3
 
   '@babel/preset-react@7.0.0(@babel/core@7.27.7)':
@@ -12533,24 +12578,24 @@ snapshots:
 
   '@types/babel__core@7.20.5':
     dependencies:
-      '@babel/parser': 7.27.5
-      '@babel/types': 7.27.6
+      '@babel/parser': 7.27.7
+      '@babel/types': 7.27.7
       '@types/babel__generator': 7.27.0
       '@types/babel__template': 7.4.4
       '@types/babel__traverse': 7.20.7
 
   '@types/babel__generator@7.27.0':
     dependencies:
-      '@babel/types': 7.27.6
+      '@babel/types': 7.27.7
 
   '@types/babel__template@7.4.4':
     dependencies:
-      '@babel/parser': 7.27.5
-      '@babel/types': 7.27.6
+      '@babel/parser': 7.27.7
+      '@babel/types': 7.27.7
 
   '@types/babel__traverse@7.20.7':
     dependencies:
-      '@babel/types': 7.27.6
+      '@babel/types': 7.27.7
 
   '@types/cacheable-request@6.0.3':
     dependencies:
@@ -14225,7 +14270,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.34.1(eslint@9.30.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0)(eslint@9.30.0(jiti@1.21.7)))(eslint@9.30.0(jiti@1.21.7)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.34.1(eslint@9.30.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.0(jiti@1.21.7)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -14269,7 +14314,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.30.0(jiti@1.21.7)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.34.1(eslint@9.30.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1(eslint-plugin-import@2.31.0)(eslint@9.30.0(jiti@1.21.7)))(eslint@9.30.0(jiti@1.21.7))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.34.1(eslint@9.30.0(jiti@1.21.7))(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.10.1)(eslint@9.30.0(jiti@1.21.7))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3

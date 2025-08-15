@@ -1,0 +1,12 @@
+---
+description: Paquetes compartidos (packages/**)
+globs:
+  - "packages/**"
+alwaysApply: false
+---
+# Reglas de compartición
+- `@repo/design` u otros deben ser **web-only** o **agnósticos**. No importar DOM en native.
+- Lógica compartida: TS puro (sin `react`/`react-native`).
+
+# Imports
+- Evitar rutas relativas largas (`../../..`). Usar alias/paths si el template los provee.
