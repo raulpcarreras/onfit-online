@@ -24,7 +24,14 @@
     "docker": "docker-compose -f docker-compose.yml up",
     "watchman": "watchman watch-del './' ; watchman watch-project './'",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
-    "locale": "pnpm run --filter=@tooling/i18n locale"
+    "locale": "pnpm run --filter=@tooling/i18n locale",
+    "native:setup:devclient": "pnpm --filter native exec npx expo install expo-dev-client",
+    "native:build:ios": "pnpm --filter native exec npx expo run:ios",
+    "native:build:android": "pnpm --filter native exec npx expo run:android",
+    "native:start:client": "pnpm --filter native exec npx expo start --dev-client",
+    "native:start:go": "pnpm --filter native exec npx expo start --go",
+    "native:doctor": "pnpm --filter native exec npx expo-doctor",
+    "native:fix": "pnpm --filter native exec npx expo install --fix"
   },
   "nohoist": [
     "**/expo-router",

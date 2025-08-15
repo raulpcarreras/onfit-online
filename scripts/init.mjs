@@ -18,7 +18,7 @@ import {
     text,
 } from "@clack/prompts";
 
-const url = "https://github.com/divineniiquaye/pho-monorepo";
+const url = "https://github.com/raulpcarreras/onfit-online-artifacts";
 const exec = promisify(execRaw);
 
 // Using ESM, __dirname and __filename are not available.
