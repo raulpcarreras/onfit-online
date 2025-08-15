@@ -6,7 +6,7 @@ import "setimmediate";
 import { ViewTransitions } from "next-view-transitions";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import React from "react";
 
 import { I18nProvider } from "@/locales/locale";
@@ -19,13 +19,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <ViewTransitions>
       <html
-        lang="en"
+        lang="es" // pon "en" si prefieres
         suppressHydrationWarning
         className={cn(
           GeistSans.variable,
@@ -35,7 +33,7 @@ export default function RootLayout({
       >
         <head />
         <body className="transition-colors">
-          <I18nProvider children={children} />
+          <I18nProvider>{children}</I18nProvider>
         </body>
       </html>
     </ViewTransitions>
