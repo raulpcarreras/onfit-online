@@ -1,0 +1,16 @@
+{
+  "extends": "@tooling/typescript/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "target": "ESNext",
+    "module": "ESNext",
+    "paths": {
+      "@repo/design/*": ["./*"],
+      "@repo/*": ["../*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

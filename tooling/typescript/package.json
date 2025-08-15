@@ -1,0 +1,14 @@
+{
+  "name": "@tooling/typescript",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf dist node_modules"
+  },
+  "devDependencies": {
+    "@babel/core": "7.27.7",
+    "@types/node": "24.0.7",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3"
+  }
+}

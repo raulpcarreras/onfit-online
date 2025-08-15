@@ -1,0 +1,216 @@
+# GitHub Actions Documentation: https://docs.github.com/en/actions
+name: Build (IOS,Android,Web)
+on:
+    push:
+        branches: [develop, main]
+        paths: ["packages/**", "apps/**", "package.json"]
+    pull_request:
+        paths: ["packages/**", "apps/**", "package.json", ".github/workflows/ci.yml"]
+        types: [opened, reopened, synchronize]
+
+    workflow_dispatch:
+        inputs:
+            platform:
+                description: Platform to build for (all/android/ios)
+                type: choice
+                required: true
+                default: all
+                options: [all, android, ios]
+            profile:
+                description: EAS build profile (development/production/staging/simulator)
+                type: choice
+                required: false
+                options: [development, production, staging, simulator]
+            build:
+                description: Force build even if the build number is the same
+                type: number
+                required: false
+            submit:
+                description: Auto submit to the store? (TestFlight/Internal testing)
+                default: false
+                type: boolean
+                required: true
+
+# Prevent concurrent builds of the same branch
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    filter:
+        runs-on: macos-latest
+        name: Check paths
+        outputs:
+            web: ${{ steps.paths.outputs.web }}
+            native: ${{ steps.paths.outputs.native }}
+        steps:
+            - name: 🏗 Checkout full history
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🔍 Filter for changed paths
+              id: paths
+              uses: dorny/paths-filter@v3
+              with:
+                  filters: |
+                      native:
+                        - 'apps/native/**'
+                      web:
+                        - 'apps/web/**'
+
+    lint:
+        name: Lint
+        runs-on: macos-latest
+
+        steps:
+            - name: 🏗 Setup repository
+              uses: actions/checkout@v4
+
+            - name: 🏗 Setup monorepo
+              uses: ./.github/actions/setup-monorepo
+
+            - name: 🔎 Static Code Analysis
+              id: static-code-analysis
+              run: pnpm lint
+
+    test:
+        name: Unit Tests
+        runs-on: macos-latest
+
+        steps:
+            - name: 🏗 Setup repository
+              uses: actions/checkout@v4
+
+            - name: 🏗 Setup monorepo
+              uses: ./.github/actions/setup-monorepo
+
+            - name: 🧪 Test packages
+              run: pnpm test all
+
+    web:
+        name: Web Build
+        runs-on: macos-latest
+        needs: [filter, lint]
+        if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && needs.filter.outputs.web == 'true') }}
+
+        steps:
+            - name: 🏗 Setup repository
+              uses: actions/checkout@v4
+
+            - name: 🏗 Setup monorepo
+              uses: ./.github/actions/setup-monorepo
+
+            # If you want to to deploy a different website,
+            # you can change the `settings.rootDirectory` config in `./vercel/project.json`
+            - name: 🛠️ Pull Vercel Config
+              run: |
+                  environment=$([[ "${{ github.ref }}" == 'refs/heads/main' ]] && echo "production" || echo "preview")
+                  pnpm dlx vercel pull apps/web --yes --environment=$environment --token=${{ secrets.VERCEL_TOKEN }}
+                  rm -rf .vercel && mv apps/web/.vercel .
+
+            - name: 🚀 Deploy to Vercel
+              run: |
+                  pnpm dlx vercel build --token=${{ secrets.VERCEL_TOKEN }}
+                  pnpm dlx vercel deploy --prebuilt --archive=tgz --token=${{ secrets.VERCEL_TOKEN }}
+
+            # - name: 🚀 Deploy to Cloudflare Pages
+            #   env:
+            #     CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+            #     CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+            #   run: |
+            #       echo '{
+            #         "name": "my-app",
+            #         "compatibility_date": "2024-07-29",
+            #         "compatibility_flags": [
+            #             "nodejs_compat"
+            #         ],
+            #         "pages_build_output_dir": ".vercel/output/static"
+            #       }' > wrangler.json
+            #       pnpm dlx @cloudflare/next-on-pages
+            #       pnpm dlx wrangler pages deploy
+
+    native:
+        name: EAS Build
+        runs-on: macos-latest
+        needs: [filter, lint]
+        if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && needs.filter.outputs.native == 'true') }}
+
+        steps:
+            - name: 🏗 Setup repository
+              uses: actions/checkout@v4
+              with:
+                  persist-credentials: false
+                  fetch-depth: 0
+
+            - name: 🏗 Setup monorepo
+              uses: ./.github/actions/setup-monorepo
+              with:
+                  expo-token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: 🔎 Checking Expo Build Ready
+              id: expo
+              run: |
+                  ENV_FILE="./apps/native/app.config.ts"
+                  CURRENT_BUILD=$(grep "BUILD_NUMBER" "$ENV_FILE" | grep -o '"[0-9]*"' | tr -d '"')
+                  PREV_BUILD=${{ vars.NATIVE_BUILD_NUMBER }}
+
+                  if [[ $CURRENT_BUILD -gt $PREV_BUILD || -n "${{ github.event.inputs.build }}" ]]; then
+                    EAS_BUILD="build"
+                  else
+                    EAS_BUILD="update"
+                    CURRENT_BUILD=$((CURRENT_BUILD + 1))
+                  fi
+
+                  {
+                    echo "EAS_BUILD=$EAS_BUILD"
+                    echo "CURRENT_BUILD=${{ github.event.inputs.build || '$CURRENT_BUILD' }}"
+                    echo "EAS_UPDATE_ENV=${{ github.ref_name == 'main' && 'production' || 'preview' }}"
+                    echo "EAS_UPDATE_BRANCH=${{ github.ref_name == 'main' && 'main' || 'staging' }}"
+                  } >> $GITHUB_OUTPUT
+
+            - name: 🛠️ Build on EAS
+              continue-on-error: true # Remove this if you want to fail the build if EAS fails
+              env:
+                  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+                  # This can be removed and declared in your ENV_FILE directly
+                  EAS_PROJECT_ID: ${{ vars.EAS_PROJECT_ID }}
+                  EXPO_ACCOUNT_OWNER: ${{ vars.EXPO_ACCOUNT_OWNER }}
+              run: |
+                  AUTO_SUBMIT=${{ github.event.inputs.submit == 'true' && '--auto-submit' || '' }}
+                  if [[ ${{ steps.expo.outputs.EAS_BUILD }} == 'update' ]]; then pnpm run --filter=native prebuild --force; fi
+                  pnpm run --filter=native build ${{ github.event.inputs.profile || (github.ref_name == 'main' && 'production' || 'staging') }} \
+                    --platform ${{ steps.expo.outputs.EAS_BUILD == 'update' && 'android' || (github.event.inputs.platform || 'all') }} \
+                    --non-interactive \
+                    --no-wait \
+                    $AUTO_SUBMIT
+                  gh variable set NATIVE_BUILD_NUMBER --body ${{ steps.expo.outputs.CURRENT_BUILD }}
+
+            # In order not to push dev env to production, make sure to set envs in your expo account
+            - name: 🚀 OTA Update
+              if: ${{ steps.expo.outputs.EAS_BUILD == 'update' }}
+              working-directory: ./apps/mybitstore
+              run: |
+                  eas update --auto --json --non-interactive \
+                    --platform ${{ github.event.inputs.platform || 'all' }} \
+                    --environment=${{ steps.expo.outputs.EAS_UPDATE_ENV }} \
+                    --branch=${{ steps.expo.outputs.EAS_UPDATE_BRANCH }}
+
+            # Uncomment this if you face an issue with eas update for android
+            # and change --platform for OTA to ios
+            # - name: Android Build Cleanup
+            #   uses: actions-js/push@v1.5
+            #   if: ${{ steps.expo.outputs.EAS_BUILD == 'update' }}
+            #   with:
+            #       github_token: ${{ secrets.GITHUB_TOKEN }}
+            #       message: "Bump build number to: ${{ steps.expo.outputs.CURRENT_BUILD }} [skip ci]"
+            #       branch: ${{ github.ref_name }}
+
+            # TODO
+            # - name: 💬 Comment in Slack
+            #   uses: slackapi/slack-github-action@v1.17.0
+            #   env:
+            #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_TOKEN }}
+            #   with:
+            #     channel-id: deployments
+            #     slack-message: 'New deployment is ready!\n- Preview: ${{ steps.preview.outputs.qr }}'

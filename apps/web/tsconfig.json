@@ -1,0 +1,23 @@
+{
+  "extends": "@tooling/typescript/nextjs.json",
+  "compilerOptions": {
+    "paths": {
+      "@/assets/*": [
+        "./public/*"
+      ],
+      "@/*": ["./src/*"],
+      "@repo/design/*": ["../../packages/design-system/*"],
+      "@repo/*": ["../../packages/*"]
+    },
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "nativewind-env.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

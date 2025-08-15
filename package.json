@@ -1,0 +1,52 @@
+{
+  "name": "pho-monorepo",
+  "version": "0.2.18",
+  "pho": "0.2.18",
+  "bin": {
+    "pho-monorepo": "scripts/init.mjs"
+  },
+  "files": [
+    "scripts/init.mjs",
+    "CHANGELOG.md"
+  ],
+  "packageManager": "pnpm@10.12.4",
+  "workspaces": [],
+  "scripts": {
+    "build": "node scripts/run.mjs build",
+    "dev": "node scripts/run.mjs dev",
+    "test": "node scripts/run.mjs test",
+    "deps": "node scripts/deps.mjs",
+    "patch": "pnpm dlx pnpm-patch-i",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "docker": "docker-compose -f docker-compose.yml up",
+    "watchman": "watchman watch-del './' ; watchman watch-project './'",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
+    "locale": "pnpm run --filter=@tooling/i18n locale"
+  },
+  "nohoist": [
+    "**/expo-router",
+    "**/expo-router/**"
+  ],
+  "dependencies": {
+    "@inquirer/select": "^4.2.3",
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.4"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "i18n-config": {
+    "paths": [
+      "./apps/web",
+      "./apps/native"
+    ],
+    "include": [
+      "./packages/design-system/components"
+    ]
+  }
+}

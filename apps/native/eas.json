@@ -1,0 +1,77 @@
+{
+  "cli": {
+    "appVersionSource": "local"
+  },
+  "build": {
+    "production": {
+      "channel": "production",
+      "distribution": "store",
+      "ios": {
+        "image": "latest"
+      },
+      "android": {
+        "buildType": "app-bundle",
+        "image": "latest"
+      },
+      "env": {
+        "EXPO_NO_DOTENV": "1",
+        "APP_ENV": "production",
+        "FLIPPER_DISABLE": "1"
+      }
+    },
+    "staging": {
+      "channel": "staging",
+      "distribution": "store",
+      "ios": {
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
+      },
+      "env": {
+        "APP_ENV": "development",
+        "EXPO_NO_DOTENV": "1",
+        "FLIPPER_DISABLE": "1"
+      }
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
+      },
+      "env": {
+        "APP_ENV": "development",
+        "EXPO_NO_DOTENV": "1"
+      }
+    },
+    "simulator": {
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      },
+      "android": {
+        "image": "latest"
+      },
+      "env": {
+        "APP_ENV": "development",
+        "EXPO_NO_DOTENV": "1"
+      }
+    }
+  },
+  "submit": {
+    "staging": {
+      "android": {
+        "track": "internal"
+      }
+    },
+    "production": {
+      "android": {
+        "track": "internal"
+      }
+    }
+  }
+}
