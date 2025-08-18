@@ -13,20 +13,7 @@
   "workspaces": [],
   "scripts": {
     "dev:web": "NODE_OPTIONS=--no-deprecation pnpm --filter web dev",
-    "web:dev": "pnpm run dev:web",
-    "web:build": "pnpm --filter web build",
-
-    "dev:native": "NODE_OPTIONS=--no-deprecation pnpm --filter native exec expo start -c",
-    "native:start": "pnpm run dev:native",
-    "native:start:client": "pnpm --filter native exec npx expo start --dev-client",
-    "native:start:go": "pnpm --filter native exec npx expo start --go",
-    "native:run:ios": "pnpm --filter native exec npx expo run:ios",
-    "native:run:android": "pnpm --filter native exec npx expo run:android",
-    "native:prebuild:clean": "pnpm --filter native exec npx expo prebuild --clean",
-    "native:doctor": "pnpm --filter native exec npx expo-doctor",
-    "native:fix": "pnpm --filter native exec npx expo install --fix",
-    "native:setup:devclient": "pnpm --filter native exec npx expo install expo-dev-client",
-
+    "dev:native": "NODE_OPTIONS=--no-deprecation pnpm --filter native dev",
     "build": "node scripts/run.mjs build",
     "dev": "node scripts/run.mjs dev",
     "test": "node scripts/run.mjs test",
@@ -34,8 +21,19 @@
     "patch": "pnpm dlx pnpm-patch-i",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
+    "docker": "docker-compose -f docker-compose.yml up",
     "watchman": "watchman watch-del './' ; watchman watch-project './'",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore"
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
+    "locale": "pnpm run --filter=@tooling/i18n locale",
+    "native:setup:devclient": "pnpm --filter native exec npx expo install expo-dev-client",
+    "native:build:ios": "pnpm --filter native exec npx expo run:ios",
+    "native:build:android": "pnpm --filter native exec npx expo run:android",
+    "native:start:client": "pnpm --filter native exec npx expo start --dev-client",
+    "native:start:go": "pnpm --filter native exec npx expo start --go",
+    "native:doctor": "pnpm --filter native exec npx expo-doctor",
+    "native:fix": "pnpm --filter native exec npx expo install --fix",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "nohoist": [
     "**/expo-router",
