@@ -10,6 +10,7 @@ import type { Metadata } from "next";
 import React from "react";
 
 import { I18nProvider } from "@/locales/locale";
+import { UserProvider } from "@/lib/user-provider";
 import { cn } from "@repo/design/lib/utils";
 
 export const metadata: Metadata = {
@@ -33,7 +34,9 @@ export default function RootLayout({
       >
         <head />
         <body className="transition-colors">
-          <I18nProvider>{children}</I18nProvider>
+          <I18nProvider>
+            <UserProvider>{children}</UserProvider>
+          </I18nProvider>
         </body>
       </html>
     </ViewTransitions>

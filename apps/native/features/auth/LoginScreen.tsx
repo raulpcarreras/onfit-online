@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useRouter } from "expo-router";
+import { supabase } from "@/lib/supabase";
 import {
   SafeAreaView,
   View,
@@ -15,9 +17,11 @@ import {
 } from "react-native";
 
 export default function OnfitAuth() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
+  const [loading, setLoading] = useState(false);
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -35,8 +39,52 @@ export default function OnfitAuth() {
     btnText: "#000000",
   };
 
-  const handleSubmit = () => {
-    Alert.alert(`Login simulado`, `email: ${email}`);
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      Alert.alert("Datos requeridos", "Introduce email y contraseña");
+      return;
+    }
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw error;
+      // Cargar rol desde onfit.profiles
+      const { data: user } = await supabase.auth.getUser();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("user_id", user?.user?.id)
+        .maybeSingle();
+      if (profile?.role === "admin") router.replace("/admin");
+      else router.replace("/");
+    } catch (e: any) {
+      Alert.alert("Error de inicio de sesión", e?.message ?? "Inténtalo de nuevo");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async () => {
+    if (!email || !password) {
+      Alert.alert("Datos requeridos", "Introduce email y contraseña");
+      return;
+    }
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) throw error;
+      Alert.alert("Registro iniciado", "Revisa tu email para confirmar la cuenta");
+    } catch (e: any) {
+      Alert.alert("Error al registrar", e?.message ?? "Inténtalo de nuevo");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -118,16 +166,21 @@ export default function OnfitAuth() {
 
             {/* Botón de login */}
             <Pressable
-              style={[s.primary, { backgroundColor: colors.btnBg }]}
+              style={[s.primary, { backgroundColor: colors.btnBg, opacity: loading ? 0.6 : 1 }]}
               onPress={handleSubmit}
+              disabled={loading}
             >
-              <Text style={[s.primaryTxt, { color: colors.btnText }]}>Entrar</Text>
+              <Text style={[s.primaryTxt, { color: colors.btnText }]}>
+                {loading ? "Entrando..." : "Entrar"}
+              </Text>
             </Pressable>
 
             {/* Links */}
             <View style={s.links}>
               <Text style={[s.link, { color: colors.link }]}>Olvidé mi contraseña</Text>
-              <Text style={[s.link, { color: colors.link }]}>Crear cuenta nueva</Text>
+              <Pressable onPress={handleSignUp} disabled={loading}>
+                <Text style={[s.link, { color: colors.link }]}>{loading ? "..." : "Crear cuenta nueva"}</Text>
+              </Pressable>
             </View>
 
             <Text style={[s.footer, { color: colors.footer }]}>
