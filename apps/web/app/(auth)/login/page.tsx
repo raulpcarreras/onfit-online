@@ -42,7 +42,12 @@ export default function LoginPage() {
       // tras registro, creamos perfil y redirigimos al dashboard (usuario por defecto)
       const { data: u } = await supabase.auth.getUser();
       if (u.user?.id) {
-        await supabase.from("profiles").insert({ user_id: u.user.id, email: u.user.email }).catch(() => {});
+        await supabase
+          .from("profiles")
+          .upsert(
+            { user_id: u.user.id, email: u.user.email ?? null },
+            { onConflict: "user_id", ignoreDuplicates: true },
+          );
       }
       router.replace("/client");
     } catch (err: any) {
