@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useUser } from "@/lib/user-provider";
+import { useRouter } from "next/navigation";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 import {
   Dumbbell, Calendar, MessageSquare, CheckCircle2, TrendingUp, Utensils
@@ -36,6 +38,19 @@ const habitos = [
 export default function UserDashboard() {
   const { resolvedTheme } = useTheme();
   const { user, role, loading } = useUser();
+  const router = useRouter();
+
+  // Protección de ruta: solo usuarios pueden ver esta página
+  useEffect(() => {
+    if (!loading && (!user || role !== "user")) {
+      router.replace("/login");
+    }
+  }, [loading, user, role, router]);
+
+  // Mostrar loader hasta confirmar que es usuario
+  if (loading || !user || role !== "user") {
+    return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+  }
 
   const border = "border border-border";
   const card = "bg-card rounded-lg p-4";
@@ -66,7 +81,7 @@ export default function UserDashboard() {
               <k.icon className={`size-4 ${accent}`} />
             </div>
             <div className="mt-2 text-2xl font-semibold">{k.value}</div>
-            {k.diff && <div className="mt-1 text-xs text-emerald-600 dark:text-emerald-400">{k.diff}</div>}
+                            {k.diff && <div className="mt-1 text-xs text-primary">{k.diff}</div>}
           </div>
         ))}
       </section>

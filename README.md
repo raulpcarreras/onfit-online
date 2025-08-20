@@ -64,6 +64,19 @@ My main goals driving this template are:
 - [Zod](https://zod.dev/)
 
 
+## 🛠️ Troubleshooting
+
+### Watchman Recrawl
+Si ves warnings de Watchman sobre "recrawl", ejecuta:
+```bash
+pnpm watchman
+```
+
+### GitHub Artifacts
+Para evitar errores de upload (422), el proyecto usa cache de GitHub Actions. Si tienes problemas:
+1. Asegúrate de tener `GITHUB_TOKEN` configurado
+2. O ejecuta `gh auth login` si tienes GitHub CLI instalado
+
 ## 💅 Shadcn UI Kit (Web & Native)
 
 >> A web demo of most ui listed is available [here](https://pho-monorepo.vercel.app/), and use Expo Go to try out the native version of the app.

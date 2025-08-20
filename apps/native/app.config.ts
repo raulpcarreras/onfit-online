@@ -190,6 +190,7 @@ const config: import("expo/config").ExpoConfig = {
         package: parsed.data.BUNDLE_ID,
         googleServicesFile: "./certs/google-services.json",
         versionCode: Number.parseInt(parsed.data.BUILD_NUMBER),
+
         adaptiveIcon: {
             foregroundImage: `${ASSET_URL}/adaptive-icon.png`,
             backgroundImage: `${ASSET_URL}/adaptive-icon.png`,

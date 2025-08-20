@@ -84,7 +84,7 @@ export default function TrainingRunner() {
 
   // Timer de descanso
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: number | undefined;
     
     if (restTimer && restTimer > 0) {
       interval = setInterval(() => {

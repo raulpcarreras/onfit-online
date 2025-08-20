@@ -1,39 +1,28 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useUser } from "@/lib/user-provider";
-import Topbar from "@/components/dashboard/Topbar";
-import UserSidebar from "@/components/dashboard/UserSidebar";
-import FullScreenLoader from "@/components/FullScreenLoader";
+import React, { useState } from "react";
+import Topbar from "@/components/dashboard/layout/Topbar";
+import Sidebar from "@/components/dashboard/layout/Sidebar";
+import { userMenuItems } from "@/components/dashboard/layout/menu-config";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { user, role, loading } = useUser();
-  const router = useRouter();
-
-  // Protección del layout: solo usuarios pueden ver este layout
-  useEffect(() => {
-    if (!loading && (!user || role !== "user")) {
-      router.replace("/login");
-    }
-  }, [loading, user, role, router]);
-
-  // Mostrar loader hasta confirmar que es usuario
-  if (loading || !user || role !== "user") {
-    return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
-  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* TOPBAR - Ahora ocupa todo el ancho */}
       <header className="fixed top-0 left-0 right-0 z-30">
-        <Topbar variant="user" onOpenMenu={() => setMobileOpen(true)} />
+        <Topbar 
+          variant="user" 
+          brandName="Online"
+          showBreadcrumb={false}
+          onOpenMenu={() => setMobileOpen(true)} 
+        />
       </header>
 
       {/* SIDEBAR DESKTOP - Ahora empieza debajo de la topbar con ancho ajustado */}
       <aside className="hidden lg:block fixed top-14 bottom-0 left-0 w-52 border-r border-border bg-background/90 backdrop-blur z-20">
-        <UserSidebar />
+        <Sidebar items={userMenuItems} />
       </aside>
 
       {/* DRAWER MOBILE */}
@@ -46,7 +35,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
           />
           <div className="absolute top-14 bottom-0 left-0 w-60 max-w-[85%] bg-card border-r border-border shadow-xl">
             <div className="p-2">
-              <UserSidebar />
+              <Sidebar items={userMenuItems} />
             </div>
           </div>
         </div>

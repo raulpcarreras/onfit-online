@@ -1,9 +1,12 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Users, Euro, Activity } from "lucide-react";
 import { useUser } from "@/lib/user-provider";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 // Cargar el gráfico solo en cliente para evitar problemas de hidratación
 const RevenueChart = dynamic(() => import("@/components/RevenueChart"), { ssr: false });
@@ -33,7 +36,20 @@ const recientes = [
 
 export default function AdminDashboard() {
   const { theme, resolvedTheme } = useTheme();
-  const { role, loading } = useUser();
+  const { user, role, loading } = useUser();
+  const router = useRouter();
+
+  // Protección de ruta: solo admins pueden ver esta página
+  useEffect(() => {
+    if (!loading && (!user || role !== "admin")) {
+      router.replace("/login");
+    }
+  }, [loading, user, role, router]);
+
+  // Mostrar loader hasta confirmar que es admin
+  if (loading || !user || role !== "admin") {
+    return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+  }
 
   const accent = "text-primary";
   const border = "border border-border";
@@ -58,7 +74,7 @@ export default function AdminDashboard() {
                   <item.icon className={`size-4 ${accent}`} />
                 </div>
                 <div className="mt-2 text-2xl font-semibold">{item.value}</div>
-                <div className="mt-1 text-xs text-emerald-400">{item.diff}</div>
+                <div className="mt-1 text-xs text-primary">{item.diff}</div>
               </div>
             ))}
           </section>

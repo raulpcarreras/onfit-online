@@ -1,0 +1,13 @@
+# artefactos y caches
+**/node_modules
+**/.next
+**/.expo
+**/android
+**/ios
+**/.turbo
+**/dist
+**/build
+**/out
+**/coverage
+**/.DS_Store
+**/.env*
