@@ -1,76 +1,36 @@
 @tailwind components;
 
 @layer components {
-  /* Superficies */
-  .surface-card {
-    @apply bg-neutral-900/60 text-neutral-100 border border-neutral-800/70 rounded-xl shadow-md backdrop-blur;
-  }
-  .surface-popover {
-    @apply bg-neutral-900/50 text-neutral-100 border border-neutral-800/70 rounded-lg shadow-md;
+  /* Utilidades que usan tokens canónicos */
+  
+  /* Botón primario */
+  .btn-primary {
+    @apply py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition;
   }
   
-  /* Dashboard específico */
-  .dashboard-card {
-    @apply bg-neutral-900/60 backdrop-blur rounded-xl border border-neutral-800/70;
-  }
-  
-  /* Inputs */
-  .input-base {
-    @apply rounded-lg border border-neutral-800/60 bg-neutral-900/70 text-neutral-100 outline-none hover:border-neutral-700 focus:border-amber-500;
-  }
-  
-  /* Input estilo dashboard */
-  .input-dashboard {
-    @apply w-full pl-9 pr-3 py-2 rounded-lg bg-neutral-900/70 outline-none text-sm placeholder:text-neutral-500 border border-neutral-800/60;
-  }
-
-  /* Botón icono (ghost/outline) */
-  .icon-btn {
-    @apply p-2 rounded-lg border border-neutral-800/70 hover:border-neutral-700 focus:outline-none focus:ring-0;
-  }
-
-  /* Botón icono estilo dashboard (sin borde, hover sutil según tema) */
+  /* Botón icono ghost */
   .icon-ghost {
-    @apply p-2 rounded-lg transition-colors hover:bg-neutral-800 focus:outline-none focus:ring-0;
+    @apply p-2 rounded-lg transition-colors hover:bg-secondary focus:outline-none focus:ring-0;
   }
-
-  /* Icono con color de acento amber */
+  
+  /* Icono con color de acento */
   .accent-icon {
-    @apply text-amber-500;
+    @apply text-accent;
   }
-
-  /* Icono atenuado - como en el dashboard */
+  
+  /* Icono atenuado */
   .icon-muted {
-    @apply text-neutral-400;
+    @apply text-muted-foreground;
   }
-
-  /* Texto/links tenues */
-  .link-muted {
-    @apply text-neutral-500 hover:text-neutral-300;
-  }
-
+  
   /* Separador tenue */
   .divider-muted {
-    @apply border-t border-neutral-800/70;
+    @apply border-t border-border/50;
   }
   
-  /* Botón primario estilo dashboard */
-  .btn-primary {
-    @apply py-2 rounded-lg bg-amber-500 text-black font-medium hover:bg-amber-400 transition;
-  }
-  
-  /* Tabla dashboard */
-  .table-header {
-    @apply bg-neutral-900/50 text-neutral-400;
-  }
-  
-  .table-row {
-    @apply border-t border-neutral-800/70;
-  }
-  
-  /* Badge estilo dashboard */
-  .badge-dashboard {
-    @apply px-2 py-1 rounded-md bg-neutral-800 text-neutral-300 capitalize;
+  /* Transiciones suaves */
+  .transition-smooth {
+    @apply transition-all duration-200 ease-in-out;
   }
 }
 

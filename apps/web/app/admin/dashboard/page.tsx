@@ -50,7 +50,7 @@ export default function AdminDashboard() {
 
   const accent = "text-primary";
   const border = "border border-border";
-  const card = "surface-card p-0";
+  const card = "bg-card p-0";
   const ChartStroke = theme === "light" ? "hsl(var(--chart-stroke))" : "hsl(var(--primary))";
 
   // Evitar FOUC de contenido protegido: mostrar loader corporativo hasta confirmar rol
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
               <div className="font-medium">Usuarios recientes</div>
               <div className="mt-3 border border-border rounded-lg overflow-hidden">
                 <table className="w-full text-sm">
-                  <thead className="surface-popover text-muted-foreground">
+                  <thead className="bg-popover text-muted-foreground">
                     <tr>
                       <th className="text-left px-3 py-2 font-normal">Nombre</th>
                       <th className="text-left px-3 py-2 font-normal">Email</th>
@@ -124,7 +124,7 @@ export default function AdminDashboard() {
                         <td className="px-3 py-2">{u.name}</td>
                         <td className="px-3 py-2 text-muted-foreground">{u.email}</td>
                         <td className="px-3 py-2">
-                          <span className="px-2 py-1 rounded-md surface-popover capitalize">
+                          <span className="px-2 py-1 rounded-md bg-popover capitalize">
                             {u.role}
                           </span>
                         </td>

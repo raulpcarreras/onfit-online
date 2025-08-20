@@ -2,8 +2,8 @@ import "raf/polyfill";
 import "setimmediate";
 
 /* Importar estilos en el orden correcto */
-import "@repo/design/tailwind/global.css";
 import "./globals.css";
+import "@repo/design/tailwind/global.css";
 import "./styles/utilities.css";
 
 import { ViewTransitions } from "next-view-transitions";

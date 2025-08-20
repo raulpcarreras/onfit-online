@@ -1,176 +1,299 @@
-# Sistema de estilos y layout – ONFIT (Web)
+# Sistema de Estilos ONFIT - Guía Completa
 
-## TL;DR
-- Estandarizamos estilos en utilidades (`apps/web/app/styles/utilities.css`) y variables (`apps/web/app/theme.css`).
-- Usa SIEMPRE utilidades/tokens en vez de clases neutrales sueltas.
-- Layout Admin: Topbar fija (viewport) + Sidebar fijo bajo la topbar. El contenido se desplaza con `lg:ml-64` y respeta la topbar con `pt-14`.
-- Si un cambio de CSS no se refleja: recarga dura o reinicia el dev server (HMR puede quedarse atascado con `@layer`).
+## 🎯 Visión General
+
+ONFIT utiliza un **sistema de design tokens unificado** que funciona tanto en **web (Next.js + Tailwind)** como en **nativo (Expo + NativeWind)**. Este sistema garantiza coherencia visual, facilita cambios de tema y mantiene la consistencia entre plataformas.
 
 ---
 
-## 1) Estructura de layout (Admin)
+## 🏗️ Arquitectura del Sistema
 
-Archivo: `apps/web/app/admin/layout.tsx`
+### 1. **Design Tokens Compartidos**
+**Archivo:** `packages/design-system/tokens.ts`
 
-- Grid simplificada: en escritorio el sidebar es fijo y el contenido se desplaza.
-- Sidebar (escritorio):
-  - `fixed top-14 left-0 w-64 h-[calc(100vh-3.5rem)] z-30` (queda pegado bajo la topbar)
-- Topbar: componente `Topbar` (fijo en viewport) con:
-  - `fixed top-0 left-0 right-0 lg:left-64 lg:right-0 z-30 h-14`
-  - En escritorio ocupa exactamente desde el borde derecho del sidebar hasta el borde derecho de la ventana.
-- Contenido:
-  - En escritorio: `lg:ml-64` para no solapar el menú
-  - Respeta topbar: `pt-14` bajo la barra para evitar recortes
-
-Resultado: topbar y sidebar no se pisan y permanecen visibles; el contenido scrollea bajo ambos offsets.
-
----
-
-## 2) Sistema de estilos
-
-### 2.1 Variables de tema (`apps/web/app/theme.css`)
-- Variables HSL para color de marca y tokens de diseño:
-  - `--accent`, `--primary`, `--ring` (derivan de la marca)
-  - Modo oscuro con valores específicos.
-- Evita tocar colores hard‑coded en vistas; usa variables.
-
-### 2.2 Utilidades (`apps/web/app/styles/utilities.css`)
-Utilidades principales (via `@layer components`):
-- `surface-card`: fondo/borde de tarjetas conforme al tema
-- `surface-popover`: fondo/borde de popovers/cabeceras de tabla
-- `input-base`: estilos de inputs (borde, focus, fondo)
-- `icon-btn`: botón tipo outline con hover gris coherente
-- `icon-ghost`: botón fantasma sin borde; hover sutil claro/oscuro
-- `accent-icon`: fuerza `color` y `stroke` al color de acento (útil para Lucide)
-- `icon-muted`: icono atenuado (grises coherentes)
-- `link-muted`: enlaces discretos con hover
-- `divider-muted`: separador suave con borde del tema
-
-Reglas prácticas:
-- Sustituye clases `neutral-*` por estas utilidades.
-- Para iconos Lucide, si el color no aplica, usa `accent-icon` (controla `stroke`) o eleva especificidad.
-
-### 2.3 Design System (botones)
-Archivo: `packages/design-system/ui/button.tsx`
-- Variantes relevantes:
-  - `iconGhost`: botón de icono fantasma
-  - `iconGhostAccent`: fantasma con color de acento
-  - `iconGhostAuto`: fantasma que muestra acento en claro y blanco en oscuro
-
-Usa estas variantes en Topbar/acciones para comportamiento coherente en ambos temas.
-
----
-
-## 3) Patrones UI (ejemplos aplicados)
-
-### 3.1 Buscador en Topbar
-Componente: `apps/web/src/components/dashboard/Topbar.tsx`
-- Lupa correctamente alineada y deshabilitada a eventos:
-
-```tsx
-<Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 size-5 icon-muted" />
-<input className="w-full h-10 pl-14 pr-3 rounded-xl input-base text-sm placeholder:text-muted-foreground" />
+```typescript
+export const tokens = {
+  light: {
+    bg: "0 0% 98%",           // #fafafa
+    card: "0 0% 100%",        // #ffffff
+    text: "222.2 47.4% 11.2%", // #0b0b0c
+    primary: "38 92% 50%",    // #F59E0B (amber-500)
+    // ... más tokens
+  },
+  dark: {
+    bg: "0 0% 5%",            // #0a0a0a
+    card: "0 0% 9%",          // #171717
+    text: "0 0% 90%",         // #e5e5e5
+    primary: "38 92% 50%",    // #F59E0B (amber-500)
+    // ... más tokens
+  }
+}
 ```
 
-- `pl-14` evita solape y mantiene el placeholder alineado.
+**Características:**
+- ✅ **Un solo origen de verdad** para colores
+- ✅ **Valores HSL** para flexibilidad
+- ✅ **Temas light/dark** predefinidos
+- ✅ **Exportable** para web y nativo
 
-### 3.2 Brand en Topbar
-- Bloque brand (mancuerna + texto) a la izquierda del buscador.
-- Mantener `shrink-0` si fuera necesario para evitar que el input lo colapse.
+### 2. **CSS Variables (Web)**
+**Archivo:** `apps/web/app/globals.css`
 
-### 3.3 Sidebar
-Componente: `apps/web/src/components/dashboard/Sidebar.tsx`
-- Etiqueta “MENU” discreta: `text-xs text-muted-foreground`
-- Ítems: botones con `hover:bg-muted/40`
-- “Cerrar sesión” como ítem adicional del menú (sin footer separado) para mayor previsibilidad.
+```css
+:root {
+  --bg: 0 0% 98%;
+  --card: 0 0% 100%;
+  --text: 222.2 47.4% 11.2%;
+  --primary: 38 92% 50%;
+  --primary-fg: 0 0% 100%;
+  /* ... más variables */
+}
 
----
+.dark {
+  --bg: 0 0% 5%;
+  --card: 0 0% 9%;
+  --text: 0 0% 90%;
+  --primary: 38 92% 50%;
+  --primary-fg: 0 0% 5%;
+  /* ... más variables */
+}
+```
 
-## 4) Prioridad y troubleshooting
+**Características:**
+- ✅ **Mapeo directo** de tokens a CSS variables
+- ✅ **Cambio automático** con `next-themes`
+- ✅ **Soporte para HSL** en Tailwind
 
-- Prioridad de estilos
-  - Utilidades en `utilities.css` (capa components) suelen ganar a clases sueltas.
-  - Para iconos Lucide: además de `color`, debes afectar `stroke` (usa `accent-icon`).
-- HMR/Cache
-  - Cambios a `@layer` o CSS global pueden requerir recarga dura (Cmd+Shift+R) o reiniciar `pnpm --filter web dev`.
-  - Si persiste, borra `apps/web/.next`.
-- Duplicidad de render
-  - Evita incluir Topbar/Sidebar dentro de páginas si ya existen en el layout (provoca “parpadeos” y estilos que parecen ignorarse).
+### 3. **Configuración de Tailwind**
+**Archivo:** `apps/web/tailwind.config.ts`
 
----
+```typescript
+theme: {
+  extend: {
+    colors: {
+      bg: "hsl(var(--bg))",
+      card: "hsl(var(--card))",
+      text: "hsl(var(--text))",
+      primary: "hsl(var(--primary))",
+      primaryFg: "hsl(var(--primary-fg))",
+      // ... más colores
+    }
+  }
+}
+```
 
-## 5) Checklist para tocar estilos
-- [ ] ¿Usas utilidades del sistema y no `neutral-*`?
-- [ ] ¿El cambio está en layout o en página (evitar duplicados)?
-- [ ] ¿Has comprobado claro/oscuro y hover/focus?
-- [ ] ¿Recarga dura o restart del dev server si tocaste `@layer`?
-- [ ] ¿Iconos Lucide con `stroke` (usa `accent-icon`) si necesitas forzar color?
-
----
-
-## 6) Comandos útiles
-- Dev web: `pnpm --filter web dev`
-- Build web: `pnpm --filter web build`
-- Limpiar caché de Next: `rm -rf apps/web/.next`
-
----
-
-## 7) Notas finales
-- Prioriza siempre tokens/variables y utilidades compartidas. Inline sólo para depurar y luego vuelve a utilidades.
-- Si algo “no responde”, revisa el orden de carga (`theme.css` y `utilities.css` van en `app/layout.tsx`) y que el componente que editas sea el que realmente se renderiza en esa ruta.
-
----
-
-## 8) Cheat sheet de tokens y utilidades (Web)
-
-- Fondos y texto
-  - `bg-background`, `text-foreground`
-  - Tarjetas/Popovers: `surface-card`, `surface-popover`
-- Bordes y separadores
-  - `border border-border`, `divider-muted`
-- Inputs
-  - Base: `input-base`
-- Iconos
-  - Acento forzado: `accent-icon`
-  - Atenuado: `icon-muted`
-  - Icon button ghost (color acento claro / blanco oscuro): `iconGhostAuto` + `btn-ghost-icon`
-- Hovers coherentes
-  - Elementos de lista: `hover:bg-muted/40`
-  - Botones con borde: `hover:border-neutral-300 dark:hover:border-neutral-600`
-
-Sustituciones típicas:
-- `bg-neutral-950` → `bg-background`
-- `text-white` → `text-foreground`
-- `hover:bg-neutral-900` → `hover:bg-muted/40`
-- `border-neutral-*` → `border-border`
+**Características:**
+- ✅ **Mapeo automático** a `hsl(var(--token))`
+- ✅ **Clases semánticas** como `bg-primary`, `text-card`
+- ✅ **Soporte completo** para temas light/dark
 
 ---
 
-## 9) Equivalencias y pautas en Native (Expo + NativeWind)
+## 🎨 Uso de Colores
 
-- Principios
-  - Prioriza componentes del Design System (`@repo/design/ui/*`) y sus `variant`/`size` antes que clases sueltas.
-  - Evita colores hard‑coded. En iconos, usa variantes (p.ej. botones `iconGhostAuto`).
-- Iconos (lucide)
-  - Si usas `lucide-react-native` y hay interop para `className`, aplica utilidades como `accent-icon`. Si no, pasa `color`/`stroke` desde el tema del DS.
-  - En botones de icono ghost, usa el propio `Button` con `variant="iconGhostAuto"` y coloca el icono sin color explícito cuando sea posible.
-- Estilos coherentes
-  - Inputs: utiliza los del DS. Evita `View` + `TextInput` caseros para no romper el look.
-  - Superficies: reaprovecha contenedores del DS o `surface-card` cuando estés en web; en native, usa las variantes DS equivalentes.
-- Navegación/FOUC
-  - Mantén loaders de pantalla completa (componente reutilizable) mientras confirmas sesión/rol.
-- Dev Native
-  - Arranque Expo Go: `pnpm --filter native exec expo start --go`
-  - Dev Client: `pnpm --filter native run ios|android` (una vez) y luego `pnpm --filter native dev`
+### **Clases Principales**
+```tsx
+// Fondos
+className="bg-bg"           // Fondo principal
+className="bg-card"         // Fondo de tarjetas
+className="bg-primary"      // Fondo naranja/ámbar
+
+// Texto
+className="text-text"       // Texto principal
+className="text-primary"    // Texto naranja/ámbar
+className="text-muted"      // Texto atenuado
+
+// Bordes
+className="border-border"   // Bordes del tema
+className="border-primary"  // Bordes naranjas
+
+// Estados
+className="hover:bg-secondary"    // Hover sutil
+className="focus:ring-primary"    // Focus naranja
+```
+
+### **Ejemplos Prácticos**
+```tsx
+// Botón primario
+<button className="bg-primary text-primary-fg hover:bg-primary/90">
+  Acción Principal
+</button>
+
+// Tarjeta
+<div className="bg-card text-text border border-border rounded-lg p-4">
+  Contenido de la tarjeta
+</div>
+
+// Input
+<input className="bg-bg text-text border border-border focus:ring-2 focus:ring-primary" />
+```
 
 ---
 
-## 10) Ejemplos rápidos
+## 🌓 Sistema de Temas
 
-- Botón icono ghost (Topbar/acciones):
-  - Web: `<Button variant="iconGhostAuto" className="p-2 h-auto btn-ghost-icon">...` 
-  - Icono dentro sin `text-*`: deja que herede color; si no aplica, usa `btn-ghost-icon`.
-- CTA primario (login/signup):
-  - `bg-primary text-primary-foreground hover:brightness-95 disabled:opacity-60`
-- Item de menú (Sidebar):
-  - `px-3 py-2 rounded-lg hover:bg-muted/40` con icono `icon-muted`
+### **Configuración**
+**Archivo:** `apps/web/src/providers/theme.tsx`
+
+```tsx
+<ThemeProvider 
+  attribute="class" 
+  defaultTheme="system" 
+  enableSystem
+  disableTransitionOnChange={false}
+  storageKey="onfit-theme"
+>
+```
+
+### **Cambio de Tema**
+```tsx
+import { useTheme } from "next-themes";
+
+const { theme, setTheme } = useTheme();
+
+// Cambiar tema
+setTheme("light");    // Tema claro
+setTheme("dark");     // Tema oscuro
+setTheme("system");   // Tema del sistema
+```
+
+### **Clases CSS Automáticas**
+- **Tema claro:** Sin clase especial
+- **Tema oscuro:** Clase `.dark` en `<html>`
+- **Transiciones:** Automáticas entre temas
+
+---
+
+## 📱 Componentes del Dashboard
+
+### **Topbar**
+**Archivo:** `apps/web/src/components/dashboard/Topbar.tsx`
+
+**Características:**
+- ✅ **Brand:** Icono + "ONFIT Admin" (Admin en naranja)
+- ✅ **Breadcrumb:** Navegación contextual
+- ✅ **Buscador:** Centrado y funcional
+- ✅ **Selector de tema:** Dropdown funcional
+- ✅ **Usuario:** Avatar y información
+
+**Estructura:**
+```tsx
+<div className="h-14 border-b border-border bg-background/80 backdrop-blur">
+  {/* Brand + Breadcrumb */}
+  {/* Buscador centrado */}
+  {/* Tema + Notificaciones + Usuario */}
+</div>
+```
+
+### **Sidebar**
+**Archivo:** `apps/web/src/components/dashboard/Sidebar.tsx`
+
+**Características:**
+- ✅ **Etiqueta "MENU":** Estilo programador
+- ✅ **Navegación:** Dashboard, Usuarios, Pagos, Ajustes
+- ✅ **Cerrar sesión:** Integrado en el menú
+- ✅ **Hover effects:** Consistentes con el tema
+
+### **Layout Admin**
+**Archivo:** `apps/web/app/admin/layout.tsx`
+
+**Estructura:**
+```tsx
+<div className="min-h-screen bg-bg">
+  <Topbar onOpenMenu={onOpenMenu} />
+  <Sidebar isOpen={isOpen} onClose={onClose} />
+  <main className="lg:ml-64 pt-14">
+    {children}
+  </main>
+</div>
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### **Problemas Comunes**
+
+#### **1. Colores no se aplican**
+```bash
+# Verificar que las variables CSS estén cargadas
+# En DevTools > Elements > :root
+# Deberías ver --primary, --bg, etc.
+
+# Si no están, verificar orden de importación en layout.tsx
+import "./globals.css";  // Debe ir ANTES de Tailwind
+```
+
+#### **2. Tema no cambia**
+```bash
+# Verificar que next-themes esté funcionando
+# En DevTools > Elements > <html>
+# Debería tener clase "dark" en modo oscuro
+
+# Si no funciona, limpiar localStorage
+localStorage.removeItem('onfit-theme');
+```
+
+#### **3. Hover effects no funcionan**
+```bash
+# Verificar que no haya conflictos de CSS
+# Usar clases como hover:bg-secondary
+# Evitar !important innecesarios
+```
+
+### **Comandos de Limpieza**
+```bash
+# Limpiar cache de Next.js
+rm -rf apps/web/.next
+rm -rf apps/web/.turbo
+
+# Reiniciar servidor
+pnpm --filter web dev
+```
+
+---
+
+## 📋 Checklist de Implementación
+
+### **Para Nuevos Componentes**
+- [ ] **Usar tokens del sistema:** `bg-primary`, `text-card`
+- [ ] **Evitar colores hardcoded:** No `bg-red-500`, usar `bg-destructive`
+- [ ] **Soporte para temas:** Funcionar en light y dark
+- [ ] **Hover states:** Incluir `hover:bg-secondary` o similar
+- [ ] **Consistencia:** Seguir patrones del dashboard
+
+### **Para Modificaciones**
+- [ ] **Actualizar tokens** si se añaden nuevos colores
+- [ ] **Verificar CSS variables** en `globals.css`
+- [ ] **Actualizar Tailwind config** si se añaden nuevos tokens
+- [ ] **Probar en ambos temas** antes de commit
+
+---
+
+## 🚀 Próximos Pasos
+
+### **Mejoras Planificadas**
+- [ ] **Más variantes de botones** en el design system
+- [ ] **Animaciones** consistentes entre temas
+- [ ] **Iconos personalizados** para ONFIT
+- [ ] **Componentes nativos** usando tokens compartidos
+
+### **Mantenimiento**
+- [ ] **Revisar tokens** mensualmente
+- [ ] **Actualizar documentación** con nuevos componentes
+- [ ] **Auditoría de colores** para accesibilidad
+- [ ] **Performance** de CSS variables
+
+---
+
+## 📚 Referencias
+
+- **Design Tokens:** [Figma Design Tokens](https://www.figma.com/community/file/888409328500312931)
+- **CSS Variables:** [MDN CSS Custom Properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
+- **Tailwind CSS:** [Documentación oficial](https://tailwindcss.com/docs)
+- **Next Themes:** [GitHub next-themes](https://github.com/pacocoursey/next-themes)
+
+---
+
+*Última actualización: $(date)*
+*Versión del sistema: 1.0.0*

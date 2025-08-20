@@ -11,32 +11,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Nuestros tokens personalizados
-        bg: "hsl(var(--bg))",
-        card: "hsl(var(--card))",
-        text: "hsl(var(--text))",
-        muted: "hsl(var(--muted))",
-        border: "hsl(var(--border))",
-        accent: "hsl(var(--accent))",
-        accentFg: "hsl(var(--accent-fg))",
-        primary: "hsl(var(--primary))",
-        primaryFg: "hsl(var(--primary-fg))",
-        secondary: "hsl(var(--secondary))",
-        secondaryFg: "hsl(var(--secondary-fg))",
-        destructive: "hsl(var(--destructive))",
-        destructiveFg: "hsl(var(--destructive-fg))",
-        ring: "hsl(var(--ring))",
-        input: "hsl(var(--input))",
-        popover: "hsl(var(--popover))",
-        popoverFg: "hsl(var(--popover-fg))",
-        chartStroke: "hsl(var(--chart-stroke))",
+        // Colores canónicos de shadcn
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         
+        card: "hsl(var(--card))",
+        "card-foreground": "hsl(var(--card-foreground))",
+        
+        popover: "hsl(var(--popover))",
+        "popover-foreground": "hsl(var(--popover-foreground))",
+        
+        primary: "hsl(var(--primary))",
+        "primary-foreground": "hsl(var(--primary-foreground))",
+        
+        secondary: "hsl(var(--secondary))",
+        "secondary-foreground": "hsl(var(--secondary-foreground))",
+        
+        muted: "hsl(var(--muted))",
+        "muted-foreground": "hsl(var(--muted-foreground))",
+        
+        accent: "hsl(var(--accent))",
+        "accent-foreground": "hsl(var(--accent-foreground))",
+        
+        destructive: "hsl(var(--destructive))",
+        "destructive-foreground": "hsl(var(--destructive-foreground))",
+        
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        
+        // Tooltip colors (mantenemos estos como estaban)
         tooltip: {
           bg: "var(--tooltip-bg)",
           border: "var(--tooltip-border)",
           text: "var(--tooltip-text)",
           value: "var(--tooltip-value)",
         },
+      },
+      borderRadius: {
+        lg: "12px",
+        md: "10px",
+        sm: "8px",
       },
     },
   },

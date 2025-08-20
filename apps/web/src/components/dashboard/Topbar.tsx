@@ -4,16 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Menu, Search, Bell, User, Dumbbell, Sun, Moon, Monitor, ChevronRight } from "lucide-react";
 import { Button } from "@repo/design/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from "@repo/design/ui/dropdown-menu";
+
 import { Text } from "@repo/design/ui/text";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -38,6 +29,8 @@ export default function Topbar({ onOpenMenu }: TopbarProps) {
   
   useEffect(() => setMounted(true), []);
   const themeSetting = mounted ? (theme ?? "system") : "system";
+
+
   
 
   
@@ -121,42 +114,27 @@ export default function Topbar({ onOpenMenu }: TopbarProps) {
         
         {/* DERECHA: Tema + Notificaciones + Usuario */}
         <div className="flex items-center gap-2">
-          {/* Selector de tema */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="p-2 rounded-lg hover:bg-secondary transition-colors" aria-label="Cambiar tema">
-                {!mounted ? (
-                  <Monitor className="size-5 text-muted-foreground" />
-                ) : themeSetting === "light" ? (
-                  <Sun className="size-5 text-muted-foreground" />
-                ) : themeSetting === "dark" ? (
-                  <Moon className="size-5 text-muted-foreground" />
-                ) : (
-                  <Monitor className="size-5 text-muted-foreground" />
-                )}
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 bg-card border border-border shadow-lg">
-              <DropdownMenuLabel>
-                <span className="text-xs text-muted-foreground">Selecciona tema</span>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup value={themeSetting} onValueChange={(v) => setTheme(v)}>
-                <DropdownMenuRadioItem value="light" className="flex items-center hover:bg-secondary">
-                  <Sun className="size-3 mr-2 text-primary" />
-                  <span className="text-sm">Claro</span>
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="dark" className="flex items-center hover:bg-secondary">
-                  <Moon className="size-3 mr-2 text-primary" />
-                  <span className="text-sm">Oscuro</span>
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="system" className="flex items-center hover:bg-secondary">
-                  <Monitor className="size-3 mr-2 text-primary" />
-                  <span className="text-sm">Sistema</span>
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Selector de tema personalizado */}
+          <div className="relative">
+            <button 
+              onClick={() => setTheme(themeSetting === "light" ? "dark" : themeSetting === "dark" ? "system" : "light")}
+              className="p-2 rounded-lg hover:bg-secondary transition-colors flex items-center gap-2" 
+              aria-label="Cambiar tema"
+            >
+              {!mounted ? (
+                <Monitor className="size-5 text-muted-foreground" />
+              ) : themeSetting === "light" ? (
+                <Sun className="size-5 text-muted-foreground" />
+              ) : themeSetting === "dark" ? (
+                <Moon className="size-5 text-muted-foreground" />
+              ) : (
+                <Monitor className="size-5 text-muted-foreground" />
+              )}
+              <span className="text-xs text-muted-foreground hidden sm:inline">
+                {themeSetting === "light" ? "Claro" : themeSetting === "dark" ? "Oscuro" : "Sistema"}
+              </span>
+            </button>
+          </div>
 
           {/* Notificaciones */}
           <button className="p-2 rounded-lg hover:bg-secondary" aria-label="Notificaciones">
@@ -166,7 +144,7 @@ export default function Topbar({ onOpenMenu }: TopbarProps) {
           {/* Usuario */}
           <div className="hidden sm:flex items-center gap-2 pl-2">
             <div className="text-right leading-tight">
-              <div className="text-sm font-medium">Raúl Carreras</div>
+              <div className="text-sm font-medium text-foreground">Raúl Carreras</div>
               <div className="text-[11px] text-muted-foreground">admin@onfit.online</div>
             </div>
             <div className="size-8 rounded-full grid place-items-center bg-primary/15">

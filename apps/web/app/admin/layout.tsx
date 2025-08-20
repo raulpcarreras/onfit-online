@@ -23,7 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-foreground/20"
+            className="absolute inset-0 bg-black/20 dark:bg-black/40"
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
