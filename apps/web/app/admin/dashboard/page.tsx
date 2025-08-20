@@ -2,19 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import dynamic from "next/dynamic";
 import { Users, Euro, Activity } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/user-provider";
 import FullScreenLoader from "@/components/FullScreenLoader";
+
+// Cargar el gráfico solo en cliente para evitar problemas de hidratación
+const RevenueChart = dynamic(() => import("@/components/RevenueChart"), { ssr: false });
 
 const kpi = [
   { label: "Usuarios totales", value: "12.481", icon: Users, diff: "+2.8%" },
@@ -40,7 +35,7 @@ const recientes = [
 ];
 
 export default function AdminDashboard() {
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const { role, loading } = useUser();
   const router = useRouter();
 
@@ -51,7 +46,8 @@ export default function AdminDashboard() {
   const accent = "text-primary";
   const border = "border border-border";
   const card = "bg-card p-0";
-  const ChartStroke = theme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
+  // Usar resolvedTheme para evitar problemas de hidratación
+  const ChartStroke = resolvedTheme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
 
   // Evitar FOUC de contenido protegido: mostrar loader corporativo hasta confirmar rol
   if (loading || role !== "admin") return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
@@ -85,25 +81,7 @@ export default function AdminDashboard() {
                 <div className="font-medium">Ingresos últimos 7 días</div>
                 <div className="text-xs text-muted-foreground">EUR</div>
               </div>
-              <div className="h-[260px] mt-3">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={ingresos} margin={{ top: 10, right: 20, bottom: 0, left: 0 }}>
-                    <CartesianGrid stroke="rgba(120,120,120,0.15)" vertical={false} />
-                    <XAxis dataKey="day" tick={{ fill: "currentColor" }} stroke="rgba(120,120,120,0.25)" />
-                    <YAxis tick={{ fill: "currentColor" }} stroke="rgba(120,120,120,0.25)" />
-                    <Tooltip
-                      contentStyle={{
-                        background: "var(--tooltip-bg)",
-                        border: "1px solid var(--tooltip-border)",
-                        borderRadius: 8,
-                      }}
-                      labelStyle={{ color: "var(--tooltip-text)" }}
-                      itemStyle={{ color: "var(--tooltip-value)" }}
-                    />
-                    <Line type="monotone" dataKey="value" stroke={ChartStroke} strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+              <RevenueChart data={ingresos} stroke={ChartStroke} />
             </div>
 
             <div className={`${card} p-4`}>
