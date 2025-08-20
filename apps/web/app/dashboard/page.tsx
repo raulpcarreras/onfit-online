@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/user-provider";
 import { supabase } from "@/lib/supabase";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 export default function DashboardPage() {
   const { user, role, loading } = useUser();
@@ -14,32 +15,33 @@ export default function DashboardPage() {
     }
   }, [loading, user, router]);
 
+  // Evitar FOUC: no mostrar nada mientras se confirma sesión
+  if (loading || !user) return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+
   const onLogout = async () => {
+    try { await supabase.auth.signOut({ scope: "global" as any }); } catch {}
     try {
-      await supabase.auth.signOut();
-    } finally {
-      window.location.href = "/login";
-    }
+      Object.keys(window.localStorage).forEach((k) => {
+        if (k.startsWith("sb-") || k.toLowerCase().includes("supabase")) {
+          window.localStorage.removeItem(k);
+        }
+      });
+    } catch {}
+    window.location.replace("/");
   };
 
-  if (loading || !user) {
-    return (
-      <div className="min-h-screen grid place-items-center text-neutral-400">
-        {loading ? "Cargando..." : "Redirigiendo..."}
-      </div>
-    );
-  }
+  
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-sm rounded-2xl bg-neutral-900/60 backdrop-blur shadow-xl border border-neutral-800 p-5">
+      <div className="w-full max-w-sm surface-card p-5">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-xs text-neutral-400">
+          <p className="text-xs text-muted-foreground">
             Has iniciado sesión como: <span className="font-medium text-white">{role ?? "usuario"}</span>
           </p>
           <button
             onClick={onLogout}
-            className="px-3 py-1.5 rounded-lg border border-neutral-800 text-xs hover:border-neutral-700"
+            className="px-3 py-1.5 rounded-lg border border-border text-xs hover:border-neutral-300 dark:hover:border-neutral-600"
           >
             Cerrar sesión
           </button>
@@ -50,7 +52,7 @@ export default function DashboardPage() {
             <span className="text-amber-400 font-semibold">ON</span>
           </div>
           <h1 className="text-lg font-semibold">Dashboard</h1>
-          <p className="text-xs text-neutral-400">Área de usuario</p>
+          <p className="text-xs text-muted-foreground">Área de usuario</p>
         </div>
       </div>
     </div>

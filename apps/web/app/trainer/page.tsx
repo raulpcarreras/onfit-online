@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/user-provider";
 import { supabase } from "@/lib/supabase";
+import FullScreenLoader from "@/components/FullScreenLoader";
 
 export default function TrainerPage() {
   const { user, role, loading } = useUser();
@@ -14,43 +15,35 @@ export default function TrainerPage() {
     }
   }, [loading, user, router]);
 
+  // Evitar FOUC: no renderizar hasta confirmar sesión/rol
+  if (loading || !user) return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+
   const [signingOut, setSigningOut] = useState(false);
-  const onLogout = async () => {
+  const onLogout = () => {
     if (signingOut) return;
     setSigningOut(true);
-    const hardRedirect = () => {
-      try {
-        Object.keys(window.localStorage).forEach((k) => {
-          if (k.startsWith("sb-") || k.toLowerCase().includes("supabase")) {
-            window.localStorage.removeItem(k);
-          }
-        });
-      } catch {}
-      window.location.assign("/login");
-    };
-    const fallback = setTimeout(hardRedirect, 400);
-    try { await supabase.auth.signOut({ scope: "local" as any }); } catch {}
-    clearTimeout(fallback);
-    hardRedirect();
+    try {
+      Object.keys(window.localStorage).forEach((k) => {
+        if (k.startsWith("sb-") || k.toLowerCase().includes("supabase")) {
+          window.localStorage.removeItem(k);
+        }
+      });
+    } catch {}
+    try { void supabase.auth.signOut({ scope: "global" as any }); } catch {}
+    window.location.replace("/");
   };
 
-  if (loading || !user) {
-    return (
-      <div className="min-h-screen grid place-items-center text-neutral-400">
-        {loading ? "Cargando..." : "Redirigiendo..."}
-      </div>
-    );
-  }
+  
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center p-4">
-      <div className="w-full max-w-sm rounded-2xl bg-neutral-900/60 backdrop-blur shadow-xl border border-neutral-800 p-5">
+      <div className="w-full max-w-sm surface-card p-5">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-xs text-neutral-400">
+          <p className="text-xs text-muted-foreground">
             Has iniciado sesión como: <span className="font-medium text-white">{role ?? "usuario"}</span>
           </p>
           <button onClick={onLogout} type="button" disabled={signingOut}
-            className="px-3 py-1.5 rounded-lg border border-neutral-800 text-xs hover:border-neutral-700 disabled:opacity-60">
+            className="px-3 py-1.5 rounded-lg border border-border text-xs hover:border-neutral-300 dark:hover:border-neutral-600 disabled:opacity-60">
             {signingOut ? "Saliendo..." : "Cerrar sesión"}
           </button>
         </div>
@@ -60,7 +53,7 @@ export default function TrainerPage() {
             <span className="text-amber-400 font-semibold">ON</span>
           </div>
           <h1 className="text-lg font-semibold">Panel de trainer</h1>
-          <p className="text-xs text-neutral-400">Contenido para trainers</p>
+          <p className="text-xs text-muted-foreground">Contenido para trainers</p>
         </div>
       </div>
     </div>

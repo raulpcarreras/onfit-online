@@ -21,6 +21,11 @@ const buttonVariants = cva(
         secondary: "bg-secondary web:hover:opacity-80 active:opacity-80",
         ghost:
           "web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent active:text-accent-foreground",
+        iconGhost: "bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900",
+        iconGhostAccent:
+          "bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900 text-[hsl(var(--accent))]",
+        iconGhostAuto:
+          "bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900 text-[hsl(var(--accent))] dark:text-white",
         link: "web:underline-offset-4 web:hover:underline web:focus:underline",
       },
       size: {
@@ -47,6 +52,9 @@ const buttonTextVariants = cva(
         outline: "group-active:text-accent-foreground",
         secondary: "text-secondary-foreground group-active:text-secondary-foreground",
         ghost: "group-active:text-accent-foreground",
+        iconGhost: "",
+        iconGhostAccent: "text-[hsl(var(--accent))]",
+        iconGhostAuto: "text-[hsl(var(--accent))] dark:text-white",
         link: "text-primary group-active:underline",
       },
       size: {

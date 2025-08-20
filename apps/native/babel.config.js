@@ -5,12 +5,11 @@ module.exports = (api) => {
         presets: [
             [
                 "babel-preset-expo",
-                { jsxImportSource: "nativewind", unstable_transformImportMeta: true },
+                { unstable_transformImportMeta: true },
             ],
-            "nativewind/babel",
         ],
 
         /** NOTE: This must be last in the plugins @see https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin */
-        plugins: ["react-native-reanimated/plugin"],
+        plugins: ["nativewind/babel", "react-native-reanimated/plugin"],
     };
 };

@@ -9,6 +9,8 @@
 @tailwind utilities;
 
 
+/* Variables CSS comentadas - ahora se manejan desde apps/web/app/globals.css */
+/*
 @layer base {
     :root {
       --background: 0 0% 100%;
@@ -123,3 +125,4 @@
       @apply bg-background text-foreground;
     }
   }
+*/
