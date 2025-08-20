@@ -8,9 +8,15 @@ import { Button } from "@repo/design/ui/button";
 import { Text } from "@repo/design/ui/text";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useProfile } from "@/lib/profile-provider";
 
 type TopbarProps = {
   onOpenMenu?: () => void;
+  variant?: "admin" | "user";
+  userInfo?: {
+    name: string;
+    email: string;
+  };
 };
 
 const formatPathSegment = (segment: string): string => {
@@ -22,10 +28,11 @@ const formatPathSegment = (segment: string): string => {
     .replace(/^\w|\s\w/g, (s) => s.toUpperCase());
 };
 
-export default function Topbar({ onOpenMenu }: TopbarProps) {
+export default function Topbar({ onOpenMenu, variant = "admin", userInfo }: TopbarProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const { profile, loading } = useProfile();
   
   useEffect(() => setMounted(true), []);
   const themeSetting = mounted ? (theme ?? "system") : "system";
@@ -67,32 +74,36 @@ export default function Topbar({ onOpenMenu }: TopbarProps) {
               <Dumbbell className="size-5 text-primary" />
             </div>
             <div className="font-semibold">
-              ONFIT <span className="text-primary">Admin</span>
+              ONFIT <span className="text-primary">{variant === "admin" ? "Admin" : "Online"}</span>
             </div>
           </div>
           
           {/* Slash separado - se puede mover independientemente */}
-          <span className="hidden sm:inline mx-1 md:mx-2 text-xl md:text-2xl text-muted-foreground font-light" style={{ marginTop: '-2px' }}>/</span>
-          
-          {/* Breadcrumb */}
-          <div className="hidden sm:flex items-center" style={{ marginTop: '3px' }}>
-            <div className="flex items-center font-mono text-xs tracking-tight text-muted-foreground truncate max-w-[150px] md:max-w-none">
-              {pathSegments.map((segment, i) => (
-                <React.Fragment key={segment.href}>
-                  {i > 0 && <ChevronRight className="size-3 mx-1 text-muted flex-shrink-0" />}
-                  <Link 
-                    href={segment.href}
-                    className="hover:text-primary transition-colors truncate"
-                  >
-                    {segment.name}
-                  </Link>
-                </React.Fragment>
-              ))}
-              {pathSegments.length === 0 && (
-                <span className="text-muted-foreground">Dashboard</span>
-              )}
-            </div>
-          </div>
+          {variant === "admin" && (
+            <>
+              <span className="hidden sm:inline mx-1 md:mx-2 text-xl md:text-2xl text-muted-foreground font-light" style={{ marginTop: '-2px' }}>/</span>
+              
+              {/* Breadcrumb */}
+              <div className="hidden sm:flex items-center" style={{ marginTop: '3px' }}>
+                <div className="flex items-center font-mono text-xs tracking-tight text-muted-foreground truncate max-w-[150px] md:max-w-none">
+                  {pathSegments.map((segment, i) => (
+                    <React.Fragment key={segment.href}>
+                      {i > 0 && <ChevronRight className="size-3 mx-1 text-muted flex-shrink-0" />}
+                      <Link 
+                        href={segment.href}
+                        className="hover:text-primary transition-colors truncate"
+                      >
+                        {segment.name}
+                      </Link>
+                    </React.Fragment>
+                  ))}
+                  {pathSegments.length === 0 && (
+                    <span className="text-muted-foreground">Dashboard</span>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
         
         {/* CENTRO: Buscador */}
@@ -144,8 +155,16 @@ export default function Topbar({ onOpenMenu }: TopbarProps) {
           {/* Usuario */}
           <div className="hidden sm:flex items-center gap-2 pl-2">
             <div className="text-right leading-tight">
-              <div className="text-sm font-medium text-foreground">Raúl Carreras</div>
-              <div className="text-[11px] text-muted-foreground">admin@onfit.online</div>
+              <div className="text-sm font-medium text-foreground">
+                {loading 
+                  ? "Cargando..." 
+                  : (profile?.full_name || userInfo?.name || (variant === "admin" ? "Raúl Carreras" : "Usuario"))}
+              </div>
+              <div className="text-[11px] text-muted-foreground">
+                {loading 
+                  ? "" 
+                  : (profile?.email || userInfo?.email || (variant === "admin" ? "admin@onfit.online" : "usuario@onfit.online"))}
+              </div>
             </div>
             <div className="size-8 rounded-full grid place-items-center bg-primary/15">
               <User className="size-4 text-primary" />

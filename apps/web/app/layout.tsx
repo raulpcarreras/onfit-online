@@ -14,6 +14,7 @@ import React from "react";
 
 import { I18nProvider } from "@/locales/locale";
 import { UserProvider } from "@/lib/user-provider";
+import { ProfileProvider } from "@/lib/profile-provider";
 import { ThemeProviders } from "@/providers/theme";
 import { cn } from "@repo/design/lib/utils";
 
@@ -40,7 +41,11 @@ export default function RootLayout({
         <body className="transition-colors">
           <I18nProvider>
             <ThemeProviders>
-              <UserProvider>{children}</UserProvider>
+              <UserProvider>
+                <ProfileProvider>
+                  {children}
+                </ProfileProvider>
+              </UserProvider>
             </ThemeProviders>
           </I18nProvider>
         </body>

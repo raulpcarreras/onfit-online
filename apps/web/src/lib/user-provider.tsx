@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 
 type UserContextValue = {
   user: import("@supabase/supabase-js").User | null;
-  role: "client" | "trainer" | "admin" | null;
+  role: "user" | "trainer" | "admin" | null;
   loading: boolean;
 };
 
@@ -44,8 +44,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           profile = p2 ?? null;
         }
         if (!mounted) return;
-        const normalized = (profile?.role as any) === "user" ? "client" : (profile?.role as any);
-        setRole(normalized ?? null);
+        setRole(profile?.role ?? null);
       } else {
         setRole(null);
       }
@@ -75,8 +74,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           const { data: p2 } = await selectRole();
           profile = p2 ?? null;
         }
-        const normalized = (profile?.role as any) === "user" ? "client" : (profile?.role as any);
-        setRole(normalized ?? null);
+        setRole(profile?.role ?? null);
       } else {
         setRole(null);
       }

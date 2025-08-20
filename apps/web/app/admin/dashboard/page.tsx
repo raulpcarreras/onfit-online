@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import { Users, Euro, Activity } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/user-provider";
-import FullScreenLoader from "@/components/FullScreenLoader";
 
 // Cargar el gráfico solo en cliente para evitar problemas de hidratación
 const RevenueChart = dynamic(() => import("@/components/RevenueChart"), { ssr: false });
@@ -28,20 +25,15 @@ const ingresos = [
 ];
 
 const recientes = [
-  { name: "Ana López", email: "ana@example.com", role: "cliente", plan: "PRO" },
+  { name: "Ana López", email: "ana@example.com", role: "usuario", plan: "PRO" },
   { name: "Carlos Pérez", email: "carlos@example.com", role: "trainer", plan: "BASIC" },
-  { name: "María Ruiz", email: "maria@example.com", role: "cliente", plan: "PRO" },
-  { name: "Jorge Díaz", email: "jorge@example.com", role: "cliente", plan: "FREE" },
+  { name: "María Ruiz", email: "maria@example.com", role: "usuario", plan: "PRO" },
+  { name: "Jorge Díaz", email: "jorge@example.com", role: "usuario", plan: "FREE" },
 ];
 
 export default function AdminDashboard() {
   const { theme, resolvedTheme } = useTheme();
   const { role, loading } = useUser();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && role !== "admin") router.replace("/login");
-  }, [loading, role, router]);
 
   const accent = "text-primary";
   const border = "border border-border";
@@ -49,11 +41,8 @@ export default function AdminDashboard() {
   // Usar resolvedTheme para evitar problemas de hidratación
   const ChartStroke = resolvedTheme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
 
-  // Evitar FOUC de contenido protegido: mostrar loader corporativo hasta confirmar rol
-  if (loading || role !== "admin") return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
-
   return (
-    <div>
+    <div className="px-4 md:px-5 py-4">
       <main>
 
 
@@ -112,7 +101,7 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
-              <button className="mt-3 w-full py-2 rounded-lg bg-primary text-primary-foreground font-medium transition btn-primary">
+              <button className="mt-3 w-full py-2 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition">
                 Ver todos
               </button>
             </div>

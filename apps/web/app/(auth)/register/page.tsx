@@ -59,7 +59,7 @@ export default function RegisterPage() {
         options: {
           data: {
             name: formData.name,
-            role: "client" // Solo clientes por defecto
+            role: "user" // Solo usuarios por defecto
           }
         }
       });
@@ -74,7 +74,7 @@ export default function RegisterPage() {
             id: authData.user.id,
             name: formData.name,
             email: formData.email,
-            role: "client", // Solo clientes por defecto
+            role: "user", // Solo usuarios por defecto
             created_at: new Date().toISOString()
           });
         
@@ -83,8 +83,8 @@ export default function RegisterPage() {
           // No es crítico, el usuario ya existe en auth
         }
         
-        // 3. Redirigir a la página del cliente
-        router.push("/client");
+        // 3. Redirigir a la página del usuario
+        router.push("/user");
       }
       
     } catch (error: any) {

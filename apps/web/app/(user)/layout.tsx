@@ -4,23 +4,23 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/user-provider";
 import Topbar from "@/components/dashboard/Topbar";
-import Sidebar from "@/components/dashboard/Sidebar";
+import UserSidebar from "@/components/dashboard/UserSidebar";
 import FullScreenLoader from "@/components/FullScreenLoader";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function UserLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, role, loading } = useUser();
   const router = useRouter();
 
-  // Protección del layout: solo admins pueden ver este layout
+  // Protección del layout: solo usuarios pueden ver este layout
   useEffect(() => {
-    if (!loading && (!user || role !== "admin")) {
+    if (!loading && (!user || role !== "user")) {
       router.replace("/login");
     }
   }, [loading, user, role, router]);
 
-  // Mostrar loader hasta confirmar que es admin
-  if (loading || !user || role !== "admin") {
+  // Mostrar loader hasta confirmar que es usuario
+  if (loading || !user || role !== "user") {
     return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
   }
 
@@ -28,12 +28,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-background text-foreground">
       {/* TOPBAR - Ahora ocupa todo el ancho */}
       <header className="fixed top-0 left-0 right-0 z-30">
-        <Topbar variant="admin" onOpenMenu={() => setMobileOpen(true)} />
+        <Topbar variant="user" onOpenMenu={() => setMobileOpen(true)} />
       </header>
 
       {/* SIDEBAR DESKTOP - Ahora empieza debajo de la topbar con ancho ajustado */}
       <aside className="hidden lg:block fixed top-14 bottom-0 left-0 w-52 border-r border-border bg-background/90 backdrop-blur z-20">
-        <Sidebar />
+        <UserSidebar />
       </aside>
 
       {/* DRAWER MOBILE */}
@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           />
           <div className="absolute top-14 bottom-0 left-0 w-60 max-w-[85%] bg-card border-r border-border shadow-xl">
             <div className="p-2">
-              <Sidebar />
+              <UserSidebar />
             </div>
           </div>
         </div>
@@ -59,5 +59,3 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
-
-

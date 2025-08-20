@@ -35,7 +35,21 @@ export default function LoginPage() {
       if (error) throw error;
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
-        router.push("/admin");
+        // Obtener el rol del usuario para redirigir correctamente
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("user_id", user.id)
+          .single();
+        
+        const role = profile?.role;
+        if (role === "admin") {
+          router.push("/admin/dashboard");
+        } else if (role === "trainer") {
+          router.push("/trainer");
+        } else {
+          router.push("/user");
+        }
       }
     } catch (error: any) {
       console.error("Error de login:", error);
