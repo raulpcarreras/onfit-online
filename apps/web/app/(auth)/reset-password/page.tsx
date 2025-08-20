@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { Dumbbell, Eye, EyeOff, CheckCircle, AlertCircle } from "lucide-react";
 import Link from "next/link";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
@@ -272,5 +272,22 @@ export default function ResetPasswordPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-lg text-center">
+          <div className="flex justify-center mb-4">
+            <div className="inline-block size-8 border-2 border-current border-t-transparent rounded-full animate-spin" />
+          </div>
+          <p className="text-muted-foreground">Cargando...</p>
+        </div>
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

@@ -16,17 +16,7 @@ export default function ForgotPasswordPage() {
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => setMounted(true), []);
-  // Forzar tema por defecto a "system" siempre
-  useEffect(() => {
-    if (mounted) {
-      // Si no hay tema guardado o es diferente de "system", establecer "system"
-      if (!theme || theme !== "system") {
-        setTheme("system");
-      }
-    }
-  }, [mounted, theme, setTheme]);
-  
-  const themeSetting = mounted ? (theme || "system") : "system";
+  const themeSetting = mounted ? (theme ?? "system") : "system";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
