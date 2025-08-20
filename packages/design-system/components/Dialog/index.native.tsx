@@ -1,0 +1,10 @@
+import React from "react";
+import { View } from "react-native";
+type FC<P = any> = React.FC<React.PropsWithChildren<P>>;
+export const Dialog: FC = ({ children }) => <View>{children}</View>;
+export const DialogContent: FC = ({ children }) => <View>{children}</View>;
+export const DialogHeader: FC = ({ children }) => <View>{children}</View>;
+export const DialogTitle: FC = ({ children }) => <View>{children}</View>;
+export const DialogDescription: FC = ({ children }) => <View>{children}</View>;
+export const DialogFooter: FC = ({ children }) => <View>{children}</View>;
+export default Dialog;

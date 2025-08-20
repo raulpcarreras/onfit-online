@@ -1,0 +1,11 @@
+import React from "react";
+import { View } from "react-native";
+type FC<P = any> = React.FC<React.PropsWithChildren<P>>;
+export const Select: FC = ({ children }) => <View>{children}</View>;
+export const SelectTrigger: FC = ({ children }) => <View>{children}</View>;
+export const SelectContent: FC = ({ children }) => <View>{children}</View>;
+export const SelectItem: FC = ({ children }) => <View>{children}</View>;
+export const SelectValue: FC = ({ children }) => <View>{children}</View>;
+export const SelectGroup: FC = ({ children }) => <View>{children}</View>;
+export const SelectLabel: FC = ({ children }) => <View>{children}</View>;
+export default Select;

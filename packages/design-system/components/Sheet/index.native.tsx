@@ -1,0 +1,12 @@
+import React from "react";
+import { View } from "react-native";
+type FC<P = any> = React.FC<React.PropsWithChildren<P>>;
+export const Sheet: FC = ({ children }) => <View>{children}</View>;
+export const SheetTrigger: FC = ({ children }) => <View>{children}</View>;
+export const SheetContent: FC = ({ children }) => <View>{children}</View>;
+export const SheetHeader: FC = ({ children }) => <View>{children}</View>;
+export const SheetTitle: FC = ({ children }) => <View>{children}</View>;
+export const SheetDescription: FC = ({ children }) => <View>{children}</View>;
+export const SheetFooter: FC = ({ children }) => <View>{children}</View>;
+export const SheetClose: FC = ({ children }) => <View>{children}</View>;
+export default Sheet;

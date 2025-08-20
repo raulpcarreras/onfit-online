@@ -1,0 +1,12 @@
+import React from "react";
+import { View } from "react-native";
+type FC<P = any> = React.FC<React.PropsWithChildren<P>>;
+export const Table: FC = ({ children }) => <View>{children}</View>;
+export const TableHeader: FC = ({ children }) => <View>{children}</View>;
+export const TableBody: FC = ({ children }) => <View>{children}</View>;
+export const TableRow: FC = ({ children }) => <View>{children}</View>;
+export const TableHead: FC = ({ children }) => <View>{children}</View>;
+export const TableCell: FC = ({ children }) => <View>{children}</View>;
+export const TableCaption: FC = ({ children }) => <View>{children}</View>;
+export const TableFooter: FC = ({ children }) => <View>{children}</View>;
+export default Table;

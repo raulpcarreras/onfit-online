@@ -51,7 +51,7 @@ export default function AdminDashboard() {
   const accent = "text-primary";
   const border = "border border-border";
   const card = "bg-card p-0";
-  const ChartStroke = theme === "light" ? "hsl(var(--chart-stroke))" : "hsl(var(--primary))";
+  const ChartStroke = theme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
 
   // Evitar FOUC de contenido protegido: mostrar loader corporativo hasta confirmar rol
   if (loading || role !== "admin") return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;

@@ -81,21 +81,23 @@
 
 /* Estilos base que respetan el tema */
 body {
-  @apply bg-background text-foreground transition-colors duration-300;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 /* Estilos de hover esenciales */
 button:hover, a:hover {
-  @apply transition-colors;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 /* Estilos de hover adaptados al tema */
 button.hover-neutral:hover {
-  @apply bg-secondary;
+  background-color: hsl(var(--secondary));
 }
 
 .btn-primary:hover {
-  @apply brightness-110;
+  filter: brightness(1.1);
 }
 
 /* Estilos de color-scheme para cada tema */
