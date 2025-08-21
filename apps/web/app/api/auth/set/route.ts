@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createServerClient } from '@supabase/ssr'
 
+// Forzar Node.js runtime para evitar warnings de Edge
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   try {
     const { access_token, refresh_token } = await request.json().catch(() => ({} as any));
