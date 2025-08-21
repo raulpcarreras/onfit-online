@@ -82,6 +82,15 @@ function withExpo(nextConfig) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
+    
+    // Configuración de webpack para diagnóstico de warnings
+    webpack(config) {
+        config.infrastructureLogging = {
+            level: 'verbose',
+            debug: /PackFileCacheStrategy/,
+        };
+        return config;
+    },
     transpilePackages: [
         "react-native",
         "react-native-web",
