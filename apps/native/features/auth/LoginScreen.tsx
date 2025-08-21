@@ -56,7 +56,7 @@ export default function OnfitAuth() {
       const { data: profile } = await supabase
         .from("profiles")
         .select("role")
-        .eq("user_id", user?.user?.id)
+        .eq("id", user?.user?.id)
         .maybeSingle();
       if (profile?.role === "admin") router.replace("/admin");
       else router.replace("/");

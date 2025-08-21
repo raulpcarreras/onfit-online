@@ -29,7 +29,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         const { data: profile } = await supabase
           .from("profiles")
           .select("role")
-          .eq("user_id", currentUser.id)
+          .eq("id", currentUser.id)
           .maybeSingle();
         if (!mounted) return;
         const normalized = (profile?.role as any) === "user" ? "client" : (profile?.role as any);
@@ -50,7 +50,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       supabase
         .from("profiles")
         .select("role")
-        .eq("user_id", u.id)
+        .eq("id", u.id)
         .maybeSingle()
         .then(({ data: profile }) => {
           const normalized = (profile?.role as any) === "user" ? "client" : (profile?.role as any);

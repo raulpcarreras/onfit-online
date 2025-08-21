@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 
 type Role = "user" | "trainer" | "admin";
 export type Profile = {
-  user_id: string;
+  id: string;
   full_name: string | null;
   email: string | null;
   avatar_url: string | null;
@@ -39,12 +39,12 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       }
 
       // NOTA: estamos en esquema "onfit"
-      console.log("🔍 ProfileProvider - Querying profiles for user_id:", user.id);
+      console.log("🔍 ProfileProvider - Querying profiles for id:", user.id);
       const { data, error } = await supabase
         .schema("onfit")
         .from("profiles")
-        .select("user_id, full_name, email, avatar_url, role")
-        .eq("user_id", user.id)
+        .select("id, full_name, email, avatar_url, role")
+        .eq("id", user.id)
         .maybeSingle();
       
       console.log("🔍 ProfileProvider - Profiles query result:", { data, error });
@@ -57,7 +57,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       }
 
       const profile: Profile = {
-        user_id: user.id,
+        id: user.id,
         full_name: data?.full_name ?? user.user_metadata?.full_name ?? (user.email?.split("@")[0] ?? "Usuario"),
         email: data?.email ?? user.email ?? null,
         avatar_url: data?.avatar_url ?? (user.user_metadata?.avatar_url ?? null),

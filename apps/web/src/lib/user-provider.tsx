@@ -29,7 +29,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           supabase
             .from("profiles")
             .select("role", { head: false })
-            .eq("user_id", currentUser.id)
+            .eq("id", currentUser.id)
             .single();
 
         let { data: profile } = await selectRole();
@@ -37,7 +37,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           try {
             await supabase
               .from("profiles")
-              .upsert({ user_id: currentUser.id, email: currentUser.email }, { onConflict: "user_id" });
+              .upsert({ id: currentUser.id, email: currentUser.email }, { onConflict: "id" });
           } catch (_) {}
           const { data: p2 } = await selectRole();
           profile = p2 ?? null;
@@ -59,7 +59,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           supabase
             .from("profiles")
             .select("role", { head: false })
-            .eq("user_id", u.id)
+            .eq("id", u.id)
             .single();
 
         let { data: profile } = await selectRole();
@@ -67,7 +67,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           try {
             await supabase
               .from("profiles")
-              .upsert({ user_id: u.id, email: u.email }, { onConflict: "user_id" });
+              .upsert({ id: u.id, email: u.email }, { onConflict: "id" });
           } catch (_) {}
           const { data: p2 } = await selectRole();
           profile = p2 ?? null;
