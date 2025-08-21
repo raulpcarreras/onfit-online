@@ -46,3 +46,51 @@ yarn-error.log*
 # local env files
 .env*
 apps/native/.env*
+
+# Archivos comprimidos y backups
+*.7z
+*.zip
+*.rar
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.gz
+*.bz2
+*.xz
+*.lzma
+*.cab
+*.iso
+*.dmg
+*.pkg
+
+# Archivos temporales y de sistema
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs y archivos de registro
+*.log
+logs/
+log/
+
+# Archivos de IDE y editores
+.vscode/
+.idea/
+*.sublime-*
+.atom/
+.brackets.json
+
+# Archivos de macOS
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Archivos de Windows
+*.lnk
