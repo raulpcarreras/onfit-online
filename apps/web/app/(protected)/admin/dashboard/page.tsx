@@ -60,9 +60,6 @@ export default function AdminDashboard() {
   return (
     <div className="px-4 md:px-5 py-4">
       <main>
-
-
-
         {/* CONTENT */}
         <div className="space-y-4">
           {/* KPIs */}

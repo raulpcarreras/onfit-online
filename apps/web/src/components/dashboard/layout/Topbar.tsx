@@ -44,7 +44,13 @@ export default function Topbar({
     .split('/')
     .filter(Boolean)
     .map((segment, i, arr) => {
-      const href = `/${arr.slice(0, i + 1).join('/')}`;
+      let href = `/${arr.slice(0, i + 1).join('/')}`;
+      
+      // Para admin, el primer segmento siempre debe ir a /admin/dashboard
+      if (variant === "admin" && i === 0 && segment === "admin") {
+        href = "/admin/dashboard";
+      }
+      
       return {
         name: formatPathSegment(segment),
         href

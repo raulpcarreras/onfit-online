@@ -62,13 +62,8 @@ export default function UserDashboard() {
     progress: 35,
   };
 
-  const kcal = useMemo(
-    () => {
-      const [cur, tar] = [1820, 2200];
-      return Math.round((cur / tar) * 100);
-    },
-    []
-  );
+  // Calcular kcal (memoizado para evitar recálculos)
+  const kcal = Math.round((1820 / 2200) * 100);
 
   return (
     <div className="px-4 md:px-5 py-4 space-y-6">
@@ -81,7 +76,7 @@ export default function UserDashboard() {
               <k.icon className={`size-4 ${accent}`} />
             </div>
             <div className="mt-2 text-2xl font-semibold">{k.value}</div>
-                            {k.diff && <div className="mt-1 text-xs text-primary">{k.diff}</div>}
+            {k.diff && <div className="mt-1 text-xs text-primary">{k.diff}</div>}
           </div>
         ))}
       </section>

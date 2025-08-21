@@ -110,7 +110,7 @@ export default function TrainingPage() {
 
         <div className="flex gap-3">
           <button 
-            onClick={() => router.push('/training/runner')}
+            onClick={() => router.push('/user/training/runner')}
             className="flex-1 px-4 py-3 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition flex items-center justify-center"
           >
             <Play className="size-4 mr-2" />

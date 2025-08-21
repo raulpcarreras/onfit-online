@@ -56,16 +56,10 @@ function Nav({ items }: { items: SidebarItem[] }) {
       
       {/* Cerrar sesión como un ítem más del menú */}
       <button
-        onClick={() => {
-          try {
-            Object.keys(window.localStorage).forEach((k) => {
-              if (k.startsWith("sb-") || k.toLowerCase().includes("supabase")) {
-                window.localStorage.removeItem(k);
-              }
-            });
-          } catch {}
-          try { void supabase.auth.signOut({ scope: "global" as any }); } catch {}
-          window.location.replace("/");
+        onClick={async () => {
+          // Logout server-first: el servidor limpia las cookies
+          await fetch("/api/auth/signout", { method: "POST", credentials: "include" });
+          window.location.replace("/login");
         }}
         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-foreground hover:bg-secondary transition-colors"
       >

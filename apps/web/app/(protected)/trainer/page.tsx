@@ -9,31 +9,18 @@ export default function TrainerPage() {
   const { user, role, loading } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.replace("/login");
-    }
-  }, [loading, user, router]);
-
-  // Evitar FOUC: no renderizar hasta confirmar sesión/rol
-  if (loading || !user) return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+  // Solo mostrar loading mientras se carga el rol
+  if (loading) return <FullScreenLoader label="Cargando..." />;
 
   const [signingOut, setSigningOut] = useState(false);
-  const onLogout = () => {
+  const onLogout = async () => {
     if (signingOut) return;
     setSigningOut(true);
-    try {
-      Object.keys(window.localStorage).forEach((k) => {
-        if (k.startsWith("sb-") || k.toLowerCase().includes("supabase")) {
-          window.localStorage.removeItem(k);
-        }
-      });
-    } catch {}
-    try { void supabase.auth.signOut({ scope: "global" as any }); } catch {}
-    window.location.replace("/");
+    
+    // Logout server-first: el servidor limpia las cookies
+    await fetch("/api/auth/signout", { method: "POST", credentials: "include" });
+    window.location.replace("/login");
   };
-
-  
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center p-4">
@@ -59,5 +46,3 @@ export default function TrainerPage() {
     </div>
   );
 }
-
-

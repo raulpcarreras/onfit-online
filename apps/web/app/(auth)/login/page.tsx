@@ -31,25 +31,43 @@ export default function LoginPage() {
     
     try {
       setLoadingSignIn(true);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
+      
+      if (data.user && data.session) {
+        // Sincronizar cookies en el servidor
+        const syncResponse = await fetch('/api/auth/set', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          credentials: 'include', // importante
+          body: JSON.stringify({
+            access_token: data.session.access_token,
+            refresh_token: data.session.refresh_token,
+          }),
+        });
+
+        if (!syncResponse.ok) {
+          throw new Error('Failed to sync session');
+        }
+
         // Obtener el rol del usuario para redirigir correctamente
         const { data: profile } = await supabase
           .from("profiles")
           .select("role")
-          .eq("id", user.id)
+          .eq("id", data.user.id)
           .single();
         
         const role = profile?.role;
+        let redirectUrl = '/user';
+        
         if (role === "admin") {
-          router.push("/admin/dashboard");
+          redirectUrl = "/admin/dashboard";
         } else if (role === "trainer") {
-          router.push("/trainer");
-        } else {
-          router.push("/user");
+          redirectUrl = "/trainer";
         }
+
+        // Ahora sí, redirige después de sincronizar cookies
+        window.location.replace(redirectUrl);
       }
     } catch (error: any) {
       console.error("Error de login:", error);
