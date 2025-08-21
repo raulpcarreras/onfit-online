@@ -11,7 +11,7 @@ export default function Index() {
     if (!loading && user) {
       if (role === "admin") router.replace("/admin");
       else if (role === "trainer") router.replace("/trainer");
-      else if (role === "client") router.replace("/client");
+      else if (role === "user") router.replace("/client");
     }
   }, [loading, user, role]);
   if (loading) {

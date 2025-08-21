@@ -29,19 +29,24 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       
       setState((s) => ({ ...s, loading: true, error: undefined }));
 
-      const { data: { user }, error: authErr } = await supabase.auth.getUser();
+      const { data: { session }, error: authErr } = await supabase.auth.getSession();
+      const user = session?.user ?? null;
       console.log("🔍 ProfileProvider - Auth user:", user);
       console.log("🔍 ProfileProvider - Auth error:", authErr);
       
-      if (authErr || !user) {
-        if (mounted) setState({ loading: false, profile: null, error: authErr?.message });
+      if (authErr) {
+        console.warn("⚠️ ProfileProvider - Error al obtener sesión:", authErr);
+        // No es crítico, continuar sin sesión
+      }
+      
+      if (!user) {
+        if (mounted) setState({ loading: false, profile: null, error: undefined });
         return;
       }
 
-      // NOTA: estamos en esquema "onfit"
+      // NOTA: estamos en esquema "public"
       console.log("🔍 ProfileProvider - Querying profiles for id:", user.id);
       const { data, error } = await supabase
-        .schema("onfit")
         .from("profiles")
         .select("id, full_name, email, avatar_url, role")
         .eq("id", user.id)
@@ -72,8 +77,22 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     load();
 
     // Suscripción a cambios de auth (solo una vez)
-    authSub = supabase.auth.onAuthStateChange(() => {
-      if (mounted) load();
+    authSub = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(`🔄 ProfileProvider - Cambio de estado de auth: ${event}`);
+      
+      // Para eventos de logout, limpiar inmediatamente
+      if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED' && !session) {
+        console.log(`👤 ProfileProvider - Usuario desconectado (evento: ${event})`);
+        if (mounted) {
+          setState({ loading: false, profile: null, error: undefined });
+        }
+        return;
+      }
+      
+      // Solo recargar si hay sesión activa
+      if (session?.user && mounted) {
+        load();
+      }
     });
 
     // Cleanup

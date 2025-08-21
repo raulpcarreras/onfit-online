@@ -8,13 +8,12 @@ const config: Config = {
         "./app/**/*.{ts,tsx}",
         "./src/**/*.{ts,tsx}",
 
-        // Design system: apunta SOLO a código fuente
+        // Design system: apunta SOLO a código fuente (excluye node_modules)
         "../../packages/design-system/src/**/*.{ts,tsx}",
         "../../packages/design-system/components/**/*.{ts,tsx}",
         "../../packages/design-system/ui/**/*.{ts,tsx}",
-
-        // (opcional) si tienes hooks u otros dirs fuente:
-        // "../../packages/design-system/hooks/**/*.{ts,t
+        "../../packages/design-system/hooks/**/*.{ts,tsx}",
+        "../../packages/design-system/lib/**/*.{ts,tsx}",
     ],
     theme: {
         container: {
