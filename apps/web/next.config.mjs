@@ -7,6 +7,16 @@ function withExpo(nextConfig) {
     return {
         ...nextConfig,
         webpack(config, options) {
+            // Configurar cache de webpack para evitar warnings de strings grandes
+            if (config.cache) {
+                config.cache = {
+                    ...config.cache,
+                    type: 'filesystem',
+                    compression: 'gzip',
+                    maxMemoryGenerations: 1,
+                };
+            }
+
             // Mix in aliases
             if (!config.resolve) {
                 config.resolve = {};
@@ -52,6 +62,12 @@ function withExpo(nextConfig) {
                     __DEV__: JSON.stringify(process.env.NODE_ENV !== "production"),
                 }),
             );
+
+            // Configurar performance para evitar warnings de strings grandes
+            if (!config.performance) {
+                config.performance = {};
+            }
+            config.performance.hints = false; // Desactivar warnings de performance
 
             // Execute the user-defined webpack config.
             if (typeof nextConfig.webpack === "function") {

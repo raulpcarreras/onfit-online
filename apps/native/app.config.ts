@@ -19,7 +19,7 @@ dotenv.config({ path: envPath });
  * You can add them to the .env file but we think it's better to keep them here as as we use prefix to generate this values based on the APP_ENV
  * for example: if the APP_ENV is staging, the bundle id will be com.myapp.staging
  */
-const NAME = "ONFIT ONLINE";
+const NAME = "ONFIT13";
 const BUNDLE_ID = "app.myapp.com";
 const EXPO_ACCOUNT_OWNER = process.env["EXPO_ACCOUNT_OWNER"] ?? "myapp_owner";
 const EAS_PROJECT_ID = process.env["EAS_PROJECT_ID"] ?? "<PROJECT_ID>";

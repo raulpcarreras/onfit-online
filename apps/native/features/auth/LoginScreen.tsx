@@ -109,7 +109,7 @@ export default function OnfitAuth() {
                 <Text style={[s.logoTxt]}>ON</Text>
               </View>
               <View>
-                <Text style={[s.title, { color: colors.text }]}>ONFIT ONLINE</Text>
+                <Text style={[s.title, { color: colors.text }]}>ONFIT13</Text>
                 <Text style={[s.subtitle, { color: colors.subtext }]}>
                   Accede con tu cuenta
                 </Text>
