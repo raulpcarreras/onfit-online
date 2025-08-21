@@ -69,15 +69,7 @@ export default function ForgotPasswordPage() {
         <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-lg text-center">
           {/* Header */}
           <div className="mb-6">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Dumbbell className="size-8 text-primary" />
-              <div>
-                <h1 className="text-xl font-bold">
-                  <span className="text-foreground">ONFIT</span>
-                  <span className="text-primary">ONLINE</span>
-                </h1>
-                <p className="text-xs text-muted-foreground">Tu app de fitness</p>
-              </div>
+            <div className="mb-5">
             </div>
           </div>
 
@@ -134,40 +126,33 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-lg">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <div className="flex items-center gap-2">
-              <Dumbbell className="size-8 text-primary" />
-              <div>
-                <h1 className="text-xl font-bold">
-                  <span className="text-foreground">ONFIT</span>
-                  <span className="text-primary">ONLINE</span>
-                </h1>
-                <p className="text-xs text-muted-foreground">Tu app de fitness</p>
-              </div>
-            </div>
+          <div className="mb-5 relative">
+            {/* Botón de tema posicionado absolutamente en la esquina superior derecha */}
             <button
               onClick={() => setTheme(themeSetting === "light" ? "dark" : 
                                      themeSetting === "dark" ? "system" : "light")}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0"
+              className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
             >
               {themeSetting === "light" ? <Sun className="size-5" /> : 
                themeSetting === "dark" ? <Moon className="size-5" /> : <Monitor className="size-5" />}
             </button>
+
+            {/* Flecha y título por encima del logo */}
+            <div className="flex items-center gap-2 mb-4">
+              <Link 
+                href="/login"
+                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+              >
+                <ArrowLeft className="size-4 text-muted-foreground" />
+              </Link>
+              <h2 className="text-lg font-semibold text-foreground">Recuperar contraseña</h2>
+            </div>
+
+
+            <p className="mt-2 text-xs text-muted-foreground">
+              Introduce tu email y te enviaremos un enlace para crear una nueva contraseña
+            </p>
           </div>
-          
-          <div className="flex items-center gap-2 mb-4">
-            <Link 
-              href="/login"
-              className="p-2 rounded-lg hover:bg-secondary transition-colors"
-            >
-              <ArrowLeft className="size-4 text-muted-foreground" />
-            </Link>
-            <h2 className="text-lg font-semibold text-foreground">Recuperar contraseña</h2>
-          </div>
-          
-          <p className="text-sm text-muted-foreground">
-            Introduce tu email y te enviaremos un enlace para crear una nueva contraseña
-          </p>
         </div>
 
         {/* Formulario */}

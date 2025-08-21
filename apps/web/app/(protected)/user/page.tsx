@@ -53,7 +53,7 @@ export default function UserDashboard() {
   }
 
   const border = "border border-border";
-  const card = "bg-card rounded-lg p-4";
+  const card = "bg-card rounded-lg border border-border p-4";
   const accent = "text-primary";
 
   const session = {

@@ -15,7 +15,6 @@
     "dev:web": "NODE_OPTIONS=--no-deprecation pnpm --filter web dev",
     "web:dev": "pnpm run dev:web",
     "web:build": "pnpm --filter web build",
-
     "dev:native": "NODE_OPTIONS=--no-deprecation pnpm --filter native exec expo start -c",
     "native:start": "pnpm run dev:native",
     "native:start:client": "pnpm --filter native exec npx expo start --dev-client",
@@ -26,7 +25,6 @@
     "native:doctor": "pnpm --filter native exec npx expo-doctor",
     "native:fix": "pnpm --filter native exec npx expo install --fix",
     "native:setup:devclient": "pnpm --filter native exec npx expo install expo-dev-client",
-
     "build": "node scripts/run.mjs build",
     "dev": "node scripts/run.mjs dev",
     "test": "node scripts/run.mjs test",
@@ -47,7 +45,8 @@
     "commander": "^14.0.0",
     "expo": "~53.0.20",
     "react": "19.0.0",
-    "react-native": "0.79.5"
+    "react-native": "0.79.5",
+    "sharp": "^0.34.3"
   },
   "devDependencies": {
     "prettier": "^3.6.2",

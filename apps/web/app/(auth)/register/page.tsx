@@ -162,40 +162,54 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-lg">
         {/* Header */}
         <div className="mb-6">
-          <div className="flex items-center justify-between gap-3 mb-4">
-            <div className="flex items-center gap-2">
-              <Dumbbell className="size-8 text-primary" />
-              <div>
-                <h1 className="text-xl font-bold">
-                  <span className="text-foreground">ONFIT</span>
-                  <span className="text-primary">ONLINE</span>
-                </h1>
-                <p className="text-xs text-muted-foreground">Tu app de fitness</p>
-              </div>
-            </div>
+          <div className="mb-5 relative">
+            {/* Botón de tema posicionado absolutamente en la esquina superior derecha */}
             <button
               onClick={() => setTheme(themeSetting === "light" ? "dark" : 
                                      themeSetting === "dark" ? "system" : "light")}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0"
+              className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
             >
               {themeSetting === "light" ? <Sun className="size-5" /> : 
                themeSetting === "dark" ? <Moon className="size-5" /> : <Monitor className="size-5" />}
             </button>
+
+            {/* Flecha y título por encima del logo */}
+            <div className="flex items-center gap-2 mb-4">
+              <Link 
+                href="/login"
+                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+              >
+                <ArrowLeft className="size-4 text-muted-foreground" />
+              </Link>
+              <h2 className="text-lg font-semibold text-foreground">Crear cuenta nueva</h2>
+            </div>
+
+            {/* Logo centrado en la card */}
+            <div className="flex flex-col items-center text-center">
+              {/* Logo adaptativo según tema */}
+              {!mounted ? (
+                <div className="w-12 h-12 bg-primary/15 rounded-lg grid place-items-center">
+                  <Dumbbell className="size-8 text-primary" />
+                </div>
+              ) : resolvedTheme === "dark" ? (
+                <img
+                  src="/logos/logo-dark.png"
+                  alt="ONFIT Logo"
+                  className="h-12 w-auto object-contain"
+                />
+              ) : (
+                <img
+                  src="/logos/logo-light.png"
+                  alt="ONFIT Logo"
+                  className="h-12 w-auto object-contain"
+                />
+              )}
+            </div>
+            <div className="mt-4 border-t border-border/50" />
+            <p className="mt-2 text-xs text-muted-foreground">
+              Completa los datos para crear tu cuenta en ONFIT. Después, en el panel de usuario, rellenarás un formulario con los datos necesarios para empezar tu cambio físico.
+            </p>
           </div>
-          
-          <div className="flex items-center gap-2 mb-4">
-            <Link 
-              href="/login"
-              className="p-2 rounded-lg hover:bg-secondary transition-colors"
-            >
-              <ArrowLeft className="size-4 text-muted-foreground" />
-            </Link>
-            <h2 className="text-lg font-semibold text-foreground">Crear cuenta nueva</h2>
-          </div>
-          
-          <p className="text-sm text-muted-foreground">
-            Completa los datos para crear tu cuenta en ONFIT. Después, en el panel de usuario, rellenarás un formulario con los datos necesarios para empezar tu cambio físico.
-          </p>
         </div>
 
         {/* Formulario */}

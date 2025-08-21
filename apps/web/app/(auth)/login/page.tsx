@@ -70,7 +70,11 @@ export default function LoginPage() {
         window.location.replace(redirectUrl);
       }
     } catch (error: any) {
-      console.error("Error de login:", error);
+      // Solo loggear errores que no sean credenciales inválidas
+      if (!error.message.includes("Invalid login credentials")) {
+        console.error("Error de login:", error);
+      }
+      
       if (error.message.includes("Invalid login credentials")) {
         setLoginErrors({ email: "Credenciales incorrectas" });
       } else {
@@ -84,26 +88,38 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-card border border-border rounded-lg p-5 shadow-lg">
-        <div className="mb-5">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Dumbbell className="size-8 text-primary" />
-              <div>
-                <h1 className="text-xl font-bold">
-                  <span className="text-foreground">ONFIT</span>
-                  <span className="text-primary">ONLINE</span>
-                </h1>
-                <p className="text-xs text-muted-foreground">Tu app de fitness</p>
+        <div className="mb-5 relative">
+          {/* Botón de tema posicionado absolutamente en la esquina superior derecha */}
+          <button
+            onClick={() => setTheme(themeSetting === "light" ? "dark" : 
+                                   themeSetting === "dark" ? "system" : "light")}
+            className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
+          >
+            {themeSetting === "light" ? <Sun className="size-5" /> : 
+             themeSetting === "dark" ? <Moon className="size-5" /> : <Monitor className="size-5" />}
+          </button>
+          
+          {/* Logo centrado en la card (sin interferencia del botón) */}
+          <div className="flex flex-col items-center text-center">
+            {/* Logo adaptativo según tema */}
+            {!mounted ? (
+              <div className="w-12 h-12 bg-primary/15 rounded-lg grid place-items-center">
+                <Dumbbell className="size-8 text-primary" />
               </div>
-            </div>
-            <button
-              onClick={() => setTheme(themeSetting === "light" ? "dark" : 
-                                     themeSetting === "dark" ? "system" : "light")}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0"
-            >
-              {themeSetting === "light" ? <Sun className="size-5" /> : 
-               themeSetting === "dark" ? <Moon className="size-5" /> : <Monitor className="size-5" />}
-            </button>
+            ) : resolvedTheme === "dark" ? (
+              <img 
+                src="/logos/logo-dark.png" 
+                alt="ONFIT Logo" 
+                className="h-12 w-auto object-contain"
+              />
+            ) : (
+              <img 
+                src="/logos/logo-light.png" 
+                alt="ONFIT Logo" 
+                className="h-12 w-auto object-contain"
+              />
+            )}
+
           </div>
           <div className="mt-4 border-t border-border/50" />
           <p className="mt-2 text-xs text-muted-foreground">

@@ -72,13 +72,25 @@ export default function Topbar({
           </button>
 
           {/* Brand */}
-          <div className="flex items-center gap-2 shrink-0 relative z-10">
-            <div className="size-8 rounded-xl bg-primary/15 grid place-items-center">
-              <Dumbbell className="size-5 text-primary" />
-            </div>
-            <div className="font-semibold">
-              ONFIT <span className="text-primary">{brandName}</span>
-            </div>
+          <div className="flex items-center shrink-0 relative z-10">
+            {/* Logo adaptativo según tema */}
+            {!mounted ? (
+              <div className="w-8 h-8 bg-primary/15 rounded-lg grid place-items-center">
+                <Dumbbell className="size-7 text-primary" />
+              </div>
+            ) : resolvedTheme === "dark" ? (
+              <img 
+                src="/logos/logo-dark.png" 
+                alt="ONFIT Logo" 
+                className="h-8 w-auto object-contain"
+              />
+            ) : (
+              <img 
+                src="/logos/logo-light.png" 
+                alt="ONFIT Logo" 
+                className="h-8 w-auto object-contain"
+              />
+            )}
           </div>
           
           {/* Breadcrumb (solo si showBreadcrumb es true) */}
@@ -89,7 +101,7 @@ export default function Topbar({
               <div className="hidden sm:flex items-center" style={{ marginTop: '3px' }}>
                 <div className="flex items-center font-mono text-xs tracking-tight text-muted-foreground truncate max-w-[150px] md:max-w-none">
                   {pathSegments.map((segment, i) => (
-                    <React.Fragment key={segment.href}>
+                    <React.Fragment key={`breadcrumb-${i}-${segment.href}`}>
                       {i > 0 && <ChevronRight className="size-3 mx-1 text-muted flex-shrink-0" />}
                       <Link 
                         href={segment.href}
