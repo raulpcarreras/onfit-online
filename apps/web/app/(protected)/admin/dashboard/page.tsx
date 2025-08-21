@@ -53,7 +53,7 @@ export default function AdminDashboard() {
 
   const accent = "text-primary";
   const border = "border border-border";
-  const card = "bg-card p-0";
+  const card = "bg-card rounded-lg border border-border p-4";
   // Usar resolvedTheme para evitar problemas de hidratación
   const ChartStroke = resolvedTheme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
 

@@ -31,15 +31,20 @@ export function useLoginActions() {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
-        // 2) Obtener tokens (de la respuesta o, si falla, del getSession)
-        let access_token = data.session?.access_token;
-        let refresh_token = (data.session as any)?.refresh_token;
-
-        if (!access_token || !refresh_token) {
-          const s = await supabase.auth.getSession();
-          access_token = s.data.session?.access_token || access_token;
-          refresh_token = (s.data.session as any)?.refresh_token || refresh_token;
+        // 2) Obtener tokens de la sesión
+        if (!data.session) {
+          throw new Error("No se creó sesión tras el login");
         }
+
+        // Obtener tokens de la sesión actual
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (!sessionData.session) {
+          throw new Error("No se pudo obtener la sesión");
+        }
+
+        const access_token = sessionData.session.access_token;
+        const refresh_token = sessionData.session.refresh_token;
+
         if (!access_token || !refresh_token) {
           throw new Error("Faltan tokens de sesión tras el login");
         }

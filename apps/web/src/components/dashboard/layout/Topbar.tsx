@@ -76,7 +76,11 @@ export default function Topbar({
             {/* Logo adaptativo según tema */}
             {!mounted ? (
               <div className="w-8 h-8 bg-primary/15 rounded-lg grid place-items-center">
-                <Dumbbell className="size-7 text-primary" />
+                <img
+                  src="/favicon.png"
+                  alt="ONFIT Logo"
+                  className="size-7 object-contain"
+                />
               </div>
             ) : resolvedTheme === "dark" ? (
               <img 

@@ -173,25 +173,18 @@ export default function RegisterPage() {
                themeSetting === "dark" ? <Moon className="size-5" /> : <Monitor className="size-5" />}
             </button>
 
-            {/* Flecha y título por encima del logo */}
-            <div className="flex items-center gap-2 mb-4">
-              <Link 
-                href="/login"
-                className="p-2 rounded-lg hover:bg-secondary transition-colors"
-              >
-                <ArrowLeft className="size-4 text-muted-foreground" />
-              </Link>
-              <h2 className="text-lg font-semibold text-foreground">Crear cuenta nueva</h2>
-            </div>
+            {/* Botón de flecha posicionado absolutamente en la esquina superior izquierda */}
+            <Link 
+              href="/login"
+              className="absolute top-0 left-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
+            >
+              <ArrowLeft className="size-5 text-muted-foreground" />
+            </Link>
 
             {/* Logo centrado en la card */}
             <div className="flex flex-col items-center text-center">
               {/* Logo adaptativo según tema */}
-              {!mounted ? (
-                <div className="w-12 h-12 bg-primary/15 rounded-lg grid place-items-center">
-                  <Dumbbell className="size-8 text-primary" />
-                </div>
-              ) : resolvedTheme === "dark" ? (
+              {resolvedTheme === "dark" ? (
                 <img
                   src="/logos/logo-dark.png"
                   alt="ONFIT Logo"
@@ -206,6 +199,12 @@ export default function RegisterPage() {
               )}
             </div>
             <div className="mt-4 border-t border-border/50" />
+            
+            {/* Título entre el separador y la descripción */}
+            <div className="mt-4 mb-2">
+              <h2 className="text-lg font-semibold text-foreground">Crea una cuenta nueva</h2>
+            </div>
+            
             <p className="mt-2 text-xs text-muted-foreground">
               Completa los datos para crear tu cuenta en ONFIT. Después, en el panel de usuario, rellenarás un formulario con los datos necesarios para empezar tu cambio físico.
             </p>

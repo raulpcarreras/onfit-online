@@ -71,7 +71,11 @@ export default function Topbar({ onOpenMenu, variant = "admin", userInfo }: Topb
           {/* Brand */}
           <div className="flex items-center gap-2 shrink-0 relative z-10">
             <div className="size-8 rounded-xl bg-primary/15 grid place-items-center">
-              <Dumbbell className="size-5 text-primary" />
+              <img
+                src="/favicon.png"
+                alt="ONFIT Logo"
+                className="size-5 object-contain"
+              />
             </div>
             <div className="font-semibold">
               ONFIT <span className="text-primary">{variant === "admin" ? "Admin" : "Online"}</span>

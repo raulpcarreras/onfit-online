@@ -12,16 +12,13 @@ export async function middleware(req: NextRequest) {
   const allCookies = req.cookies.getAll();
   console.log(`🍪 Cookies encontradas:`, allCookies.map(c => c.name));
 
-  // Verificación mínima: solo comprobar presencia de cookies de Supabase
-  const hasAuthToken = allCookies.some(c => 
-    c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
-  );
-  const hasRefreshToken = allCookies.some(c => 
-    c.name.startsWith("sb-") && c.name.endsWith("-refresh-token")
-  );
+                // Verificación mínima: solo comprobar presencia de ALGUNA cookie de Supabase
+              const hasAnySupabaseCookie = allCookies.some(c => 
+                c.name.startsWith("sb-") && (c.name.endsWith("-auth-token") || c.name.endsWith("-refresh-token"))
+              );
 
-  // Si faltan las cookies esenciales, redirigir a login
-  if (!hasAuthToken || !hasRefreshToken) {
+              // Si no hay NINGUNA cookie de Supabase, redirigir a login
+              if (!hasAnySupabaseCookie) {
     console.log(`🔄 Cookies insuficientes, redirigiendo a login desde: ${req.nextUrl.pathname}`);
     const url = req.nextUrl.clone();
     url.pathname = "/login";

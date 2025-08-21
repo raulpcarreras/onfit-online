@@ -62,9 +62,11 @@ export default function LoginPage() {
           <div className="flex flex-col items-center text-center">
             {/* Logo adaptativo según tema */}
             {!mounted ? (
-              <div className="w-12 h-12 bg-primary/15 rounded-lg grid place-items-center">
-                <Dumbbell className="size-8 text-primary" />
-              </div>
+              <img
+                src="/favicon.png"
+                alt="ONFIT Logo"
+                className="h-12 w-auto object-contain"
+              />
             ) : resolvedTheme === "dark" ? (
               <img 
                 src="/logos/logo-dark.png" 
@@ -126,9 +128,9 @@ export default function LoginPage() {
                 onClick={() => setShowPwd((v) => !v)}
               >
                 {showPwd ? (
-                  <EyeOff className="size-5 text-muted-foreground" />
+                  <EyeOff className="size-5 text-foreground" />
                 ) : (
-                  <Eye className="size-5 text-muted-foreground" />
+                  <Eye className="size-5 text-foreground" />
                 )}
               </button>
             </div>

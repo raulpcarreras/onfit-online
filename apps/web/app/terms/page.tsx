@@ -8,7 +8,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <div className="border-b border-border">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-4 max-w-4xl">
           <div className="flex items-center gap-4">
             <Link 
               href="/login"
@@ -17,7 +17,11 @@ export default function TermsPage() {
               <ArrowLeft className="size-5 text-muted-foreground" />
             </Link>
             <div className="flex items-center gap-2">
-              <Dumbbell className="size-6 text-primary" />
+              <img
+                src="/favicon.png"
+                alt="ONFIT Logo"
+                className="size-6 object-contain"
+              />
               <h1 className="text-lg font-semibold text-foreground">Términos y Condiciones</h1>
             </div>
           </div>
