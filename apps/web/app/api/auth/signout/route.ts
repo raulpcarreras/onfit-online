@@ -1,32 +1,40 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { createServerClient } from '@supabase/ssr'
 
-export async function POST(req: NextRequest) {
-  const res = NextResponse.json({ ok: true });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => req.cookies.getAll(),
-        setAll: (cookies) => {
-          for (const { name, value, options } of cookies) {
-            res.cookies.set(name, value, {
-              ...options,
-              path: "/",
-              secure: process.env.NODE_ENV === "production",
-              sameSite: "lax",
+export async function POST(_request: Request) {
+  try {
+    const cookieStore = await cookies();
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll: () => cookieStore.getAll(),
+          setAll: (cookiesToSet: Array<{ name: string; value: string; options?: any }>) => {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
             });
-          }
+          },
         },
-      },
-      db: { schema: "public" },
-    }
-  );
+        db: { schema: "public" },
+      }
+    );
 
-  // Invalida sesión en Supabase y fuerza Set-Cookie de limpieza
-  await supabase.auth.signOut();
+    // Revoca/limpia en Supabase (servidor)
+    await supabase.auth.signOut({ scope: "global" });
 
-  return res;
+    // Asegura limpieza de cookies sb-* (defensa en profundidad)
+    cookieStore
+      .getAll()
+      .filter((c) => c.name.startsWith("sb-"))
+      .forEach((c) => cookieStore.set(c.name, "", { maxAge: 0, path: "/" }));
+
+    return NextResponse.json({ ok: true });
+  } catch (e: any) {
+    return NextResponse.json(
+      { ok: false, error: e?.message ?? "Unexpected error" },
+      { status: 500 }
+    );
+  }
 }

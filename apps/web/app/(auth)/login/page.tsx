@@ -1,20 +1,19 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import { Eye, EyeOff, Dumbbell, Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import { useLoginActions } from "@/lib/use-login-actions";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
-  const [loadingSignIn, setLoadingSignIn] = useState(false);
   const [loginErrors, setLoginErrors] = useState<{ email?: string; password?: string }>({});
   const { setTheme, theme, resolvedTheme } = useTheme() as any;
   const [mounted, setMounted] = useState(false);
+  
+  const { loading, loginWithPassword } = useLoginActions();
   
   useEffect(() => setMounted(true), []);
   const themeSetting = mounted ? (theme ?? "system") : "system";
@@ -30,45 +29,7 @@ export default function LoginPage() {
     if (Object.keys(errs).length > 0) return;
     
     try {
-      setLoadingSignIn(true);
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-      if (error) throw error;
-      
-      if (data.user && data.session) {
-        // Sincronizar cookies en el servidor
-        const syncResponse = await fetch('/api/auth/set', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          credentials: 'include', // importante
-          body: JSON.stringify({
-            access_token: data.session.access_token,
-            refresh_token: data.session.refresh_token,
-          }),
-        });
-
-        if (!syncResponse.ok) {
-          throw new Error('Failed to sync session');
-        }
-
-        // Obtener el rol del usuario para redirigir correctamente
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("role")
-          .eq("id", data.user.id)
-          .single();
-        
-        const role = profile?.role;
-        let redirectUrl = '/user';
-        
-        if (role === "admin") {
-          redirectUrl = "/admin/dashboard";
-        } else if (role === "trainer") {
-          redirectUrl = "/trainer";
-        }
-
-        // Ahora sí, redirige después de sincronizar cookies
-        window.location.replace(redirectUrl);
-      }
+      await loginWithPassword(email, password);
     } catch (error: any) {
       // Solo loggear errores que no sean credenciales inválidas
       if (!error.message.includes("Invalid login credentials")) {
@@ -80,8 +41,6 @@ export default function LoginPage() {
       } else {
         setLoginErrors({ email: "Error al iniciar sesión" });
       }
-    } finally {
-      setLoadingSignIn(false);
     }
   };
 
@@ -129,8 +88,10 @@ export default function LoginPage() {
 
         <form onSubmit={onSubmit} className="space-y-3">
           <div>
-            <label className="text-xs text-muted-foreground">Email</label>
+            <label htmlFor="email" className="text-xs text-muted-foreground">Email</label>
             <input
+              id="email"
+              name="email"
               type="email"
               placeholder="tu@correo.com"
               value={email}
@@ -145,9 +106,11 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="text-xs text-muted-foreground">Contraseña</label>
+            <label htmlFor="password" className="text-xs text-muted-foreground">Contraseña</label>
             <div className="mt-1 flex items-stretch gap-2">
               <input
+                id="password"
+                name="password"
                 type={showPwd ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
@@ -176,13 +139,13 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            disabled={loadingSignIn}
+            disabled={loading}
             className="w-full py-2.5 rounded-xl bg-primary text-black font-medium hover:bg-primary/90 disabled:opacity-60 flex items-center justify-center gap-2 transition-colors"
           >
-            {loadingSignIn && (
+            {loading && (
               <span className="inline-block size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             )}
-            {loadingSignIn ? "Entrando..." : "Entrar"}
+            {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
 

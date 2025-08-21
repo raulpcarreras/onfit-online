@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Users, Euro, Activity } from "lucide-react";
 import { useUser } from "@/lib/user-provider";
+import { useProfile } from "@/lib/profile-provider";
 import FullScreenLoader from "@/components/FullScreenLoader";
 
 // Cargar el gráfico solo en cliente para evitar problemas de hidratación
@@ -36,19 +37,18 @@ const recientes = [
 
 export default function AdminDashboard() {
   const { theme, resolvedTheme } = useTheme();
-  const { user, role, loading } = useUser();
+  const { user, loading } = useUser();
+  const { profile } = useProfile();
   const router = useRouter();
 
-  // Protección de ruta: solo admins pueden ver esta página
-  useEffect(() => {
-    if (!loading && (!user || role !== "admin")) {
-      router.replace("/login");
-    }
-  }, [loading, user, role, router]);
+  // Mostrar loader mientras se carga el perfil
+  if (loading || !user || !profile) {
+    return <FullScreenLoader label="Cargando..." />;
+  }
 
-  // Mostrar loader hasta confirmar que es admin
-  if (loading || !user || role !== "admin") {
-    return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+  // Verificar que el usuario tenga rol de admin (esto ya lo valida el middleware + layout)
+  if (profile.role !== "admin") {
+    return <FullScreenLoader label="Redirigiendo..." />;
   }
 
   const accent = "text-primary";

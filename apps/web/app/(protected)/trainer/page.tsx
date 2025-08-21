@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/lib/user-provider";
+import { useProfile } from "@/lib/profile-provider";
 import { supabase } from "@/lib/supabase";
 import FullScreenLoader from "@/components/FullScreenLoader";
 
 export default function TrainerPage() {
-  const { user, role, loading } = useUser();
+  const { user, loading } = useUser();
+  const { profile } = useProfile();
   const router = useRouter();
 
   // Solo mostrar loading mientras se carga el rol
@@ -27,7 +29,7 @@ export default function TrainerPage() {
       <div className="w-full max-w-sm surface-card p-5">
         <div className="flex items-center justify-between mb-4">
           <p className="text-xs text-muted-foreground">
-            Has iniciado sesión como: <span className="font-medium text-white">{role ?? "usuario"}</span>
+            Has iniciado sesión como: <span className="font-medium text-white">{profile?.role ?? "usuario"}</span>
           </p>
           <button onClick={onLogout} type="button" disabled={signingOut}
             className="px-3 py-1.5 rounded-lg border border-border text-xs hover:border-neutral-300 dark:hover:border-neutral-600 disabled:opacity-60">

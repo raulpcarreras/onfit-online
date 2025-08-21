@@ -1,22 +1,46 @@
-"use client";
-import React, { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useUser } from "@/lib/user-provider";
+import { redirect } from "next/navigation";
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
 
-export default function Home() {
-  const router = useRouter();
-  const { user, role, loading } = useUser();
-
-  useEffect(() => {
-    if (loading) return;
-    if (!user) {
-      router.replace("/login");
-      return;
+export default async function Home() {
+  const cookieStore = await cookies()
+  
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll()
+        },
+        setAll() {
+          // No necesitamos setear cookies aquí
+        },
+      },
     }
-    if (role === "admin") router.replace("/admin/dashboard");
-    else if (role === "trainer") router.replace("/trainer");
-    else if (role === "user") router.replace("/user");
-  }, [user, role, loading, router]);
+  )
 
-  return null;
+  // 1) Sesión del usuario (server-side)
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Sin sesión -> a login
+    redirect("/login");
+  }
+
+  // 2) Traemos rol del perfil (usa **id** como clave primaria)
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  // 3) Redirigimos por rol
+  if (profile?.role === "admin") redirect("/admin/dashboard");
+  if (profile?.role === "trainer") redirect("/trainer");
+
+  // por defecto usuario normal
+  redirect("/user");
 }

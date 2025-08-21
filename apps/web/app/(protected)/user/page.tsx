@@ -3,6 +3,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useUser } from "@/lib/user-provider";
+import { useProfile } from "@/lib/profile-provider";
 import { useRouter } from "next/navigation";
 import FullScreenLoader from "@/components/FullScreenLoader";
 
@@ -37,19 +38,18 @@ const habitos = [
 
 export default function UserDashboard() {
   const { resolvedTheme } = useTheme();
-  const { user, role, loading } = useUser();
+  const { user, loading } = useUser();
+  const { profile } = useProfile();
   const router = useRouter();
 
-  // Protección de ruta: solo usuarios pueden ver esta página
-  useEffect(() => {
-    if (!loading && (!user || role !== "user")) {
-      router.replace("/login");
-    }
-  }, [loading, user, role, router]);
+  // Mostrar loader mientras se carga el perfil
+  if (loading || !user || !profile) {
+    return <FullScreenLoader label="Cargando..." />;
+  }
 
-  // Mostrar loader hasta confirmar que es usuario
-  if (loading || !user || role !== "user") {
-    return <FullScreenLoader label={loading ? "Cargando..." : "Redirigiendo..."} />;
+  // Verificar que el usuario tenga rol de usuario (esto ya lo valida el middleware + layout)
+  if (profile.role !== "user") {
+    return <FullScreenLoader label="Redirigiendo..." />;
   }
 
   const border = "border border-border";

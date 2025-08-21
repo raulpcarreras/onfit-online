@@ -1,82 +1,52 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@supabase/ssr";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { createServerClient } from '@supabase/ssr'
 
-export async function POST(req: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const { access_token, refresh_token } = await req.json();
+    const { access_token, refresh_token } = await request.json().catch(() => ({} as any));
 
     if (!access_token || !refresh_token) {
-      console.log("❌ /api/auth/set - Tokens faltantes");
-      return NextResponse.json({ error: "Missing tokens" }, { status: 400 });
+      return NextResponse.json(
+        { ok: false, error: "Missing tokens" },
+        { status: 400 }
+      );
     }
 
-    console.log("🔑 /api/auth/set - Tokens recibidos, creando cliente Supabase");
-
-    // Respuesta que usaremos para inyectar las Set-Cookie
-    const res = NextResponse.json({ ok: true });
-
+    const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
         cookies: {
-          getAll: () => req.cookies.getAll(),
-          setAll: (cookies) => {
-            console.log(`🍪 /api/auth/set - Estableciendo ${cookies.length} cookies`);
-            for (const { name, value, options } of cookies) {
-              console.log(`🍪 /api/auth/set - Cookie: ${name} = ${value.substring(0, 20)}...`);
-              // Asegurar atributos válidos en dev/producción
-              res.cookies.set(name, value, {
-                ...options,
-                path: "/",
-                // En dev (http) NO usar Secure, en prod SÍ:
-                secure: process.env.NODE_ENV === "production",
-                // SameSite Lax funciona perfect para same-origin
-                sameSite: "lax",
-              });
-            }
+          getAll: () => cookieStore.getAll(),
+          setAll: (cookiesToSet: Array<{ name: string; value: string; options?: any }>) => {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              cookieStore.set(name, value, options);
+            });
           },
         },
         db: { schema: "public" },
       }
     );
 
-    console.log("🔄 /api/auth/set - Llamando a setSession");
+    // Establece la sesión en el lado servidor (emite Set-Cookie)
     const { error } = await supabase.auth.setSession({
       access_token,
       refresh_token,
     });
-
     if (error) {
-      console.log(`❌ /api/auth/set - Error en setSession: ${error.message}`);
-      return NextResponse.json({ error: error.message }, { status: 401 });
+      return NextResponse.json({ ok: false, error: error.message }, { status: 401 });
     }
 
-    // Forzar establecimiento de ambas cookies manualmente
-    console.log("🍪 /api/auth/set - Forzando establecimiento de cookies manualmente");
-    
-    // Cookie auth-token
-    res.cookies.set(`sb-niwdiousdcowvgqpzobj-auth-token`, access_token, {
-      path: "/",
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7, // 7 días
-    });
-    
-    // Cookie refresh-token
-    res.cookies.set(`sb-niwdiousdcowvgqpzobj-refresh-token`, refresh_token, {
-      path: "/",
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 30, // 30 días
-    });
+    // (Opcional) Devolver user para debug/UX
+    const { data: { user } } = await supabase.auth.getUser();
 
-    console.log("✅ /api/auth/set - Sesión establecida correctamente con cookies manuales");
-    return res;
+    return NextResponse.json({ ok: true, user });
   } catch (e: any) {
-    console.log(`💥 /api/auth/set - Error general: ${e?.message}`);
-    return NextResponse.json({ error: e?.message ?? "Server error" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: e?.message ?? "Unexpected error" },
+      { status: 500 }
+    );
   }
 }
