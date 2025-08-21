@@ -20,9 +20,9 @@ function ResetPasswordContent() {
   useEffect(() => {
     // Verificar si hay una sesión válida de recuperación
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session?.user?.aud === 'authenticated') {
-        setSession(session);
+      const { data: { user } } = await supabase.auth.getUser();
+              if (user?.aud === 'authenticated') {
+          setSession({ user });
       } else {
         // Si no hay sesión, redirigir al login
         router.push('/login?error=invalid-reset-link');

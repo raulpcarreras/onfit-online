@@ -20,7 +20,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     let mounted = true;
     (async () => {
       setLoading(true);
-      await supabase.auth.getSession();
+      await supabase.auth.getUser();
       const { data: userData } = await supabase.auth.getUser();
       const currentUser = userData.user ?? null;
       if (!mounted) return;

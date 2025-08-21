@@ -9,7 +9,7 @@ if (!Env.NEXT_PUBLIC_SUPABASE_URL || !Env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
 export const supabase = createClient(
   Env.NEXT_PUBLIC_SUPABASE_URL,
   Env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  { db: { schema: "onfit" } }
+  { db: { schema: "public" } }
 );
 
 

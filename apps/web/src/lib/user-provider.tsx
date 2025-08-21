@@ -20,7 +20,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     (async () => {
       setLoading(true);
       // Forzar emisión de sesión inicial para SSR/CSR híbrido
-      await supabase.auth.getSession();
       const { data: userData } = await supabase.auth.getUser();
       const currentUser = userData.user ?? null;
       if (!mounted) return;
@@ -52,7 +51,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     })();
 
     const { data: sub } = supabase.auth.onAuthStateChange(async () => {
-      await supabase.auth.getSession();
       const { data: userData } = await supabase.auth.getUser();
       const u = userData.user ?? null;
       setUser(u);
