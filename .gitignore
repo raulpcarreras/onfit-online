@@ -64,6 +64,9 @@ apps/native/.env*
 *.dmg
 *.pkg
 
+# Git bundles (backups)
+*.bundle
+
 # Archivos temporales y de sistema
 *.tmp
 *.temp
