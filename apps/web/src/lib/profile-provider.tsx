@@ -10,6 +10,7 @@ type Profile = {
   email: string | null;
   avatar_url: string | null;
   role: "user" | "trainer" | "admin";
+  is_super_admin?: boolean; // Nuevo campo para super admin
 };
 
 type ProfileCtx = {
@@ -45,8 +46,17 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
           .eq("id", user.id) // 👈 usa **id** (clave primaria)
           .maybeSingle();
 
+        // Añadir flag de super admin desde JWT
+        let profileData = data as Profile | null;
+        if (profileData && user.app_metadata) {
+          profileData = {
+            ...profileData,
+            is_super_admin: !!(user.app_metadata as any)?.is_super_admin
+          };
+        }
+
         if (!cancelled) {
-          setProfile(data ?? null);
+          setProfile(profileData ?? null);
           setErr(error ? error.message : null);
         }
       } catch (e: any) {

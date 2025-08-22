@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --ci",
-    "clean": "rm -rf .next .turbo dist node_modules"
+    "clean": "rm -rf .next .turbo dist node_modules",
+    "verify-super-admin": "node scripts/verify-super-admin.js",
+    "manage-super-admin": "node scripts/manage-super-admin.js",
+    "monitor-admin": "node scripts/monitor-admin-activity.js"
   },
   "dependencies": {
     "@legendapp/state": "3.0.0-beta.30",
