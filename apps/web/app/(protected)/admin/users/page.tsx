@@ -91,7 +91,10 @@ export default function AdminUsers() {
               <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
               <p className="text-muted-foreground">Administra usuarios, roles y permisos del sistema</p>
             </div>
-            <Button className="flex items-center gap-2">
+            <Button 
+              className="flex items-center gap-2"
+              onClick={() => router.push("/admin/users/create")}
+            >
               <Plus className="size-4" />
               Nuevo Usuario
             </Button>
@@ -265,7 +268,12 @@ export default function AdminUsers() {
                           />
                         )}
                         
-                        <Button variant="ghost" size="sm" className="p-1 h-auto">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="p-1 h-auto"
+                          onClick={() => router.push(`/admin/users/edit?id=${user.id}`)}
+                        >
                           <Edit className="size-4" />
                         </Button>
                         <Button variant="ghost" size="sm" className="p-1 h-auto text-red-500 hover:text-red-600">

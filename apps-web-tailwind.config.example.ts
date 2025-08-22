@@ -1,4 +1,4 @@
-// apps/web/tailwind.config.ts
+// apps/web/tailwind.config.ts (EJEMPLO - reemplaza el tuyo con este patrón)
 import type { Config } from "tailwindcss";
 import preset from "../../packages/design-system/tailwind.preset";
 
@@ -15,5 +15,4 @@ const config: Config = {
     extend: {},
   },
 };
-
 export default config;

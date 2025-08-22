@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@repo/design/components/Button";
 import { useUser } from "@/lib/user-provider";
 import { useProfile } from "@/lib/profile-provider";
 import { supabase } from "@/lib/supabase";
@@ -31,10 +32,12 @@ export default function TrainerPage() {
           <p className="text-xs text-muted-foreground">
             Has iniciado sesión como: <span className="font-medium text-white">{profile?.role ?? "usuario"}</span>
           </p>
-          <button onClick={onLogout} type="button" disabled={signingOut}
-            className="px-3 py-1.5 rounded-lg border border-border text-xs hover:border-neutral-300 dark:hover:border-neutral-600 disabled:opacity-60">
+          <Button onClick={onLogout} type="button" disabled={signingOut}
+            variant="outline" 
+            size="sm"
+            className="text-xs">
             {signingOut ? "Saliendo..." : "Cerrar sesión"}
-          </button>
+          </Button>
         </div>
 
         <div className="flex flex-col items-center gap-1 text-center">

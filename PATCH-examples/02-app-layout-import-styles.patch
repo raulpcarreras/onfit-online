@@ -1,0 +1,6 @@
+*** Begin Patch
+*** Update File: apps/web/app/layout.tsx
+@@
+ import "./globals.css";
++import "@repo/design/styles.css";
+*** End Patch

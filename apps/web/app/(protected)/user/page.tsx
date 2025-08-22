@@ -10,6 +10,8 @@ import FullScreenLoader from "@/components/FullScreenLoader";
 import {
   Dumbbell, Calendar, MessageSquare, CheckCircle2, TrendingUp, Utensils
 } from "lucide-react";
+import { Button } from "@repo/design/components/Button";
+import { Input } from "@repo/design/components/Input";
 
 type KPI = { label: string; value: string; diff?: string; icon: any };
 
@@ -141,9 +143,9 @@ export default function UserDashboard() {
             <Calendar className={`size-4 ${accent}`} />
           </div>
           <div className="mt-2 text-sm text-muted-foreground">Mañana 18:00 — Sesión con Laura</div>
-          <button className="mt-3 w-full py-2 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition">
+          <Button className="mt-3 w-full">
             Abrir calendario
-          </button>
+          </Button>
         </div>
 
         {/* Mensajes recientes */}
@@ -166,9 +168,9 @@ export default function UserDashboard() {
               </div>
             ))}
           </div>
-          <button className="mt-3 px-4 py-2 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition">
+          <Button className="mt-3 px-4 py-2">
             Abrir mensajes
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -178,15 +180,15 @@ export default function UserDashboard() {
         <div className={`${card}`}>
           <div className="font-medium">Peso rápido</div>
           <div className="mt-3 flex gap-2">
-            <input
+            <Input
               type="number"
               inputMode="decimal"
               placeholder="kg"
-              className="flex-1 px-3 py-2 rounded-lg bg-background border border-border outline-none"
+              className="flex-1"
             />
-            <button className="px-4 py-2 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition">
+            <Button className="px-4 py-2">
               Guardar
-            </button>
+            </Button>
           </div>
         </div>
 

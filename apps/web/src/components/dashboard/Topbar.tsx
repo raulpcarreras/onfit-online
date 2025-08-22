@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Menu, Search, Bell, User, Dumbbell, Sun, Moon, Monitor, ChevronRight } from "lucide-react";
 import { Button } from "@repo/design/ui/button";
-
+import { Input } from "@repo/design/components/Input";
 import { Text } from "@repo/design/ui/text";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -60,13 +60,15 @@ export default function Topbar({ onOpenMenu, variant = "admin", userInfo }: Topb
         {/* IZQUIERDA: Menú móvil + Brand + Breadcrumb */}
         <div className="flex items-center gap-1">
           {/* Hamburger solo móvil */}
-          <button
+          <Button
             onClick={onOpenMenu}
-            className="lg:hidden p-2 rounded-lg hover:bg-secondary"
+            variant="ghost"
+            size="sm"
+            className="lg:hidden"
             aria-label="Abrir menú"
           >
             <Menu className="size-5 text-muted-foreground" />
-          </button>
+          </Button>
 
           {/* Brand */}
           <div className="flex items-center gap-2 shrink-0 relative z-10">
@@ -114,8 +116,8 @@ export default function Topbar({ onOpenMenu, variant = "admin", userInfo }: Topb
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xs md:max-w-md px-4 hidden sm:block">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-            <input
-              className="w-full pl-9 pr-3 py-2 rounded-lg bg-secondary/70 outline-none text-sm placeholder:text-muted-foreground border border-border"
+            <Input
+              className="w-full pl-9"
               placeholder="Buscar..."
               aria-label="Buscar"
             />
@@ -123,17 +125,19 @@ export default function Topbar({ onOpenMenu, variant = "admin", userInfo }: Topb
         </div>
         
         {/* Búsqueda móvil (icono) */}
-        <button className="sm:hidden p-2 rounded-lg hover:bg-secondary" aria-label="Buscar">
+        <Button variant="ghost" size="sm" className="sm:hidden" aria-label="Buscar">
           <Search className="size-5 text-muted-foreground" />
-        </button>
+        </Button>
         
         {/* DERECHA: Tema + Notificaciones + Usuario */}
         <div className="flex items-center gap-2">
           {/* Selector de tema personalizado */}
           <div className="relative">
-            <button 
+            <Button 
               onClick={() => setTheme(themeSetting === "light" ? "dark" : themeSetting === "dark" ? "system" : "light")}
-              className="p-2 rounded-lg hover:bg-secondary transition-colors flex items-center gap-2" 
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-2" 
               aria-label="Cambiar tema"
             >
               {!mounted ? (
@@ -148,13 +152,13 @@ export default function Topbar({ onOpenMenu, variant = "admin", userInfo }: Topb
               <span className="text-xs text-muted-foreground hidden sm:inline">
                 {themeSetting === "light" ? "Claro" : themeSetting === "dark" ? "Oscuro" : "Sistema"}
               </span>
-            </button>
+            </Button>
           </div>
 
           {/* Notificaciones */}
-          <button className="p-2 rounded-lg hover:bg-secondary" aria-label="Notificaciones">
+          <Button variant="ghost" size="sm" aria-label="Notificaciones">
             <Bell className="size-5 text-muted-foreground" />
-          </button>
+          </Button>
 
           {/* Usuario */}
           <div className="hidden sm:flex items-center gap-2 pl-2">

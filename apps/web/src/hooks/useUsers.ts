@@ -7,6 +7,7 @@ interface User {
   email: string | null;
   role: "user" | "trainer" | "admin";
   created_at: string;
+  updated_at?: string;
   is_super_admin?: boolean;
 }
 

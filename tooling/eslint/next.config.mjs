@@ -16,5 +16,20 @@ export default [
                 rootDir: "apps/web/",
             },
         },
+        rules: {
+            // ❌ Prohíbe onClick en JSX (te fuerza a usar onPress del DS)
+            "no-restricted-syntax": [
+                "error",
+                {
+                    selector: 'JSXAttribute[name.name="onClick"]',
+                    message: "Usa 'onPress' y el Button del DS (@repo/design/components/Button).",
+                },
+                {
+                    selector: 'JSXOpeningElement[name.name="button"]',
+                    message:
+                        "No uses <button> crudo. Usa @repo/design/components/Button.",
+                },
+            ],
+        },
     }),
 ];

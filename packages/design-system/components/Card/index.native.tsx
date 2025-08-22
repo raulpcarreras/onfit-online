@@ -1,22 +1,19 @@
+// packages/design-system/components/Card/index.native.tsx
 import React from "react";
-import { View, Text, StyleSheet, ViewProps } from "react-native";
+import { View, Text, StyleSheet, ViewProps, TextProps } from "react-native";
 
-export function Card({ style, children, ...rest }: ViewProps & { children?: React.ReactNode }) {
-  return <View style={[s.card, style]} {...rest}>{children}</View>;
+export function Card(props: ViewProps) {
+  return <View style={[styles.card, props.style]}>{props.children}</View>;
 }
-export function CardHeader({ children }: { children?: React.ReactNode }) { return <View style={s.header}>{children}</View>; }
-export function CardTitle({ children }: { children?: React.ReactNode }) { return <Text style={s.title}>{children}</Text>; }
-export function CardDescription({ children }: { children?: React.ReactNode }) { return <Text style={s.desc}>{children}</Text>; }
-export function CardContent({ children }: { children?: React.ReactNode }) { return <View style={s.content}>{children}</View>; }
-export function CardFooter({ children }: { children?: React.ReactNode }) { return <View style={s.footer}>{children}</View>; }
+export function CardHeader(props: ViewProps) { return <View style={[styles.section, props.style]}>{props.children}</View>; }
+export function CardContent(props: ViewProps) { return <View style={[styles.section, props.style]}>{props.children}</View>; }
+export function CardFooter(props: ViewProps) { return <View style={[styles.section, props.style]}>{props.children}</View>; }
+export function CardTitle(props: TextProps) { return <Text style={[styles.title, (props as any).style]}>{props.children}</Text>; }
+export function CardDescription(props: TextProps) { return <Text style={[styles.desc, (props as any).style]}>{props.children}</Text>; }
 
-export default Card;
-
-const s = StyleSheet.create({
-  card: { backgroundColor: "#111827", borderColor: "#262626", borderWidth: 1, borderRadius: 12, padding: 12 },
-  header: { marginBottom: 8 },
-  title: { color: "#fff", fontWeight: "600", fontSize: 16 },
-  desc: { color: "#9CA3AF" },
-  content: { },
-  footer: { marginTop: 8 },
+const styles = StyleSheet.create({
+  card: { backgroundColor: "#111", borderRadius: 12, borderWidth: 1, borderColor: "#262626" },
+  section: { padding: 16 },
+  title: { fontSize: 16, fontWeight: "600", color: "#fff" },
+  desc: { fontSize: 13, color: "#9ca3af" },
 });

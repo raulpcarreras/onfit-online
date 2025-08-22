@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Users, Euro, Activity } from "lucide-react";
+import { Button } from "@repo/design/components/Button";
 import { useUser } from "@/lib/user-provider";
 import { useProfile } from "@/lib/profile-provider";
 import FullScreenLoader from "@/components/FullScreenLoader";
@@ -114,9 +115,9 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
-              <button className="mt-3 w-full py-2 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition">
+              <Button className="mt-3 w-full">
                 Ver todos
-              </button>
+              </Button>
             </div>
           </section>
         </div>

@@ -4,6 +4,8 @@ import { Eye, EyeOff, Dumbbell, Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useLoginActions } from "@/lib/use-login-actions";
+import { Button } from "@repo/design/components/Button";
+import { Input } from "@repo/design/components/Input";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -91,14 +93,14 @@ export default function LoginPage() {
         <form onSubmit={onSubmit} className="space-y-3">
           <div>
             <label htmlFor="email" className="text-xs text-muted-foreground">Email</label>
-            <input
+            <Input
               id="email"
               name="email"
               type="email"
               placeholder="tu@correo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`mt-1 w-full px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+              className={`mt-1 ${
                 loginErrors.email ? "border-red-500" : ""
               }`}
             />
@@ -110,20 +112,22 @@ export default function LoginPage() {
           <div>
             <label htmlFor="password" className="text-xs text-muted-foreground">Contraseña</label>
             <div className="mt-1 flex items-stretch gap-2">
-              <input
+              <Input
                 id="password"
                 name="password"
                 type={showPwd ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                className={`flex-1 ${
                   loginErrors.password ? "border-red-500" : ""
                 }`}
               />
-              <button
+              <Button
                 type="button"
-                className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0"
+                variant="ghost"
+                size="sm"
+                className="p-2"
                 aria-label={showPwd ? "Ocultar contraseña" : "Mostrar contraseña"}
                 onClick={() => setShowPwd((v) => !v)}
               >
@@ -132,23 +136,23 @@ export default function LoginPage() {
                 ) : (
                   <Eye className="size-5 text-foreground" />
                 )}
-              </button>
+              </Button>
             </div>
             {loginErrors.password && (
               <p className="mt-1 text-xs text-red-500">{loginErrors.password}</p>
             )}
           </div>
 
-          <button
+          <Button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 rounded-xl bg-primary text-black font-medium hover:bg-primary/90 disabled:opacity-60 flex items-center justify-center gap-2 transition-colors"
-          >
-            {loading && (
+            className="w-full"
+            leftIcon={loading && (
               <span className="inline-block size-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
             )}
+          >
             {loading ? "Entrando..." : "Entrar"}
-          </button>
+          </Button>
         </form>
 
         <div className="mt-4 text-xs flex items-center justify-between">

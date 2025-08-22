@@ -1,0 +1,12 @@
+*** Begin Patch
+*** Update File: apps/web/src/components/dashboard/Topbar.tsx
+@@
+-// import de botones locales o HTML suelto
++import { Button } from "@repo/design/components/Button";
+@@
+-<button className="p-2 rounded-lg hover:bg-neutral-900" aria-label="Notificaciones">
++<Button variant="ghost" className="p-2 h-9 w-9 rounded-lg" aria-label="Notificaciones">
+   <Bell className="size-5 text-neutral-300" />
+-</button>
++</Button>
+*** End Patch
