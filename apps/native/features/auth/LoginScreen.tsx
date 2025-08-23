@@ -7,14 +7,13 @@ import {
   Text,
   TextInput,
   Pressable,
-  StyleSheet,
   Alert,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Dimensions,
-  useColorScheme,
 } from "react-native";
+import { useThemeBridge } from "@repo/design/providers/theme";
 
 export default function OnfitAuth() {
   const router = useRouter();
@@ -22,22 +21,7 @@ export default function OnfitAuth() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === "dark";
-
-  const colors = {
-    bg: isDark ? "#0a0a0a" : "#f9fafb",
-    card: "transparent",
-    text: isDark ? "#ffffff" : "#000000",
-    subtext: isDark ? "#9CA3AF" : "#4B5563",
-    inputBg: isDark ? "#17171799" : "#f3f4f6",
-    inputBorder: isDark ? "#262626" : "#d1d5db",
-    toggleTxt: isDark ? "#ffffff" : "#000000",
-    link: isDark ? "#D1D5DB" : "#1f2937",
-    footer: isDark ? "#6B7280" : "#6B7280",
-    btnBg: "#F59E0B",
-    btnText: "#000000",
-  };
+  const { colors } = useThemeBridge();
 
   const handleSubmit = async () => {
     if (!email || !password) {
@@ -87,13 +71,17 @@ export default function OnfitAuth() {
     }
   };
 
+  const { width } = Dimensions.get("window");
+  const maxWidth = Math.min(width * 0.9, 400);
+
   return (
-    <SafeAreaView style={[s.safe, { backgroundColor: colors.bg }]}>
+    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
+          className="flex-1"
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: "center",
@@ -102,63 +90,86 @@ export default function OnfitAuth() {
           }}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={[s.container, { backgroundColor: colors.card }]}>
+          <View 
+            className="gap-3 p-5 rounded-xl"
+            style={{ 
+              width: maxWidth,
+              backgroundColor: colors.card 
+            }}
+          >
             {/* Logo y título */}
-            <View style={s.header}>
-              <View style={[s.logo, { backgroundColor: "#F59E0B33" }]}>
-                <Text style={[s.logoTxt]}>ON</Text>
+            <View className="flex-row items-center gap-2.5 justify-center">
+              <View 
+                className="w-9 h-9 rounded-xl justify-center items-center"
+                style={{ backgroundColor: `${colors.primary}33` }}
+              >
+                <Text className="text-primary font-semibold">ON</Text>
               </View>
               <View>
-                <Text style={[s.title, { color: colors.text }]}>ONFIT13</Text>
-                <Text style={[s.subtitle, { color: colors.subtext }]}>
+                <Text 
+                  className="text-lg font-semibold"
+                  style={{ color: colors.foreground }}
+                >
+                  ONFIT13
+                </Text>
+                <Text 
+                  className="text-xs text-center"
+                  style={{ color: colors.mutedForeground }}
+                >
                   Accede con tu cuenta
                 </Text>
               </View>
             </View>
 
             {/* Email */}
-            <Text style={[s.label, { color: colors.subtext }]}>Email</Text>
+            <Text 
+              className="text-xs mt-1.5"
+              style={{ color: colors.mutedForeground }}
+            >
+              Email
+            </Text>
             <TextInput
-              style={[
-                s.input,
-                {
-                  backgroundColor: colors.inputBg,
-                  borderColor: colors.inputBorder,
-                  color: colors.text,
-                },
-              ]}
+              className="border border-input rounded-lg px-2.5 py-2"
+              style={{
+                backgroundColor: colors.muted,
+                color: colors.foreground,
+              }}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
               placeholder="tu@correo.com"
-              placeholderTextColor={colors.subtext}
+              placeholderTextColor={colors.mutedForeground}
             />
 
             {/* Contraseña */}
-            <Text style={[s.label, { color: colors.subtext }]}>Contraseña</Text>
-            <View style={s.row}>
+            <Text 
+              className="text-xs mt-1.5"
+              style={{ color: colors.mutedForeground }}
+            >
+              Contraseña
+            </Text>
+            <View className="flex-row items-center gap-2">
               <TextInput
-                style={[
-                  s.input,
-                  {
-                    flex: 1,
-                    backgroundColor: colors.inputBg,
-                    borderColor: colors.inputBorder,
-                    color: colors.text,
-                  },
-                ]}
+                className="flex-1 border border-input rounded-lg px-2.5 py-2"
+                style={{
+                  backgroundColor: colors.muted,
+                  color: colors.foreground,
+                }}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPwd}
                 placeholder="••••••••"
-                placeholderTextColor={colors.subtext}
+                placeholderTextColor={colors.mutedForeground}
               />
               <Pressable
-                style={[s.toggle, { borderColor: colors.inputBorder }]}
+                className="border border-input rounded-lg px-2 py-1.5"
                 onPress={() => setShowPwd(!showPwd)}
               >
-                <Text style={[s.toggleTxt, { color: colors.toggleTxt }]}>
+                <Text 
+                  className="text-xs"
+                  style={{ color: colors.foreground }}
+                >
                   {showPwd ? "Ocultar" : "Ver"}
                 </Text>
               </Pressable>
@@ -166,24 +177,44 @@ export default function OnfitAuth() {
 
             {/* Botón de login */}
             <Pressable
-              style={[s.primary, { backgroundColor: colors.btnBg, opacity: loading ? 0.6 : 1 }]}
+              className="rounded-lg py-2.5 items-center mt-2.5"
+              style={{ 
+                backgroundColor: colors.primary,
+                opacity: loading ? 0.6 : 1 
+              }}
               onPress={handleSubmit}
               disabled={loading}
             >
-              <Text style={[s.primaryTxt, { color: colors.btnText }]}>
+              <Text 
+                className="font-semibold"
+                style={{ color: colors.primaryForeground }}
+              >
                 {loading ? "Entrando..." : "Entrar"}
               </Text>
             </Pressable>
 
             {/* Links */}
-            <View style={s.links}>
-              <Text style={[s.link, { color: colors.link }]}>Olvidé mi contraseña</Text>
+            <View className="flex-row justify-between mt-2.5">
+              <Text 
+                className="text-xs"
+                style={{ color: colors.mutedForeground }}
+              >
+                Olvidé mi contraseña
+              </Text>
               <Pressable onPress={handleSignUp} disabled={loading}>
-                <Text style={[s.link, { color: colors.link }]}>{loading ? "..." : "Crear cuenta nueva"}</Text>
+                <Text 
+                  className="text-xs"
+                  style={{ color: colors.mutedForeground }}
+                >
+                  {loading ? "..." : "Crear cuenta nueva"}
+                </Text>
               </Pressable>
             </View>
 
-            <Text style={[s.footer, { color: colors.footer }]}>
+            <Text 
+              className="text-xs mt-3 text-center"
+              style={{ color: colors.mutedForeground }}
+            >
               Al continuar aceptas los Términos y la Política de Privacidad.
             </Text>
           </View>
@@ -192,61 +223,3 @@ export default function OnfitAuth() {
     </SafeAreaView>
   );
 }
-
-const { width } = Dimensions.get("window");
-const maxWidth = Math.min(width * 0.9, 400);
-
-const s = StyleSheet.create({
-  safe: { flex: 1 },
-  container: {
-    width: maxWidth,
-    gap: 12,
-    padding: 20,
-    borderRadius: 12,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-    justifyContent: "center",
-  },
-  logo: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logoTxt: { color: "#F59E0B", fontWeight: "600" },
-  title: { fontSize: 18, fontWeight: "600" },
-  subtitle: { fontSize: 12, textAlign: "center" },
-  label: { fontSize: 12, marginTop: 6 },
-  input: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-  },
-  row: { flexDirection: "row", alignItems: "center", gap: 8 },
-  toggle: {
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-  },
-  toggleTxt: { fontSize: 12 },
-  primary: {
-    borderRadius: 8,
-    paddingVertical: 10,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  primaryTxt: { fontWeight: "600" },
-  links: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 10,
-  },
-  link: { fontSize: 12 },
-  footer: { fontSize: 10, marginTop: 12, textAlign: "center" },
-});

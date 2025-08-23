@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 
 export default function ClientScreen() {
   return (
-    <View style={{ flex: 1, alignItems:'center', justifyContent:'center' }}>
+    <View className="flex-1 items-center justify-center">
       <Text>Client</Text>
     </View>
   );
