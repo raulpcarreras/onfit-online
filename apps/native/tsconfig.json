@@ -5,6 +5,10 @@
     "jsxImportSource": "nativewind",
     "moduleResolution": "bundler",
     "jsx": "preserve",
+    "skipLibCheck": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "types": ["nativewind/types", "jest"],
     "paths": {
       "@repo/design/*": ["../../packages/design-system/*"],
       "@repo/*": ["../../packages/*"],

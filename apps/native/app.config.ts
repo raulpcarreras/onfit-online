@@ -24,7 +24,7 @@ const BUNDLE_ID = "app.myapp.com";
 const EXPO_ACCOUNT_OWNER = process.env["EXPO_ACCOUNT_OWNER"] ?? "myapp_owner";
 const EAS_PROJECT_ID = process.env["EAS_PROJECT_ID"] ?? "<PROJECT_ID>";
 const ASSET_URL = "./assets/images";
-const BUILD_NUMBER = "1";
+const BUILD_NUMBER = "4";
 const VERSION = "0.1.0";
 const SCHEME = "onfit";
 const SLUG = SCHEME;
@@ -121,6 +121,7 @@ const config: import("expo/config").ExpoConfig = {
     scheme: parsed.data.SCHEME,
     version: parsed.data.VERSION,
     slug: parsed.data.SLUG,
+    sdkVersion: "53.0.0",
     newArchEnabled: true,
     notification: {
         icon: `${ASSET_URL}/icon.png`,
@@ -160,6 +161,7 @@ const config: import("expo/config").ExpoConfig = {
                 },
             },
         ],
+        "expo-router",
         ...plugins(buildTime.parse(_buildTimeEnv)),
     ],
     ios: {
