@@ -1,4 +1,2 @@
-import { Check } from 'lucide-react-native';
-import { iconWithClassName } from './iconWithClassName';
-iconWithClassName(Check);
+import { Check } from 'lucide-react';
 export { Check };

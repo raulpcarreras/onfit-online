@@ -1,2 +1,2 @@
-const isWeb = false;
+const isWeb = true;
 export default isWeb;

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Users, Euro, Activity } from "lucide-react";
 import { Button } from "@repo/design/components/Button";
+import { Card } from "@repo/design/components/Card";
 import { useUser } from "@/lib/user-provider";
 import { useProfile } from "@/lib/profile-provider";
 import FullScreenLoader from "@/components/FullScreenLoader";
@@ -47,14 +48,14 @@ export default function AdminDashboard() {
     return <FullScreenLoader label="Cargando..." />;
   }
 
-  // Verificar que el usuario tenga rol de admin (esto ya lo valida el middleware + layout)
-  if (profile.role !== "admin") {
+  // Verificar que el usuario tenga permisos de admin (super admin o admin normal)
+  const isSuperAdmin = !!(user.app_metadata as any)?.is_super_admin;
+  const isAdmin = profile.role === "admin";
+  
+  if (!isSuperAdmin && !isAdmin) {
     return <FullScreenLoader label="Redirigiendo..." />;
   }
 
-  const accent = "text-primary";
-  const border = "border border-border";
-  const card = "bg-card rounded-lg border border-border p-4";
   // Usar resolvedTheme para evitar problemas de hidratación
   const ChartStroke = resolvedTheme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
 
@@ -64,30 +65,30 @@ export default function AdminDashboard() {
         {/* CONTENT */}
         <div className="space-y-4">
           {/* KPIs */}
-          <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
             {kpi.map((item) => (
-              <div key={item.label} className={`${card} p-4`}>
+              <Card key={item.label} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-muted-foreground">{item.label}</div>
-                  <item.icon className={`size-4 ${accent}`} />
+                  <item.icon className="size-4 text-primary" />
                 </div>
                 <div className="mt-2 text-2xl font-semibold">{item.value}</div>
                 <div className="mt-1 text-xs text-primary">{item.diff}</div>
-              </div>
+              </Card>
             ))}
-          </section>
+          </div>
 
           {/* Chart + table */}
-          <section className="grid gap-4 grid-cols-1 xl:grid-cols-3">
-            <div className={`xl:col-span-2 ${card} p-4`}>
+          <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
+            <Card className="xl:col-span-2 p-4">
               <div className="flex items-center justify-between">
                 <div className="font-medium">Ingresos últimos 7 días</div>
                 <div className="text-xs text-muted-foreground">EUR</div>
               </div>
               <RevenueChart data={ingresos} stroke={ChartStroke} />
-            </div>
+            </Card>
 
-            <div className={`${card} p-4`}>
+            <Card className="p-4">
               <div className="font-medium">Usuarios recientes</div>
               <div className="mt-3 border border-border rounded-lg overflow-hidden">
                 <table className="w-full text-sm">
@@ -99,27 +100,43 @@ export default function AdminDashboard() {
                       <th className="text-left px-3 py-2 font-normal">Plan</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {recientes.map((u, i) => (
-                      <tr key={i} className="border-t border-border">
-                        <td className="px-3 py-2">{u.name}</td>
-                        <td className="px-3 py-2 text-muted-foreground">{u.email}</td>
+                  <tbody className="divide-y divide-border">
+                    {recientes.map((user, index) => (
+                      <tr key={index} className="hover:bg-muted/50">
+                        <td className="px-3 py-2">{user.name}</td>
+                        <td className="px-3 py-2 text-muted-foreground">{user.email}</td>
                         <td className="px-3 py-2">
-                          <span className="px-2 py-1 rounded-md bg-popover capitalize">
-                            {u.role}
+                          <span className="inline-flex items-center px-2 py-1 text-xs rounded-full bg-secondary text-secondary-foreground">
+                            {user.role}
                           </span>
                         </td>
-                        <td className="px-3 py-2">{u.plan}</td>
+                        <td className="px-3 py-2">
+                          <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${
+                            user.plan === "PRO" ? "bg-primary text-primary-foreground" :
+                            user.plan === "BASIC" ? "bg-secondary text-secondary-foreground" :
+                            "bg-muted text-muted-foreground"
+                          }`}>
+                            {user.plan}
+                          </span>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <Button className="mt-3 w-full">
-                Ver todos
-              </Button>
-            </div>
-          </section>
+            </Card>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex justify-center">
+            <Button
+              onPress={() => router.push("/admin/users")}
+              variant="outline"
+              className="px-8"
+            >
+              Ver todos
+            </Button>
+          </div>
         </div>
       </main>
     </div>

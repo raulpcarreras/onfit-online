@@ -1,3 +1,9 @@
+"use client";
+import React from "react";
+import { Card } from "@repo/design/components/Card";
+import { Button } from "@repo/design/components/Button";
+import { Text } from "@repo/design/components/Text";
+
 export default function TestTailwind() {
   return (
     <div className="p-8 space-y-4">
@@ -5,36 +11,39 @@ export default function TestTailwind() {
       
       {/* Test de colores básicos */}
       <div className="space-y-2">
-        <div className="p-4 bg-background border border-border rounded">
-          <span className="text-foreground">bg-background + border-border</span>
-        </div>
+        <Card className="p-4 bg-background border-border">
+          <Text className="text-foreground">bg-background + border-border</Text>
+        </Card>
         
-        <div className="p-4 bg-card border border-border rounded">
-          <span className="text-card-foreground">bg-card + border-border</span>
-        </div>
+        <Card className="p-4 bg-card border-border">
+          <Text className="text-card-foreground">bg-card + border-border</Text>
+        </Card>
         
-        <div className="p-4 bg-popover border border-border rounded">
-          <span className="text-popover-foreground">bg-popover + border-border</span>
-        </div>
+        <Card className="p-4 bg-popover border-border">
+          <Text className="text-popover-foreground">bg-popover + border-border</Text>
+        </Card>
         
-        <div className="p-4 bg-primary text-primary-foreground rounded">
-          <span>bg-primary + text-primary-foreground</span>
-        </div>
+        <Card className="p-4 bg-primary text-primary-foreground">
+          <Text>bg-primary + text-primary-foreground</Text>
+        </Card>
         
-        <div className="p-4 bg-secondary text-secondary-foreground rounded">
-          <span>bg-secondary + text-secondary-foreground</span>
-        </div>
+        <Card className="p-4 bg-secondary text-secondary-foreground">
+          <Text>bg-secondary + text-secondary-foreground</Text>
+        </Card>
         
-        <div className="p-4 bg-muted text-muted-foreground rounded">
-          <span>bg-muted + text-muted-foreground</span>
-        </div>
+        <Card className="p-4 bg-muted text-muted-foreground">
+          <Text>bg-muted + text-muted-foreground</Text>
+        </Card>
       </div>
       
       {/* Test de hover */}
       <div className="space-y-2">
-        <button className="p-4 bg-secondary hover:bg-accent text-secondary-foreground hover:text-accent-foreground rounded transition-colors">
+        <Button 
+          className="p-4 bg-secondary hover:bg-accent text-secondary-foreground hover:text-accent-foreground transition-colors"
+          onPress={() => {}}
+        >
           Hover test: bg-secondary → bg-accent
-        </button>
+        </Button>
       </div>
     </div>
   );

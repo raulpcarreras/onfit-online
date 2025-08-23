@@ -14,7 +14,7 @@ const KeyboardProvider =
 
 import { i18n } from "../lib/locale";
 import { useColorScheme } from "../hooks/useColorScheme";
-import { ThemeProvider } from "./theme";
+import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/native";
 import SonnerProvider from "./sonner";
 import QueryProvider from "./query";
 import isWeb from "../lib/isWeb";
@@ -48,7 +48,7 @@ export function Providers({
   }, []);
 
   return (
-    <ThemeProvider theme={colorScheme} defaultTheme={defaultTheme} themes={themes}>
+    <NavigationThemeProvider value={themes?.[defaultTheme || colorScheme]}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <KeyboardProvider>
           <QueryProvider>
@@ -58,7 +58,7 @@ export function Providers({
           </QueryProvider>
         </KeyboardProvider>
       </GestureHandlerRootView>
-    </ThemeProvider>
+    </NavigationThemeProvider>
   );
 }
 

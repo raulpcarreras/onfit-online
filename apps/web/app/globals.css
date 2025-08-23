@@ -1,83 +1,9 @@
 /* Estilos globales para la web */
+@import "@repo/design/tokens/index.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* CSS Variables canónicas de shadcn */
-:root {
-  /* Light theme */
-  --background: 0 0% 98%;
-  --foreground: 222.2 47.4% 11.2%;
-
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
-
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 47.4% 11.2%;
-
-  /* Ámbar como brand principal */
-  --primary: 38 92% 50%;
-  --primary-foreground: 24 10% 8%;
-
-  --secondary: 240 5% 96%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-
-  --muted: 240 4.8% 95.9%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-
-  --accent: 38 92% 50%;
-  --accent-foreground: 24 10% 8%;
-
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 40% 98%;
-
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 38 92% 50%;
-
-  /* Tooltip colors */
-  --tooltip-bg: #ffffff;
-  --tooltip-border: rgba(226,232,240,0.7);
-  --tooltip-text: #334155;
-  --tooltip-value: #f59e0b;
-}
-
-.dark {
-  /* Dark theme */
-  --background: 240 7% 8%;
-  --foreground: 0 0% 96%;
-
-  --card: 240 6% 10%;
-  --card-foreground: 0 0% 96%;
-
-  --popover: 240 6% 10%;
-  --popover-foreground: 0 0% 96%;
-
-  --primary: 38 92% 50%;
-  --primary-foreground: 0 0% 5%;
-
-  --secondary: 240 6% 15%;
-  --secondary-foreground: 0 0% 96%;
-
-  --muted: 240 5% 20%;
-  --muted-foreground: 0 0% 70%;
-
-  --accent: 38 92% 50%;
-  --accent-foreground: 0 0% 5%;
-
-  --destructive: 0 70% 45%;
-  --destructive-foreground: 0 0% 98%;
-
-  --border: 240 5% 20%;
-  --input: 240 5% 20%;
-  --ring: 38 92% 50%;
-
-  /* Tooltip colors */
-  --tooltip-bg: #171717;
-  --tooltip-border: rgba(38,38,38,0.7);
-  --tooltip-text: #e5e5e5;
-  --tooltip-value: #f59e0b;
-}
 
 /* Estilos base que respetan el tema */
 body {

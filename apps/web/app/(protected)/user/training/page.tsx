@@ -7,6 +7,10 @@ import {
   Play, Clock, Calendar, Target, TrendingUp, Dumbbell, 
   ChevronRight, Plus, Settings, History
 } from "lucide-react";
+import { Button } from "@repo/design/components/Button";
+import { Card } from "@repo/design/components/Card";
+import { Badge } from "@repo/design/components/Badge";
+import { Progress } from "@repo/design/components/Progress";
 
 // Datos de ejemplo (luego vendrán de Supabase)
 const activePrograms = [
@@ -51,8 +55,7 @@ export default function TrainingPage() {
   const router = useRouter();
   const [selectedProgram, setSelectedProgram] = useState<number | null>(null);
 
-  const accent = "text-primary";
-  const card = "bg-card rounded-lg border border-border p-4";
+
 
   return (
     <div className="px-4 md:px-5 py-4 space-y-6">
@@ -63,19 +66,19 @@ export default function TrainingPage() {
           <p className="text-muted-foreground">Gestiona tus programas y sesiones</p>
         </div>
         <div className="flex gap-2">
-          <button className="px-4 py-2 rounded-lg border border-border hover:bg-secondary transition">
-            <History className="size-4 mr-2 inline" />
+          <Button variant="outline" className="px-4 py-2">
+            <History className="size-4 mr-2" />
             Historial
-          </button>
-          <button className="px-4 py-2 rounded-lg bg-primary text-black hover:bg-primary/90 transition">
-            <Plus className="size-4 mr-2 inline" />
+          </Button>
+          <Button className="px-4 py-2">
+            <Plus className="size-4 mr-2" />
             Nuevo programa
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Sesión de hoy */}
-      <section className={card}>
+      <Card className="p-4">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-lg font-semibold">Sesión de hoy</h2>
@@ -83,11 +86,11 @@ export default function TrainingPage() {
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              <Clock className="size-4 inline mr-1" />
+              <Clock className="size-4 mr-1" />
               {todaySession.duration}
             </span>
             <span className="text-sm text-muted-foreground">
-              <Dumbbell className="size-4 inline mr-1" />
+              <Dumbbell className="size-4 mr-1" />
               {todaySession.exercises} ejercicios
             </span>
           </div>
@@ -109,29 +112,31 @@ export default function TrainingPage() {
         </div>
 
         <div className="flex gap-3">
-          <button 
-            onClick={() => router.push('/user/training/runner')}
-            className="flex-1 px-4 py-3 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition flex items-center justify-center"
+          <Button 
+            onPress={() => router.push('/user/training/runner')}
+            className="flex-1 px-4 py-3"
           >
             <Play className="size-4 mr-2" />
             Iniciar sesión
-          </button>
-          <button className="px-4 py-3 rounded-lg border border-border hover:bg-secondary transition">
+          </Button>
+          <Button variant="outline" className="px-4 py-3">
             <Settings className="size-4" />
-          </button>
+          </Button>
         </div>
-      </section>
+      </Card>
 
       {/* Programas activos */}
-      <section className="space-y-4">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Programas activos</h2>
-          <button className="text-sm text-primary hover:underline">Ver todos</button>
+          <Button variant="ghost" className="text-sm text-primary hover:underline p-0 h-auto">
+            Ver todos
+          </Button>
         </div>
         
         <div className="grid gap-4 md:grid-cols-2">
           {activePrograms.map((program) => (
-            <div key={program.id} className={`${card} hover:shadow-md transition-shadow cursor-pointer`}>
+            <Card key={program.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-medium">{program.name}</h3>
@@ -148,12 +153,10 @@ export default function TrainingPage() {
                   <span className="text-muted-foreground">Progreso</span>
                   <span>Semana {program.currentWeek} de {program.weeks}</span>
                 </div>
-                <div className="w-full bg-secondary rounded-full h-2">
-                  <div 
-                    className="bg-primary h-2 rounded-full transition-all" 
-                    style={{ width: `${(program.currentWeek / program.weeks) * 100}%` }}
-                  />
-                </div>
+                <Progress 
+                  value={(program.currentWeek / program.weeks) * 100} 
+                  size="sm"
+                />
               </div>
 
               <div className="text-sm text-muted-foreground mb-3">
@@ -161,26 +164,28 @@ export default function TrainingPage() {
               </div>
 
               <div className="flex gap-2">
-                <button className="flex-1 px-3 py-2 rounded-lg bg-primary text-black text-sm hover:bg-primary/90 transition">
+                <Button className="flex-1 px-3 py-2 text-sm">
                   Continuar
-                </button>
-                <button className="px-3 py-2 rounded-lg border border-border text-sm hover:bg-secondary transition">
+                </Button>
+                <Button variant="outline" className="px-3 py-2 text-sm">
                   Detalles
-                </button>
+                </Button>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
-      </section>
+      </div>
 
       {/* Sesiones recientes */}
-      <section className="space-y-4">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Sesiones recientes</h2>
-          <button className="text-sm text-primary hover:underline">Ver historial completo</button>
+          <Button variant="ghost" className="text-sm text-primary hover:underline p-0 h-auto">
+            Ver historial completo
+          </Button>
         </div>
         
-        <div className="bg-card rounded-lg border border-border">
+        <Card className="p-0">
           {recentSessions.map((session, index) => (
             <div 
               key={index} 
@@ -199,19 +204,21 @@ export default function TrainingPage() {
               </div>
               
               <div className="flex items-center gap-2">
-                <span className={`px-2 py-1 rounded-full text-xs ${
-                  session.status === 'completed' 
+                <Badge 
+                  variant={session.status === 'completed' ? 'default' : 'secondary'}
+                  className={session.status === 'completed' 
                     ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' 
                     : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                }`}>
+                  }
+                >
                   {session.status === 'completed' ? 'Completada' : 'En progreso'}
-                </span>
+                </Badge>
                 <ChevronRight className="size-4 text-muted-foreground" />
               </div>
             </div>
           ))}
-        </div>
-      </section>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,14 +1,24 @@
 {
   "extends": "@tooling/typescript/nextjs.json",
   "compilerOptions": {
+    "jsxImportSource": "react",
+    "jsx": "preserve",
+    "strict": true,
+    "skipLibCheck": true,
     "paths": {
       "@/assets/*": [
         "./public/*"
       ],
-      "@/*": ["./src/*"],
-      "@repo/design/*": ["../../packages/design-system/*"],
-      "@repo/*": ["../../packages/*"]
-    },
+      "@/*": [
+        "./src/*"
+      ],
+      "@repo/design/*": [
+        "../../packages/design-system/*"
+      ],
+      "@repo/*": [
+        "../../packages/*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",

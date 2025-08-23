@@ -5,6 +5,9 @@ import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { ArrowLeft, Save, UserPlus, User, Eye, EyeOff } from "lucide-react";
 import { Button } from "@repo/design/components/Button";
 import { Input } from "@repo/design/components/Input";
+import { Select } from "@repo/design/components/Select";
+import { Checkbox } from "@repo/design/components/Checkbox";
+import { Card } from "@repo/design/components/Card";
 import { useUsers } from "@/hooks/useUsers";
 
 interface UserFormData {
@@ -259,7 +262,7 @@ export default function UserManagementPage() {
             </div>
             <Button 
               className="flex items-center gap-2"
-              onClick={() => router.push("/admin/users")}
+              onPress={() => router.push("/admin/users")}
             >
               <ArrowLeft className="h-4 w-4" />
               Volver a Usuarios
@@ -268,22 +271,28 @@ export default function UserManagementPage() {
         </div>
 
         {/* FORMULARIO - Usando el mismo estilo card */}
-        <section className={card}>
+        <Card className="p-4">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Nombre Completo */}
             <div className="space-y-2">
               <label htmlFor="full_name" className="text-sm font-medium">
                 Nombre Completo <span className="text-destructive">*</span>
               </label>
-              <Input
-                id="full_name"
-                type="text"
-                value={formData.full_name}
-                onChange={(e) => handleInputChange("full_name", e.target.value)}
-                placeholder="Ej: Juan Pérez"
-                required
-                className="w-full"
-              />
+              {/* PRUEBA: Aplicando el mismo contexto que el Topbar */}
+              <div className="relative w-full max-w-xs md:max-w-md">
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                  <Input
+                    id="full_name"
+                    type="text"
+                    value={formData.full_name}
+                    onChange={(e) => handleInputChange("full_name", e.target.value)}
+                    placeholder="Ej: Juan Pérez"
+                    required
+                    className="w-full pl-9"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Email */}
@@ -325,18 +334,19 @@ export default function UserManagementPage() {
                       required
                       className="flex-1"
                     />
-                    <button
-                      type="button"
-                      className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0"
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="p-2"
                       aria-label={showPwd ? "Ocultar contraseña" : "Mostrar contraseña"}
-                      onClick={() => setShowPwd(!showPwd)}
+                      onPress={() => setShowPwd(!showPwd)}
                     >
                       {showPwd ? (
                         <EyeOff className="size-5 text-muted-foreground" />
                       ) : (
                         <Eye className="size-5 text-muted-foreground" />
                       )}
-                    </button>
+                    </Button>
                   </div>
                   
                   {/* Barra de fortaleza de contraseña */}
@@ -393,18 +403,19 @@ export default function UserManagementPage() {
                       required
                       className="flex-1"
                     />
-                    <button
-                      type="button"
-                      className="p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0"
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="p-2"
                       aria-label={showConfirmPwd ? "Ocultar contraseña" : "Mostrar contraseña"}
-                      onClick={() => setShowConfirmPwd(!showConfirmPwd)}
+                      onPress={() => setShowConfirmPwd(!showConfirmPwd)}
                     >
                       {showConfirmPwd ? (
                         <EyeOff className="size-5 text-muted-foreground" />
                       ) : (
                         <Eye className="size-5 text-muted-foreground" />
                       )}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </>
@@ -415,16 +426,16 @@ export default function UserManagementPage() {
               <label htmlFor="role" className="text-sm font-medium">
                 Rol Funcional
               </label>
-              <select
-                id="role"
+              <Select
                 value={formData.role}
-                onChange={(e) => handleInputChange("role", e.target.value as "user" | "trainer" | "admin")}
-                className="w-full px-3 py-2 rounded-lg bg-secondary/70 outline-none text-sm border border-border"
-              >
-                <option value="user">👤 Usuario - Acceso básico</option>
-                <option value="trainer">🏋️ Trainer - Gestión de entrenamientos</option>
-                <option value="admin">⚙️ Admin - Gestión del sistema</option>
-              </select>
+                onChange={(value: string) => handleInputChange("role", value as "user" | "trainer" | "admin")}
+                options={[
+                  { value: "user", label: "👤 Usuario - Acceso básico" },
+                  { value: "trainer", label: "🏋️ Trainer - Gestión de entrenamientos" },
+                  { value: "admin", label: "⚙️ Admin - Gestión del sistema" }
+                ]}
+                className="w-full"
+              />
               <p className="text-xs text-muted-foreground">
                 El rol determina las funcionalidades disponibles para el usuario
               </p>
@@ -437,12 +448,10 @@ export default function UserManagementPage() {
                   Estado del Email
                 </label>
                 <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     id="email_confirmed"
                     checked={formData.email_confirmed}
-                    onChange={(e) => handleInputChange("email_confirmed", e.target.checked)}
-                    className="rounded border-gray-300 text-primary focus:ring-primary"
+                    onCheckedChange={(checked: boolean) => handleInputChange("email_confirmed", checked)}
                   />
                   <label htmlFor="email_confirmed" className="text-sm text-muted-foreground">
                     Email ya validado (no requiere confirmación)
@@ -460,12 +469,10 @@ export default function UserManagementPage() {
                 Permisos de Super Admin
               </label>
               <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
+                <Checkbox
                   id="is_super_admin"
                   checked={Boolean(formData.is_super_admin)}
-                  onChange={(e) => handleInputChange("is_super_admin", e.target.checked)}
-                  className="rounded border-gray-300 text-primary focus:ring-primary"
+                  onCheckedChange={(checked: boolean) => handleInputChange("is_super_admin", checked)}
                 />
                 <label htmlFor="is_super_admin" className="text-sm text-muted-foreground">
                   Otorgar permisos de super administrador
@@ -517,7 +524,7 @@ export default function UserManagementPage() {
 
               <Button
                 type="button"
-                onClick={() => router.push("/admin/users")}
+                onPress={() => router.push("/admin/users")}
                 disabled={loading}
                 className="bg-secondary text-secondary-foreground hover:bg-secondary/80"
               >
@@ -525,7 +532,7 @@ export default function UserManagementPage() {
               </Button>
             </div>
           </form>
-        </section>
+        </Card>
       </main>
     </div>
   );

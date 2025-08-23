@@ -38,7 +38,7 @@ onfit/
 6. **NO botones feos** o inconsistentes
 
 ### **✅ OBLIGATORIO:**
-1. **Usar SOLO** componentes de `@repo/design-system`
+1. **Usar SOLO** componentes de `@repo/design`
 2. **Seguir** el tema y estilos existentes
 3. **Mantener consistencia** visual con el resto de la app
 4. **Reutilizar** componentes existentes
@@ -91,11 +91,11 @@ packages/design-system/
 ### **Importación Correcta:**
 ```typescript
 // ✅ CORRECTO - Usar componentes del sistema
-import { Button } from '@repo/design-system/components/Button';
-import { Card } from '@repo/design-system/components/Card';
+import { Button } from '@repo/design/components/Button';
+import { Card } from '@repo/design/components/Card';
 
 // ❌ INCORRECTO - No usar componentes nativos en web
-import { Button } from '@repo/design-system/components/Button/index.native';
+import { Button } from '@repo/design/components/Button/index.native';
 ```
 
 ---
@@ -115,7 +115,7 @@ import { Button } from '@repo/design-system/components/Button/index.native';
 - **Espaciado**: Seguir el sistema de espaciado del tema
 
 ### **Tablas de Datos:**
-- **Componente**: `@repo/design-system/components/Table`
+- **Componente**: `@repo/design/components/Table`
 - **Estilo**: Consistente con `/admin/users`
 - **Paginación**: Si es necesario
 - **Acciones**: Botones inline con el sistema de diseño

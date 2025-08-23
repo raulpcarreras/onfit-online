@@ -7,6 +7,9 @@ import {
   Play, Pause, SkipForward, CheckCircle, Clock, 
   ChevronLeft, ChevronRight, Timer, Target, Info
 } from "lucide-react";
+import { Button } from "@repo/design/components/Button";
+import { Card } from "@repo/design/components/Card";
+import { Progress } from "@repo/design/components/Progress";
 
 // Datos de ejemplo de la sesión (luego vendrán de Supabase)
 const sessionData = {
@@ -162,12 +165,14 @@ export default function TrainingRunner() {
       <div className="sticky top-14 z-20 bg-card border border-border rounded-lg mb-6">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-            <button 
-              onClick={() => router.back()}
-              className="p-2 rounded-lg hover:bg-secondary transition"
+            <Button 
+              variant="ghost"
+              size="sm"
+              onPress={() => router.back()}
+              className="p-2 h-auto"
             >
               <ChevronLeft className="size-5" />
-            </button>
+            </Button>
             <div>
               <h1 className="font-semibold">{sessionData.name}</h1>
               <p className="text-sm text-muted-foreground">
@@ -182,39 +187,40 @@ export default function TrainingRunner() {
             {restTimer && (
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/15 text-primary">
                 <Timer className="size-4" />
-                <span className="font-mono font-medium">{formatTime(restTimer)}</span>
+                <div className="font-mono font-medium">{formatTime(restTimer)}</div>
               </div>
             )}
             
             {/* Controles de sesión */}
             {sessionStatus === 'pending' && (
-              <button 
-                onClick={startSession}
-                className="px-4 py-2 rounded-lg bg-primary text-black hover:bg-primary/90 transition flex items-center gap-2"
+              <Button 
+                onPress={startSession}
+                className="px-4 py-2"
               >
                 <Play className="size-4" />
                 Iniciar
-              </button>
+              </Button>
             )}
             
             {sessionStatus === 'active' && (
-              <button 
-                onClick={togglePause}
-                className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground hover:bg-secondary/80 transition flex items-center gap-2"
+              <Button 
+                variant="secondary"
+                onPress={togglePause}
+                className="px-4 py-2"
               >
                 <Pause className="size-4" />
                 Pausar
-              </button>
+              </Button>
             )}
             
             {sessionStatus === 'paused' && (
-              <button 
-                onClick={togglePause}
-                className="px-4 py-2 rounded-lg bg-primary text-black hover:bg-primary/90 transition flex items-center gap-2"
+              <Button 
+                onPress={togglePause}
+                className="px-4 py-2"
               >
                 <Play className="size-4" />
                 Reanudar
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -222,15 +228,14 @@ export default function TrainingRunner() {
         {/* Barra de progreso */}
         <div className="px-4 pb-4">
           <div className="flex justify-between text-sm text-muted-foreground mb-2">
-            <span>Progreso de la sesión</span>
-            <span>{sessionProgress} / {totalSets} series</span>
+            <div>Progreso de la sesión</div>
+            <div>{sessionProgress} / {totalSets} series</div>
           </div>
-          <div className="w-full bg-secondary rounded-full h-2">
-            <div 
-              className="bg-primary h-2 rounded-full transition-all duration-300" 
-              style={{ width: `${progressPercentage}%` }}
-            />
-          </div>
+          <Progress 
+            value={progressPercentage} 
+            size="sm"
+            animated
+          />
         </div>
       </div>
 
@@ -238,7 +243,7 @@ export default function TrainingRunner() {
       <div className="max-w-4xl mx-auto">
         {/* Ejercicio actual */}
         {currentExercise && (
-          <div className="bg-card rounded-lg border border-border p-6 mb-6">
+          <Card className="p-6 mb-6">
             <div className="flex items-start justify-between mb-4">
               <div>
                 <h2 className="text-xl font-semibold">{currentExercise.name}</h2>
@@ -255,13 +260,13 @@ export default function TrainingRunner() {
 
             {/* Notas del ejercicio */}
             {currentExercise.notes && (
-              <div className="bg-secondary/50 rounded-lg p-3 mb-4">
+              <Card className="bg-secondary/50 p-3 mb-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
                   <Info className="size-4" />
                   Notas
                 </div>
                 <p className="text-sm">{currentExercise.notes}</p>
-              </div>
+              </Card>
             )}
 
             {/* Series */}
@@ -280,21 +285,21 @@ export default function TrainingRunner() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="font-medium">Serie {index + 1}</span>
+                      <div className="font-medium">Serie {index + 1}</div>
                       {set.completed && <CheckCircle className="size-5 text-green-600" />}
                     </div>
                     
                     {!set.completed && index === currentSetIndex && (
-                                              <button 
-                          onClick={() => completeSet(currentExercise.id, index, {
-                            reps: 10,
-                            weight: 80,
-                            rpe: 8
-                          })}
-                          className="px-4 py-2 rounded-lg bg-primary text-black hover:bg-primary/90 transition"
-                        >
+                      <Button 
+                        onPress={() => completeSet(currentExercise.id, index, {
+                          reps: 10,
+                          weight: 80,
+                          rpe: 8
+                        })}
+                        className="px-4 py-2"
+                      >
                         Completar
-                      </button>
+                      </Button>
                     )}
                   </div>
                   
@@ -306,7 +311,7 @@ export default function TrainingRunner() {
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         )}
 
         {/* Lista de ejercicios */}
@@ -344,9 +349,9 @@ export default function TrainingRunner() {
                 
                 <div className="flex items-center gap-2">
                   {exercise.completed && <CheckCircle className="size-5 text-green-600" />}
-                  <span className="text-sm text-muted-foreground">
+                  <div className="text-sm text-muted-foreground">
                     {exercise.setsData.filter(set => set.completed).length}/{exercise.sets}
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>

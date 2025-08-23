@@ -7,7 +7,13 @@ const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "../../packages/design-system/**/*.{ts,tsx}",
+    
+    // Solo el código fuente del design system que tiene clases
+    "../../packages/design-system/{components,ui}/**/*.{ts,tsx}",
+    
+    // Bloqueos explícitos para evitar entrar en caches/builds
+    "!../../packages/**/node_modules/**",
+    "!../../packages/**/{dist,build,.next,storybook-static,coverage}/**",
   ],
   presets: [preset],
   theme: {

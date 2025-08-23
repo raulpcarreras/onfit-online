@@ -162,7 +162,7 @@ export default function EditUsersPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <p className="text-red-600 text-lg">Error al cargar usuarios: {error}</p>
-          <Button onClick={refreshUsers} className="mt-4">
+          <Button onPress={refreshUsers} className="mt-4">
             Reintentar
           </Button>
         </div>
@@ -178,7 +178,7 @@ export default function EditUsersPage() {
           <h1 className="text-3xl font-bold text-gray-900">Editar Usuarios</h1>
           <p className="text-gray-600 mt-2">Gestiona y edita los usuarios existentes del sistema</p>
         </div>
-        <Button onClick={() => window.history.back()} className="border border-input bg-background hover:bg-accent hover:text-accent-foreground">
+        <Button onPress={() => window.history.back()} className="border border-input bg-background hover:bg-accent hover:text-accent-foreground">
           <X className="h-4 w-4 mr-2" />
           Volver
         </Button>
@@ -281,7 +281,7 @@ export default function EditUsersPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <Button
-                      onClick={() => startEdit(user)}
+                      onPress={() => startEdit(user)}
                       size="sm"
                       variant="outline"
                     >
@@ -348,9 +348,8 @@ export default function EditUsersPage() {
                     Rol
                   </label>
                   <Select
-                    label="Rol"
                     value={editData.role}
-                    onValueChange={(v: string) => setEditData({ ...editData, role: v as 'user' | 'trainer' | 'admin' })}
+                    onChange={(v: string) => setEditData({ ...editData, role: v as 'user' | 'trainer' | 'admin' })}
                     options={[
                       { label: "Usuario", value: "user" },
                       { label: "Entrenador", value: "trainer" },
@@ -365,9 +364,8 @@ export default function EditUsersPage() {
                     Super Admin
                   </label>
                   <Select
-                    label="Super Admin"
                     value={editData.is_super_admin.toString()}
-                    onValueChange={(value: string) => 
+                    onChange={(value: string) => 
                       setEditData({ ...editData, is_super_admin: value === 'true' })
                     }
                     options={[
@@ -399,7 +397,7 @@ export default function EditUsersPage() {
                         variant="ghost"
                         size="sm"
                         className="absolute right-0 top-0 h-full px-3"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onPress={() => setShowPassword(!showPassword)}
                       >
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
@@ -422,7 +420,7 @@ export default function EditUsersPage() {
                         variant="ghost"
                         size="sm"
                         className="absolute right-0 top-0 h-full px-3"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
                         {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
@@ -437,14 +435,14 @@ export default function EditUsersPage() {
               {/* Acciones */}
               <div className="flex justify-end space-x-3 pt-6 border-t">
                 <Button
-                  onClick={cancelEdit}
+                  onPress={cancelEdit}
                   variant="outline"
                   disabled={isEditing}
                 >
                   Cancelar
                 </Button>
                 <Button
-                  onClick={saveChanges}
+                  onPress={saveChanges}
                   disabled={isEditing}
                   className="min-w-[100px]"
                 >

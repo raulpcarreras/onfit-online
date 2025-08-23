@@ -1,9 +1,9 @@
-# Estado del Design System - ONFIT (Enero 2025)
+# Estado del Design System - ONFIT13 23.08.2025
 
 ## 📋 Resumen Ejecutivo
 
 **Estado**: ✅ **MIGRACIÓN COMPLETADA EXITOSAMENTE**  
-**Fecha**: Enero 2025  
+**Fecha**: AGOSTO 2025  
 **Objetivo**: Unificar tema (tokens) y consumo de componentes para que **web** y **native** compartan un mismo **Design System**
 
 ---
@@ -412,4 +412,4 @@ import { Input } from "@repo/design/ui/input";
 
 ---
 
-*Documento generado automáticamente - Enero 2025*
+

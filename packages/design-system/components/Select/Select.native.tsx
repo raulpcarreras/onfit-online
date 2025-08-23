@@ -1,5 +1,11 @@
 import * as React from "react";
-import { View, Text, Pressable } from "react-native";
+import {
+  Select as UISelect,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/design/ui/select";
 
 export type SelectOption = {
   value: string;
@@ -8,46 +14,57 @@ export type SelectOption = {
 };
 
 export type SelectProps = {
-  value?: string;
-  onValueChange?: (v: string) => void;
+  value?: string | null;
+  onChange?: (value: string) => void;
   options: SelectOption[];
   placeholder?: string;
-  label?: string;
-  className?: string; // ignorado en native
   disabled?: boolean;
+  className?: string;
 };
 
 export function Select({
   value,
-  onValueChange,
+  onChange,
   options,
   placeholder = "Selecciona…",
-  label,
   disabled,
+  className,
 }: SelectProps) {
-  // Stub minimal para RN: lista de botones
+  const selectedOpt = React.useMemo(
+    () => (value ? options.find((o) => o.value === value) ?? null : null),
+    [options, value]
+  );
+
+  const handleChange = React.useCallback(
+    (next: unknown) => {
+      let nextValue: string | undefined;
+
+      if (typeof next === "string") {
+        nextValue = next;
+      } else if (next && typeof next === "object" && "value" in (next as any)) {
+        nextValue = (next as any).value as string;
+      }
+
+      if (nextValue !== undefined) onChange?.(nextValue);
+    },
+    [onChange]
+  );
+
+  const uiValue = (selectedOpt ?? value ?? "") as any;
+
   return (
-    <View style={{ gap: 8 }}>
-      {label ? <Text style={{ opacity: 0.7 }}>{label}</Text> : null}
-      <Text>{value ? options.find(o => o.value === value)?.label : placeholder}</Text>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-        {options.map((o) => (
-          <Pressable
-            key={o.value}
-            disabled={disabled || o.disabled}
-            onPress={() => onValueChange?.(o.value)}
-            style={{
-              paddingHorizontal: 10,
-              paddingVertical: 6,
-              borderRadius: 8,
-              borderWidth: 1,
-              opacity: disabled || o.disabled ? 0.5 : 1,
-            }}
-          >
-            <Text>{o.label}</Text>
-          </Pressable>
+    <UISelect value={uiValue} onValueChange={handleChange as any} disabled={disabled}>
+      <SelectTrigger className={className}>
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+
+      <SelectContent>
+        {options.map((opt) => (
+          <SelectItem key={opt.value} value={opt.value as any} label={opt.label} disabled={opt.disabled}>
+            {(_s) => opt.label}
+          </SelectItem>
         ))}
-      </View>
-    </View>
+      </SelectContent>
+    </UISelect>
   );
 }

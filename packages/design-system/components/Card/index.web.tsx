@@ -1,6 +1,7 @@
-// packages/design-system/components/Card/index.web.tsx
+"use client";
+
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../lib/cn";
 
 export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (

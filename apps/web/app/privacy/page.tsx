@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
-import { Dumbbell, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { Card } from "@repo/design/components/Card";
 
 export default function PrivacyPage() {
   return (
@@ -34,7 +35,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-bold text-foreground mb-6">Política de Privacidad de ONFIT</h2>
           
           <div className="space-y-6 text-sm text-muted-foreground leading-relaxed">
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">1. Información que Recopilamos</h3>
               <p>
                 Recopilamos la siguiente información para proporcionar y mejorar nuestros servicios:
@@ -45,9 +46,9 @@ export default function PrivacyPage() {
                 <li><strong>Datos de uso:</strong> Actividad en la aplicación, entrenamientos realizados y progreso</li>
                 <li><strong>Información técnica:</strong> Dispositivo, navegador y datos de conexión</li>
               </ul>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">2. Cómo Utilizamos tu Información</h3>
               <p>
                 Utilizamos tu información personal para:
@@ -60,9 +61,9 @@ export default function PrivacyPage() {
                 <li>Comunicarnos contigo sobre el servicio</li>
                 <li>Mejorar y desarrollar nuevas funcionalidades</li>
               </ul>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">3. Compartir de Información</h3>
               <p>
                 No vendemos, alquilamos ni compartimos tu información personal con terceros, excepto:
@@ -73,9 +74,9 @@ export default function PrivacyPage() {
                 <li>Con proveedores de servicios que nos ayudan a operar la plataforma</li>
                 <li>Para proteger nuestros derechos y seguridad</li>
               </ul>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">4. Seguridad de Datos</h3>
               <p>
                 Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal:
@@ -86,9 +87,9 @@ export default function PrivacyPage() {
                 <li>Monitoreo regular de seguridad</li>
                 <li>Copias de seguridad seguras</li>
               </ul>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">5. Tus Derechos</h3>
               <p>
                 Tienes derecho a:
@@ -101,62 +102,62 @@ export default function PrivacyPage() {
                 <li>Portabilidad de tus datos</li>
                 <li>Retirar el consentimiento en cualquier momento</li>
               </ul>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">6. Retención de Datos</h3>
               <p>
                 Conservamos tu información personal mientras mantengas una cuenta activa o según sea necesario 
                 para proporcionar nuestros servicios. Puedes solicitar la eliminación de tu cuenta en cualquier momento.
               </p>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">7. Cookies y Tecnologías Similares</h3>
               <p>
                 Utilizamos cookies y tecnologías similares para mejorar tu experiencia, analizar el uso del servicio 
                 y personalizar el contenido. Puedes gestionar las preferencias de cookies en tu navegador.
               </p>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">8. Transferencias Internacionales</h3>
               <p>
                 Tu información puede ser transferida y procesada en países fuera de tu residencia. 
                 Nos aseguramos de que estas transferencias cumplan con las leyes de protección de datos aplicables.
               </p>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">9. Menores de Edad</h3>
               <p>
                 ONFIT no está dirigido a menores de 16 años. No recopilamos intencionalmente información 
                 personal de menores de edad. Si eres padre o tutor y crees que tu hijo nos ha proporcionado 
                 información personal, contáctanos.
               </p>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">10. Cambios en esta Política</h3>
               <p>
                 Podemos actualizar esta política de privacidad ocasionalmente. Te notificaremos sobre cambios 
                 significativos y te recomendamos revisar esta política regularmente.
               </p>
-            </section>
+            </Card>
 
-            <section>
+            <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">11. Contacto</h3>
               <p>
                 Si tienes preguntas sobre esta política de privacidad o sobre cómo manejamos tu información, 
                 contáctanos a través de nuestra plataforma.
               </p>
-            </section>
+            </Card>
 
-            <div className="mt-8 p-4 bg-muted/50 rounded-lg border border-border">
+            <Card className="p-4 bg-muted/50 border-border">
               <p className="text-xs text-muted-foreground text-center">
                 <strong>Última actualización:</strong> {new Date().toLocaleDateString('es-ES')}
               </p>
-            </div>
+            </Card>
           </div>
         </div>
       </div>

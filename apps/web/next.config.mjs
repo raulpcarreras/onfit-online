@@ -33,6 +33,8 @@ function withExpo(nextConfig) {
                     "react-native-web/dist/vendor/react-native/emitter/EventEmitter",
                 "react-native/Libraries/EventEmitter/NativeEventEmitter$":
                     "react-native-web/dist/vendor/react-native/NativeEventEmitter",
+                // Alias temporal de compatibilidad design system
+                '@repo/design-system': '@repo/design', // fallback temporal
             };
 
             config.resolve.extensions = [

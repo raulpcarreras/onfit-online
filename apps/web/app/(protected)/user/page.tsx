@@ -5,13 +5,16 @@ import { useTheme } from "next-themes";
 import { useUser } from "@/lib/user-provider";
 import { useProfile } from "@/lib/profile-provider";
 import { useRouter } from "next/navigation";
-import FullScreenLoader from "@/components/FullScreenLoader";
+import { FullScreenLoader } from "@repo/design/components/FullScreenLoader";
 
 import {
   Dumbbell, Calendar, MessageSquare, CheckCircle2, TrendingUp, Utensils
 } from "lucide-react";
 import { Button } from "@repo/design/components/Button";
 import { Input } from "@repo/design/components/Input";
+import { Card } from "@repo/design/components/Card";
+import { Checkbox } from "@repo/design/components/Checkbox";
+import { Progress } from "@repo/design/components/Progress";
 
 type KPI = { label: string; value: string; diff?: string; icon: any };
 
@@ -43,6 +46,7 @@ export default function UserDashboard() {
   const { user, loading } = useUser();
   const { profile } = useProfile();
   const router = useRouter();
+  const [habitStates, setHabitStates] = useState(habitos.map(h => h.done));
 
   // Mostrar loader mientras se carga el perfil
   if (loading || !user || !profile) {
@@ -54,9 +58,7 @@ export default function UserDashboard() {
     return <FullScreenLoader label="Redirigiendo..." />;
   }
 
-  const border = "border border-border";
-  const card = "bg-card rounded-lg border border-border p-4";
-  const accent = "text-primary";
+
 
   const session = {
     name: "Full Body – Semana 3 / Día 2",
@@ -70,23 +72,23 @@ export default function UserDashboard() {
   return (
     <div className="px-4 md:px-5 py-4 space-y-6">
       {/* KPIs */}
-      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
         {kpis.map((k) => (
-          <div key={k.label} className={`${card}`}>
+          <Card key={k.label} className="p-4">
             <div className="flex items-center justify-between">
               <div className="text-sm text-muted-foreground">{k.label}</div>
-              <k.icon className={`size-4 ${accent}`} />
+              <k.icon className="size-4 text-primary" />
             </div>
             <div className="mt-2 text-2xl font-semibold">{k.value}</div>
             {k.diff && <div className="mt-1 text-xs text-primary">{k.diff}</div>}
-          </div>
+          </Card>
         ))}
-      </section>
+      </div>
 
       {/* Entrenamiento + Macros */}
-      <section className="grid gap-4 grid-cols-1 xl:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
         {/* Entrenamiento de hoy */}
-        <div className={`xl:col-span-2 ${card}`}>
+        <Card className="xl:col-span-2 p-4">
           <div className="flex items-center justify-between">
             <div className="font-medium">Entrenamiento de hoy</div>
             <div className="text-xs text-muted-foreground">{session.duration}</div>
@@ -95,24 +97,22 @@ export default function UserDashboard() {
 
           {/* progreso */}
           <div className="mt-4">
-            <div className="h-2 rounded-full bg-secondary">
-              <div className="h-2 rounded-full bg-primary" style={{ width: `${session.progress}%` }} />
-            </div>
+            <Progress value={session.progress} showValue />
             <div className="mt-1 text-xs text-muted-foreground">{session.progress}% completado</div>
           </div>
 
           <div className="mt-4 flex gap-2">
-            <button className="px-4 py-2 rounded-lg bg-primary text-black font-medium hover:bg-primary/90 transition">
+            <Button className="px-4 py-2">
               Iniciar
-            </button>
-            <button className="px-4 py-2 rounded-lg border border-border hover:bg-secondary transition">
+            </Button>
+            <Button variant="outline" className="px-4 py-2">
               Ver detalles
-            </button>
+            </Button>
           </div>
-        </div>
+        </Card>
 
         {/* Macros del día */}
-        <div className={`${card}`}>
+        <Card className="p-4">
           <div className="font-medium">Macros del día</div>
           <div className="mt-3 space-y-3">
             {macros.map((m) => {
@@ -123,42 +123,40 @@ export default function UserDashboard() {
                     <span className="text-muted-foreground">{m.key}</span>
                     <span className="text-muted-foreground">{m.current}/{m.target}g</span>
                   </div>
-                  <div className="h-2 rounded-full bg-secondary">
-                    <div className="h-2 rounded-full bg-primary" style={{ width: `${pct}%` }} />
-                  </div>
+                  <Progress value={pct} size="sm" />
                 </div>
               );
             })}
             <div className="mt-2 text-xs text-muted-foreground">Kcal totales: {kcal}% del objetivo</div>
           </div>
-        </div>
-      </section>
+        </Card>
+      </div>
 
       {/* Agenda + Mensajes */}
-      <section className="grid gap-4 grid-cols-1 xl:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
         {/* Próximo evento */}
-        <div className={`${card}`}>
+        <Card className="p-4">
           <div className="flex items-center justify-between">
             <div className="font-medium">Próximo evento</div>
-            <Calendar className={`size-4 ${accent}`} />
+            <Calendar className="size-4 text-primary" />
           </div>
           <div className="mt-2 text-sm text-muted-foreground">Mañana 18:00 — Sesión con Laura</div>
           <Button className="mt-3 w-full">
             Abrir calendario
           </Button>
-        </div>
+        </Card>
 
         {/* Mensajes recientes */}
-        <div className={`xl:col-span-2 ${card}`}>
+        <Card className="xl:col-span-2 p-4">
           <div className="flex items-center justify-between">
             <div className="font-medium">Mensajes recientes</div>
-            <MessageSquare className={`size-4 ${accent}`} />
+            <MessageSquare className="size-4 text-primary" />
           </div>
           <div className="mt-3 divide-y divide-border">
             {mensajes.map((m, i) => (
               <div key={i} className="py-3 flex items-start gap-3">
                 <div className="size-8 rounded-full grid place-items-center bg-primary/15 shrink-0">
-                  <MessageSquare className={`size-4 ${accent}`} />
+                  <MessageSquare className="size-4 text-primary" />
                 </div>
                 <div className="flex-1">
                   <div className="text-sm font-medium">{m.from}</div>
@@ -171,13 +169,13 @@ export default function UserDashboard() {
           <Button className="mt-3 px-4 py-2">
             Abrir mensajes
           </Button>
-        </div>
-      </section>
+        </Card>
+      </div>
 
       {/* Peso rápido + Hábitos */}
-      <section className="grid gap-4 grid-cols-1 xl:grid-cols-3">
+      <div className="grid gap-4 grid-cols-1 xl:grid-cols-3">
         {/* Peso rápido */}
-        <div className={`${card}`}>
+        <Card className="p-4">
           <div className="font-medium">Peso rápido</div>
           <div className="mt-3 flex gap-2">
             <Input
@@ -190,21 +188,36 @@ export default function UserDashboard() {
               Guardar
             </Button>
           </div>
-        </div>
+        </Card>
 
         {/* Hábitos (col-span-2) */}
-        <div className={`xl:col-span-2 ${card}`}>
+        <Card className="xl:col-span-2 p-4">
           <div className="font-medium">Checklist de hoy</div>
           <div className="mt-3 grid sm:grid-cols-2 gap-2">
-            {habitos.map((h) => (
-              <label key={h.key} className={`flex items-center gap-2 px-3 py-2 rounded-lg ${border} hover:bg-secondary cursor-pointer`}>
-                <input type="checkbox" defaultChecked={h.done} className="size-4 accent-primary" />
-                <span className="text-sm">{h.key}</span>
-              </label>
+            {habitos.map((h, index) => (
+              <div 
+                key={h.key} 
+                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:bg-secondary cursor-pointer"
+                onClick={() => {
+                  const newStates = [...habitStates];
+                  newStates[index] = !habitStates[index];
+                  setHabitStates(newStates);
+                }}
+              >
+                <Checkbox 
+                  checked={habitStates[index]} 
+                  onCheckedChange={(checked) => {
+                    const newStates = [...habitStates];
+                    newStates[index] = checked as boolean;
+                    setHabitStates(newStates);
+                  }}
+                />
+                <div className="text-sm">{h.key}</div>
+              </div>
             ))}
           </div>
-        </div>
-      </section>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -1,30 +1,38 @@
-"use client";
+'use client';
 
-import { Button } from "@repo/design/ui/button";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
-// import { captureException } from '@sentry/nextjs';
-import type NextError from "next/error";
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-type GlobalErrorProperties = {
-  readonly error: NextError & { digest?: string };
-  readonly reset: () => void;
-};
-
-const GlobalError = ({ error, reset }: GlobalErrorProperties) => {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   useEffect(() => {
-    // captureException(error);
+    console.error(error);
   }, [error]);
 
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html>
       <body>
-        <h1>Oops, something went wrong</h1>
-        <Button onPress={() => reset()}>Try again</Button>
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-destructive mb-4">
+              Algo salió mal
+            </h2>
+            <p className="text-muted-foreground mb-4">
+              Ha ocurrido un error inesperado
+            </p>
+            <button
+              onClick={() => reset()}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+            >
+              Intentar de nuevo
+            </button>
+          </div>
+        </div>
       </body>
     </html>
   );
-};
-
-export default GlobalError;
+}
