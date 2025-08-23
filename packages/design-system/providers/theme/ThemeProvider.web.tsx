@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { type ThemeMode, type ColorTokens } from "../../tokens/index";
 
-type ThemeMode = "light" | "dark";
 type Mode = ThemeMode | "system";
 
 type ThemeBridgeContextType = {
@@ -11,7 +11,7 @@ type ThemeBridgeContextType = {
   resolvedMode: ThemeMode;     // 'light' | 'dark'
   isDark: boolean;
   setMode: (m: Mode) => void;
-  colors: Record<string, string>; // mapa de colores CSS variables
+  colors: ColorTokens; // mapa de colores tipado
 };
 
 const ThemeBridgeContext = React.createContext<ThemeBridgeContextType | null>(null);

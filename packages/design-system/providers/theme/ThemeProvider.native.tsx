@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Appearance } from "react-native";
+import { tokens, type ThemeMode, type ColorTokens } from "../../tokens/index";
 
-type ThemeMode = "light" | "dark";
 type Mode = ThemeMode | "system";
 
 // interfaz de almacenamiento genérica para no acoplar a AsyncStorage
@@ -16,7 +16,7 @@ type ThemeBridgeContextType = {
   resolvedMode: ThemeMode;
   isDark: boolean;
   setMode: (m: Mode) => void;
-  colors: Record<string, string>; // mapa de colores para RN
+  colors: ColorTokens; // mapa de colores tipado para RN
 };
 
 const STORAGE_KEY = "theme-mode";
@@ -73,27 +73,7 @@ export function ThemeProvider({
       resolvedMode,
       isDark: resolvedMode === "dark",
       setMode: setModeAndPersist,
-      colors: {
-        background: resolvedMode === "dark" ? "#1a1a1a" : "#fafafa",
-        foreground: resolvedMode === "dark" ? "#f5f5f5" : "#171717",
-        card: resolvedMode === "dark" ? "#262626" : "#ffffff",
-        "card-foreground": resolvedMode === "dark" ? "#f5f5f5" : "#171717",
-        popover: resolvedMode === "dark" ? "#262626" : "#ffffff",
-        "popover-foreground": resolvedMode === "dark" ? "#f5f5f5" : "#171717",
-        primary: "#f59e0b",
-        "primary-foreground": resolvedMode === "dark" ? "#000000" : "#ffffff",
-        secondary: resolvedMode === "dark" ? "#404040" : "#f5f5f5",
-        "secondary-foreground": resolvedMode === "dark" ? "#f5f5f5" : "#171717",
-        muted: resolvedMode === "dark" ? "#404040" : "#f5f5f5",
-        "muted-foreground": resolvedMode === "dark" ? "#a3a3a3" : "#737373",
-        accent: "#f59e0b",
-        "accent-foreground": resolvedMode === "dark" ? "#000000" : "#171717",
-        destructive: "#ef4444",
-        "destructive-foreground": "#ffffff",
-        border: resolvedMode === "dark" ? "#404040" : "#e5e5e5",
-        input: resolvedMode === "dark" ? "#404040" : "#e5e5e5",
-        ring: "#f59e0b",
-      },
+      colors: tokens[resolvedMode], // Usar tokens JS centralizados
     }),
     [mode, resolvedMode, setModeAndPersist]
   );
