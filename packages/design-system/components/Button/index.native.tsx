@@ -1,5 +1,7 @@
 import * as React from "react";
-import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
+import { Pressable, Text, ViewStyle, TextStyle } from "react-native";
+import { useThemeBridge } from "../../providers/theme";
+import { cn } from "../../lib/cn";
 
 type Size = "sm" | "md" | "lg" | "icon";
 type Variant = "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
@@ -23,36 +25,42 @@ export const Button = ({
   textStyle,
   children,
 }: ButtonProps) => {
-  // 🎯 Mapear variantes a estilos nativos (usar tokens cuando estén disponibles)
+  const { colors } = useThemeBridge();
+
+  // 🎯 Mapear variantes a estilos nativos usando tokens
   const getVariantStyles = () => {
     switch (variant) {
       case "default":
-        return { backgroundColor: "#f59e0b" }; // TODO: usar tokens
+        return { backgroundColor: colors.primary };
       case "secondary":
-        return { backgroundColor: "#6b7280" };
+        return { backgroundColor: colors.secondary };
       case "outline":
-        return { backgroundColor: "transparent", borderWidth: 1, borderColor: "#d1d5db" };
+        return { 
+          backgroundColor: "transparent", 
+          borderWidth: 1, 
+          borderColor: colors.border 
+        };
       case "ghost":
         return { backgroundColor: "transparent" };
       case "destructive":
-        return { backgroundColor: "#ef4444" };
+        return { backgroundColor: colors.destructive };
       default:
-        return { backgroundColor: "#f59e0b" };
+        return { backgroundColor: colors.primary };
     }
   };
 
-  const getSizeStyles = () => {
+  const getSizeClasses = () => {
     switch (size) {
       case "sm":
-        return { height: 32, paddingHorizontal: 12 };
+        return "h-8 px-3";
       case "md":
-        return { height: 40, paddingHorizontal: 16 };
+        return "h-10 px-4";
       case "lg":
-        return { height: 44, paddingHorizontal: 24 };
+        return "h-11 px-6";
       case "icon":
-        return { height: 40, width: 40 };
+        return "h-10 w-10";
       default:
-        return { height: 40, paddingHorizontal: 16 };
+        return "h-10 px-4";
     }
   };
 
@@ -60,27 +68,25 @@ export const Button = ({
     <Pressable
       disabled={disabled}
       onPress={onPress}
+      className={cn(
+        "rounded-lg justify-center items-center",
+        getSizeClasses(),
+        disabled && "opacity-60"
+      )}
       style={[
-        styles.base,
         getVariantStyles(),
-        getSizeStyles(),
-        { opacity: disabled ? 0.6 : 1 },
         style,
       ]}
     >
-      <Text style={[styles.text, textStyle]}>{children}</Text>
+      <Text 
+        className="font-semibold"
+        style={[
+          { color: variant === "outline" || variant === "ghost" ? colors.foreground : colors["primary-foreground"] },
+          textStyle
+        ]}
+      >
+        {children}
+      </Text>
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontWeight: "600",
-    color: "#000",
-  },
-});
