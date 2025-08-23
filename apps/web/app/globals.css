@@ -5,28 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Estilos base que respetan el tema */
-body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  transition: color 0.3s ease, background-color 0.3s ease;
-}
-
-/* Estilos de hover esenciales */
-button:hover, a:hover {
-  transition: color 0.2s ease, background-color 0.2s ease;
-}
-
-/* Estilos de hover adaptados al tema */
-button.hover-neutral:hover {
-  background-color: hsl(var(--secondary));
-}
-
-.btn-primary:hover {
-  filter: brightness(1.1);
-}
-
-/* Estilos de color-scheme para cada tema */
+/* Theme bridge mínimo */
 :root {
   color-scheme: light;
 }
@@ -34,3 +13,6 @@ button.hover-neutral:hover {
 .dark {
   color-scheme: dark;
 }
+
+/* NO añadir reglas globales de botones, inputs, links, etc. */
+/* Los estilos deben venir del design system y shadcn por defecto */
