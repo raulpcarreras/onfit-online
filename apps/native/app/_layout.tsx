@@ -1,13 +1,5 @@
-import React from "react";
-import { Stack } from "expo-router";
-import { UserProvider } from "@/lib/user-provider";
+import { Stack } from 'expo-router';
 
 export default function RootLayout() {
-  return (
-    <UserProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-      </Stack>
-    </UserProvider>
-  );
+  return <Stack screenOptions={{ headerShown: false }} />;
 }

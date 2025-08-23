@@ -3,10 +3,8 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      'expo-router/babel',
-      // ⚠️ SOLO añade 'nativewind/babel' si tienes el paquete instalado y configurado.
-      // 'nativewind/babel',
-      ['react-native-reanimated/plugin', { relativeSourceLocation: true }], // siempre el último
+      // tus plugins si los hay…
+      'react-native-reanimated/plugin', // SIEMPRE el último
     ],
   };
 };
