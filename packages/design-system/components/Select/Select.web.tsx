@@ -70,8 +70,8 @@ export function Select({
       <SelectContent>
         {options.map((opt) => (
           // Para máxima compatibilidad, damos string como value
-          <SelectItem key={opt.value} value={opt.value as any} label={opt.label} disabled={opt.disabled}>
-            {(_s) => opt.label}
+          <SelectItem key={opt.value} value={opt.value as any} disabled={opt.disabled}>
+            {opt.label}
           </SelectItem>
         ))}
       </SelectContent>

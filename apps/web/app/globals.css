@@ -1,9 +1,13 @@
 /* Estilos globales para la web */
-@import "@repo/design/tokens/index.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}
 
 /* Theme bridge mínimo */
 :root {

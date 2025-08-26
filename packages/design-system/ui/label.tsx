@@ -1,36 +1,24 @@
-"use client";
+"use client"
 
-import * as LabelPrimitive from "@rn-primitives/label";
-import * as React from "react";
-import { cn } from "../lib/utils";
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
 
-const Label = React.forwardRef<
-  React.ComponentRef<typeof LabelPrimitive.Text>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Text> & { onFocus?: () => void }
->(
-  (
-    { className, onPress, onLongPress, onPressIn, onPressOut, onFocus, ...props },
-    ref,
-  ) => (
+import { cn } from "../lib/utils"
+
+function Label({
+  className,
+  ...props
+}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+  return (
     <LabelPrimitive.Root
-      className="web:cursor-default"
-      onPress={onPress}
-      onLongPress={onLongPress}
-      onPressIn={onPressIn}
-      onPressOut={onPressOut}
-      onFocus={onFocus}
-    >
-      <LabelPrimitive.Text
-        ref={ref}
-        className={cn(
-          "text-sm text-foreground native:text-base font-medium leading-none web:peer-disabled:cursor-not-allowed web:peer-disabled:opacity-70",
-          className,
-        )}
-        {...props}
-      />
-    </LabelPrimitive.Root>
-  ),
-);
-Label.displayName = LabelPrimitive.Root.displayName;
+      data-slot="label"
+      className={cn(
+        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
-export { Label };
+export { Label }

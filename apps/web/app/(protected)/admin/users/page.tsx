@@ -12,7 +12,7 @@ import { Text } from "@repo/design/components/Text";
 import { Input } from "@repo/design/components/Input";
 import { Select } from "@repo/design/components/Select";
 import { Card } from "@repo/design/components/Card";
-import { Badge } from "@repo/design/ui/badge";
+import { Badge } from "@repo/design/components/Badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/design/components/Table";
 import SuperAdminToggle from "@/components/admin/SuperAdminToggle";
 import { useSuperAdmin } from "@/hooks/useSuperAdmin";

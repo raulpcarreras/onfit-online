@@ -1,124 +1,116 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { View } from "react-native";
-import * as TablePrimitive from "@rn-primitives/table";
-import { cn } from "../lib/utils";
-import { TextClassContext } from "./text";
+import * as React from "react"
 
-const Table = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TablePrimitive.Root>
->(({ className, ...props }, ref) => (
-  <TablePrimitive.Root
-    ref={ref}
-    className={cn("w-full caption-bottom text-sm", className)}
-    {...props}
-  />
-));
-Table.displayName = "Table";
+import { cn } from "../lib/utils"
 
-const TableHeader = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Header>,
-  React.ComponentPropsWithoutRef<typeof TablePrimitive.Header>
->(({ className, ...props }, ref) => (
-  <TablePrimitive.Header
-    ref={ref}
-    role="rowgroup"
-    className={cn("border-border [&_tr]:border-b", className)}
-    {...props}
-  />
-));
-TableHeader.displayName = "TableHeader";
+function Table({ className, ...props }: React.ComponentProps<"table">) {
+  return (
+    <div
+      data-slot="table-container"
+      className="relative w-full overflow-x-auto"
+    >
+      <table
+        data-slot="table"
+        className={cn("w-full caption-bottom text-sm", className)}
+        {...props}
+      />
+    </div>
+  )
+}
 
-const TableBody = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Body>,
-  React.ComponentPropsWithoutRef<typeof TablePrimitive.Body>
->(({ className, style, ...props }, ref) => (
-  <TablePrimitive.Body
-    ref={ref}
-    className={cn("web:flex-1 border-border [&_tr:last-child]:border-0", className)}
-    style={[{ minHeight: 2 }, style]}
-    {...props}
-  />
-));
-TableBody.displayName = "TableBody";
+function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
+  return (
+    <thead
+      data-slot="table-header"
+      className={cn("[&_tr]:border-b", className)}
+      {...props}
+    />
+  )
+}
 
-const TableFooter = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Footer>,
-  React.ComponentPropsWithoutRef<typeof TablePrimitive.Footer>
->(({ className, ...props }, ref) => (
-  <TablePrimitive.Footer
-    ref={ref}
-    className={cn("bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
-    {...props}
-  />
-));
-TableFooter.displayName = "TableFooter";
+function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
+  return (
+    <tbody
+      data-slot="table-body"
+      className={cn("[&_tr:last-child]:border-0", className)}
+      {...props}
+    />
+  )
+}
 
-const TableRow = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Row>,
-  React.ComponentProps<typeof TablePrimitive.Row>
->(({ className, ...props }, ref) => (
-  <TablePrimitive.Row
-    ref={ref}
-    className={cn(
-      "flex-row border-border border-b web:transition-colors web:hover:bg-muted/50 web:data-[state=selected]:bg-muted",
-      className,
-    )}
-    {...props}
-  />
-));
-TableRow.displayName = "TableRow";
-
-const TableHead = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Head>,
-  React.ComponentPropsWithoutRef<typeof TablePrimitive.Head>
->(({ className, ...props }, ref) => (
-  <TextClassContext.Provider value="text-muted-foreground">
-    <TablePrimitive.Head
-      ref={ref}
+function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
+  return (
+    <tfoot
+      data-slot="table-footer"
       className={cn(
-        "h-12 px-4 text-left justify-center font-medium [&:has([role=checkbox])]:pr-0",
-        className,
+        "bg-muted/50 border-t font-medium [&>tr]:last:border-b-0",
+        className
       )}
       {...props}
     />
-  </TextClassContext.Provider>
-));
-TableHead.displayName = "TableHead";
+  )
+}
 
-const TableCell = React.forwardRef<
-  React.ComponentRef<typeof TablePrimitive.Cell>,
-  React.ComponentPropsWithoutRef<typeof TablePrimitive.Cell>
->(({ className, ...props }, ref) => (
-  <TablePrimitive.Cell
-    ref={ref}
-    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
-    {...props}
-  />
-));
-TableCell.displayName = "TableCell";
+function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+  return (
+    <tr
+      data-slot="table-row"
+      className={cn(
+        "hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors",
+        className
+      )}
+      {...props}
+    />
+  )
+}
 
-const TableCaption = React.forwardRef<
-  React.ComponentRef<typeof View>,
-  React.ComponentProps<typeof View>
->(({ className, ...props }, ref) => (
-  <View
-    ref={ref}
-    className={cn("mt-4 text-sm text-muted-foreground", className)}
-    {...props}
-  />
-));
-TableCaption.displayName = "TableCaption";
+function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+  return (
+    <th
+      data-slot="table-head"
+      className={cn(
+        "text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+  return (
+    <td
+      data-slot="table-cell"
+      className={cn(
+        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function TableCaption({
+  className,
+  ...props
+}: React.ComponentProps<"caption">) {
+  return (
+    <caption
+      data-slot="table-caption"
+      className={cn("text-muted-foreground mt-4 text-sm", className)}
+      {...props}
+    />
+  )
+}
 
 export {
   Table,
+  TableHeader,
   TableBody,
-  TableCell,
   TableFooter,
   TableHead,
-  TableHeader,
   TableRow,
+  TableCell,
   TableCaption,
-};
+}

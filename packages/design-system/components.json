@@ -3,11 +3,15 @@
   "style": "default",
   "rsc": true,
   "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "tailwind/global.css",
+    "baseColor": "slate",
+    "cssVariables": true
+  },
   "aliases": {
-    "components": "@repo/design/components",
-    "utils": "@repo/design/lib/utils",
-    "hooks": "@repo/design/hooks",
-    "lib": "@repo/design/lib",
-    "ui": "@repo/design/ui"
+    "components": "components",
+    "utils": "lib/utils",
+    "ui": "ui"
   }
 }

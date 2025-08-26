@@ -1,92 +1,73 @@
-"use client";
+"use client"
 
-import { VariantProps } from "class-variance-authority";
-import type { LucideIcon } from "lucide-react-native";
-import * as React from "react";
-import { toggleTextVariants, toggleVariants } from "./toggle";
-import { TextClassContext } from "./text";
-import * as ToggleGroupPrimitive from "@rn-primitives/toggle-group";
-import { cn } from "../lib/utils";
+import * as React from "react"
+import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group"
+import { type VariantProps } from "class-variance-authority"
 
-const ToggleGroupContext = React.createContext<VariantProps<
-  typeof toggleVariants
-> | null>(null);
+import { cn } from "../lib/utils"
+import { toggleVariants } from "ui/toggle"
 
-const ToggleGroup = React.forwardRef<
-  React.ComponentRef<typeof ToggleGroupPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root> &
-    VariantProps<typeof toggleVariants>
->(({ className, variant, size, children, ...props }, ref) => (
-  <ToggleGroupPrimitive.Root
-    ref={ref}
-    className={cn("flex flex-row items-center justify-center gap-1", className)}
-    {...props}
-  >
-    <ToggleGroupContext.Provider value={{ variant, size }}>
-      {children}
-    </ToggleGroupContext.Provider>
-  </ToggleGroupPrimitive.Root>
-));
+const ToggleGroupContext = React.createContext<
+  VariantProps<typeof toggleVariants>
+>({
+  size: "default",
+  variant: "default",
+})
 
-ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName;
-
-function useToggleGroupContext() {
-  const context = React.useContext(ToggleGroupContext);
-  if (context === null) {
-    throw new Error(
-      "ToggleGroup compound components cannot be rendered outside the ToggleGroup component",
-    );
-  }
-  return context;
+function ToggleGroup({
+  className,
+  variant,
+  size,
+  children,
+  ...props
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
+  VariantProps<typeof toggleVariants>) {
+  return (
+    <ToggleGroupPrimitive.Root
+      data-slot="toggle-group"
+      data-variant={variant}
+      data-size={size}
+      className={cn(
+        "group/toggle-group flex w-fit items-center rounded-md data-[variant=outline]:shadow-xs",
+        className
+      )}
+      {...props}
+    >
+      <ToggleGroupContext.Provider value={{ variant, size }}>
+        {children}
+      </ToggleGroupContext.Provider>
+    </ToggleGroupPrimitive.Root>
+  )
 }
 
-const ToggleGroupItem = React.forwardRef<
-  React.ComponentRef<typeof ToggleGroupPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
-    VariantProps<typeof toggleVariants>
->(({ className, children, variant, size, ...props }, ref) => {
-  const context = useToggleGroupContext();
-  const { value } = ToggleGroupPrimitive.useRootContext();
+function ToggleGroupItem({
+  className,
+  children,
+  variant,
+  size,
+  ...props
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> &
+  VariantProps<typeof toggleVariants>) {
+  const context = React.useContext(ToggleGroupContext)
 
   return (
-    <TextClassContext.Provider
-      value={cn(
-        toggleTextVariants({ variant, size }),
-        ToggleGroupPrimitive.utils.getIsSelected(value, props.value)
-          ? "text-accent-foreground"
-          : "web:group-hover:text-muted-foreground",
+    <ToggleGroupPrimitive.Item
+      data-slot="toggle-group-item"
+      data-variant={context.variant || variant}
+      data-size={context.size || size}
+      className={cn(
+        toggleVariants({
+          variant: context.variant || variant,
+          size: context.size || size,
+        }),
+        "min-w-0 flex-1 shrink-0 rounded-none shadow-none first:rounded-l-md last:rounded-r-md focus:z-10 focus-visible:z-10 data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l",
+        className
       )}
+      {...props}
     >
-      <ToggleGroupPrimitive.Item
-        ref={ref}
-        className={cn(
-          toggleVariants({
-            variant: context.variant || variant,
-            size: context.size || size,
-          }),
-          props.disabled && "web:pointer-events-none opacity-50",
-          ToggleGroupPrimitive.utils.getIsSelected(value, props.value) && "bg-accent",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </ToggleGroupPrimitive.Item>
-    </TextClassContext.Provider>
-  );
-});
-
-ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName;
-
-function ToggleGroupIcon({
-  className,
-  icon: Icon,
-  ...props
-}: React.ComponentPropsWithoutRef<LucideIcon> & {
-  icon: LucideIcon;
-}) {
-  const textClass = React.useContext(TextClassContext);
-  return <Icon className={cn(textClass, className)} {...props} />;
+      {children}
+    </ToggleGroupPrimitive.Item>
+  )
 }
 
-export { ToggleGroup, ToggleGroupIcon, ToggleGroupItem };
+export { ToggleGroup, ToggleGroupItem }

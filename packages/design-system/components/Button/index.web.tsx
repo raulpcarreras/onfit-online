@@ -1,51 +1,43 @@
 "use client";
 
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { Button as UIButton, buttonVariants as uiButtonVariants } from "../../ui/button";
 import { cn } from "../../lib/cn";
+import { type VariantProps } from "class-variance-authority";
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-60 disabled:pointer-events-none",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-        outline: "border border-input bg-background hover:bg-accent",
-        ghost: "bg-transparent hover:bg-accent",
-        link: "bg-transparent underline-offset-4 hover:underline text-primary",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-      },
-      size: {
-        sm: "h-8 px-3 text-sm",
-        md: "h-10 px-4 text-sm",
-        lg: "h-11 px-6 text-base",
-        icon: "h-10 w-10",
-      },
-    },
-    defaultVariants: { variant: "default", size: "md" },
-  }
-);
+// Re-exportar las variantes originales de shadcn
+export const buttonVariants = uiButtonVariants;
 
-type DOMProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onClick">;
+// Mapear tamaños para mantener compatibilidad
+type SizeMapping = {
+  sm: "sm";
+  md: "default"; // shadcn usa "default" en lugar de "md"
+  lg: "lg";
+  icon: "icon";
+};
 
-export type ButtonProps = DOMProps &
-  VariantProps<typeof buttonVariants> & {
+export type ButtonProps = React.ComponentProps<"button"> &
+  Omit<VariantProps<typeof uiButtonVariants>, "size"> & {
     onPress?: React.MouseEventHandler<HTMLButtonElement>;
+    size?: "sm" | "md" | "lg" | "icon"; // Permitir "md" para compatibilidad
   };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, onPress, variant, size, type, ...props }, ref) => (
-    <button
-      ref={ref}
-      type={type ?? "button"}
-      onClick={onPress}
-      className={cn(buttonVariants({ variant, size }), className)}
-      {...props}
-    />
-  )
+  ({ className, onPress, variant, size, ...props }, ref) => {
+    // Mapear "md" a "default" para compatibilidad
+    const mappedSize = size === "md" ? "default" : (size || "default");
+    
+    return (
+      <UIButton
+        ref={ref}
+        onClick={onPress}
+        variant={variant}
+        size={mappedSize}
+        className={cn(className)}
+        {...props}
+      />
+    );
+  }
 );
 
 Button.displayName = "Button";
-
-export { buttonVariants };

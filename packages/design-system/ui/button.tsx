@@ -1,199 +1,59 @@
-"use client";
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
 
-import { Animated, GestureResponderEvent, Pressable as RNPressable } from "react-native";
-import { cva, type VariantProps } from "class-variance-authority";
-import { Pressable } from "@rn-primitives/slot";
-import * as React from "react";
-
-import { TextClassContext } from "./text";
-import { cn } from "../lib/utils";
-import isWeb from "../lib/isWeb";
+import { cn } from "../lib/utils"
 
 const buttonVariants = cva(
-  "group flex items-center justify-center rounded-md web:ring-offset-background native:active:scale-95 native:transition-transform web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
-        default: "bg-primary web:hover:opacity-90 active:opacity-90",
-        destructive: "bg-destructive web:hover:opacity-90 active:opacity-90",
+        default:
+          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent active:text-accent-foreground",
-        secondary: "bg-secondary web:hover:opacity-80 active:opacity-80",
+          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+        secondary:
+          "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:
-          "web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent active:text-accent-foreground",
-        iconGhost: "bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900",
-        iconGhostAccent:
-          "bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900 text-[hsl(var(--accent))]",
-        iconGhostAuto:
-          "bg-transparent hover:bg-neutral-100 dark:hover:bg-neutral-900 text-[hsl(var(--accent))] dark:text-white",
-        link: "web:underline-offset-4 web:hover:underline web:focus:underline",
+          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2 native:h-12 native:px-5 native:py-3",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8 native:h-14",
-        icon: "h-10 w-10",
+        default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
+        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        icon: "size-9",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
-);
+  }
+)
 
-const buttonTextVariants = cva(
-  "web:whitespace-nowrap text-sm native:text-base font-medium text-foreground web:transition-colors",
-  {
-    variants: {
-      variant: {
-        default: "text-primary-foreground",
-        destructive: "text-destructive-foreground",
-        outline: "group-active:text-accent-foreground",
-        secondary: "text-secondary-foreground group-active:text-secondary-foreground",
-        ghost: "group-active:text-accent-foreground",
-        iconGhost: "",
-        iconGhostAccent: "text-[hsl(var(--accent))]",
-        iconGhostAuto: "text-[hsl(var(--accent))] dark:text-white",
-        link: "text-primary group-active:underline",
-      },
-      size: {
-        default: "",
-        sm: "",
-        lg: "native:text-lg",
-        icon: "",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  },
-);
-
-type ButtonProps = React.ComponentPropsWithoutRef<typeof RNPressable> &
-  VariantProps<typeof buttonVariants> & {
-    /** Web only */
-    type?: "submit" | "reset" | "button";
-    asChild?: boolean;
-    enableRipple?: boolean;
-  };
-
-const Button = React.forwardRef<React.ComponentRef<typeof RNPressable>, ButtonProps>(
-  ({ className, variant, size, asChild, enableRipple, ...props }, ref) => {
-    const Btn = asChild && isWeb ? Pressable : enableRipple ? RippleButton : RNPressable;
-    return (
-      <TextClassContext.Provider
-        value={cn(
-          props.disabled && "web:pointer-events-none",
-          buttonTextVariants({ variant, size }),
-        )}
-      >
-        <Btn
-          className={cn(
-            props.disabled && "opacity-50 web:pointer-events-none",
-            buttonVariants({ variant, size, className }),
-          )}
-          ref={ref}
-          role="button"
-          {...props}
-        />
-      </TextClassContext.Provider>
-    );
-  },
-);
-Button.displayName = "Button";
-
-type Ripple = { x: number; y: number; id: number };
-const RippleButton = React.forwardRef<
-  React.ComponentRef<typeof RNPressable>,
-  React.ComponentPropsWithoutRef<typeof RNPressable>
->(({ onPress, children, ...props }, ref) => {
-  const [ripples, setRipples] = React.useState<Ripple[]>([]);
-
-  const handlePress = (e: GestureResponderEvent) => {
-    if (e?.nativeEvent) {
-      const id = Date.now();
-      const { offsetX, offsetY, locationX, locationY } =
-        e.nativeEvent as typeof e.nativeEvent & { offsetX: number; offsetY: number };
-      setRipples((r) => [
-        { x: (offsetX ?? locationX) - 50, y: (offsetY ?? locationY) - 50, id },
-      ]);
-    }
-    onPress?.(e);
-  };
-
-  return (
-    <RNPressable {...props} ref={ref} onPress={handlePress}>
-      {children as any}
-      {ripples.map(({ x, y, id }) => (
-        <RippleCircle
-          key={id}
-          x={x}
-          y={y}
-          duration={400}
-          onFinish={({ finished }) => {
-            if (finished) {
-              setRipples((r) => r.filter((p) => p.id !== id));
-            }
-          }}
-        />
-      ))}
-    </RNPressable>
-  );
-});
-
-type CircleProps = React.ComponentPropsWithoutRef<typeof Animated.View> & {
-  x: number;
-  y: number;
-  duration: number;
-  onFinish: Animated.EndCallback;
-};
-
-const RippleCircle: React.FC<CircleProps> = ({
-  x,
-  y,
-  onFinish,
-  duration = isWeb ? 600 : 400,
+function Button({
   className,
-  style,
+  variant,
+  size,
+  asChild = false,
   ...props
-}) => {
-  const progress = React.useRef(new Animated.Value(0)).current;
-  React.useEffect(() => {
-    Animated.timing(progress, {
-      toValue: 1,
-      duration,
-      useNativeDriver: !isWeb,
-    }).start(onFinish);
-  }, []);
-
-  const animatedStyle = {
-    top: y,
-    left: x,
-    opacity: progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, 0],
-    }),
-    transform: [
-      {
-        scale: progress.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-        }),
-      },
-    ],
-  };
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot : "button"
 
   return (
-    <Animated.View
-      pointerEvents="none"
-      className={cn("absolute bg-accent rounded-[50px] h-[100px] w-[100px]", className)}
-      style={[animatedStyle, style]}
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
-  );
-};
+  )
+}
 
-export { Button, RippleButton, RippleCircle, buttonTextVariants, buttonVariants };
-export type { ButtonProps };
+export { Button, buttonVariants }

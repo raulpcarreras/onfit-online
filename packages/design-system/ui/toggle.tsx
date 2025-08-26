@@ -1,89 +1,47 @@
-"use client";
+"use client"
 
-import { cva, type VariantProps } from "class-variance-authority";
-import type { LucideIcon } from "lucide-react-native";
-import * as React from "react";
-import { TextClassContext } from "./text";
-import * as TogglePrimitive from "@rn-primitives/toggle";
-import { cn } from "../lib/utils";
+import * as React from "react"
+import * as TogglePrimitive from "@radix-ui/react-toggle"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "../lib/utils"
 
 const toggleVariants = cva(
-  "web:group web:inline-flex items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:hover:bg-muted active:bg-muted web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2",
+  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-muted hover:text-muted-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none transition-[color,box-shadow] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive whitespace-nowrap",
   {
     variants: {
       variant: {
         default: "bg-transparent",
         outline:
-          "border border-input bg-transparent web:hover:bg-accent active:bg-accent active:bg-accent",
+          "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
       },
       size: {
-        default: "h-10 px-3 native:h-12 native:px-[12]",
-        sm: "h-9 px-2.5 native:h-10 native:px-[9]",
-        lg: "h-11 px-5 native:h-14 native:px-6",
+        default: "h-9 px-2 min-w-9",
+        sm: "h-8 px-1.5 min-w-8",
+        lg: "h-10 px-2.5 min-w-10",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
     },
-  },
-);
+  }
+)
 
-const toggleTextVariants = cva("text-sm native:text-base text-foreground font-medium", {
-  variants: {
-    variant: {
-      default: "",
-      outline:
-        "web:group-hover:text-accent-foreground web:group-active:text-accent-foreground",
-    },
-    size: {
-      default: "",
-      sm: "",
-      lg: "",
-    },
-  },
-  defaultVariants: {
-    variant: "default",
-    size: "default",
-  },
-});
-
-const Toggle = React.forwardRef<
-  React.ComponentRef<typeof TogglePrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
-    VariantProps<typeof toggleVariants>
->(({ className, variant, size, ...props }, ref) => (
-  <TextClassContext.Provider
-    value={cn(
-      toggleTextVariants({ variant, size }),
-      props.pressed ? "text-accent-foreground" : "web:group-hover:text-muted-foreground",
-      className,
-    )}
-  >
+function Toggle({
+  className,
+  variant,
+  size,
+  ...props
+}: React.ComponentProps<typeof TogglePrimitive.Root> &
+  VariantProps<typeof toggleVariants>) {
+  return (
     <TogglePrimitive.Root
-      ref={ref}
-      className={cn(
-        toggleVariants({ variant, size }),
-        props.disabled && "web:pointer-events-none opacity-50",
-        props.pressed && "bg-accent",
-        className,
-      )}
+      data-slot="toggle"
+      className={cn(toggleVariants({ variant, size, className }))}
       {...props}
     />
-  </TextClassContext.Provider>
-));
-
-Toggle.displayName = TogglePrimitive.Root.displayName;
-
-function ToggleIcon({
-  className,
-  icon: Icon,
-  ...props
-}: React.ComponentPropsWithoutRef<LucideIcon> & {
-  icon: LucideIcon;
-}) {
-  const textClass = React.useContext(TextClassContext);
-  return <Icon className={cn(textClass, className)} {...props} />;
+  )
 }
 
-export { Toggle, ToggleIcon, toggleTextVariants, toggleVariants };
+export { Toggle, toggleVariants }

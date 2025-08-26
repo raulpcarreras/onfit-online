@@ -1,63 +1,44 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Dimensions, Platform, StyleSheet } from "react-native";
-import Animated, { FadeIn } from "react-native-reanimated";
-import { TextClassContext } from "./text";
-import * as HoverCardPrimitive from "@rn-primitives/hover-card";
-import { cn } from "../lib/utils";
+import * as React from "react"
+import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 
-const { height: HEIGHT } = Dimensions.get("screen");
+import { cn } from "../lib/utils"
 
-const HoverCard = HoverCardPrimitive.Root;
+function HoverCard({
+  ...props
+}: React.ComponentProps<typeof HoverCardPrimitive.Root>) {
+  return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />
+}
 
-const HoverCardTrigger = HoverCardPrimitive.Trigger;
-
-const HoverCardContent = React.forwardRef<
-  React.ComponentRef<typeof HoverCardPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
->(({ className, align = "center", sideOffset, ...props }, ref) => {
-  const { open, triggerPosition, contentLayout } = HoverCardPrimitive.useRootContext();
-
-  const flip = React.useMemo(
-    () =>
-      triggerPosition?.pageY
-        ? Math.abs(triggerPosition.pageY - HEIGHT) <= HEIGHT * 0.35
-        : false,
-    [triggerPosition?.pageY],
-  );
-
+function HoverCardTrigger({
+  ...props
+}: React.ComponentProps<typeof HoverCardPrimitive.Trigger>) {
   return (
-    <HoverCardPrimitive.Portal>
-      <HoverCardPrimitive.Overlay
-        style={Platform.OS !== "web" ? StyleSheet.absoluteFill : undefined}
-      >
-        <Animated.View entering={FadeIn}>
-          <TextClassContext.Provider value="text-popover-foreground">
-            <HoverCardPrimitive.Content
-              ref={ref}
-              align={align}
-              sideOffset={
-                sideOffset ??
-                (flip
-                  ? -((contentLayout?.height ?? 0) + (triggerPosition?.height ?? 0) + 8)
-                  : 0)
-              }
-              className={cn(
-                "z-50 w-64 rounded-md border border-border bg-popover p-4 shadow-md shadow-foreground/5 web:outline-none web:cursor-auto data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
-                open
-                  ? "web:animate-in  web:fade-in-0 web:zoom-in-95"
-                  : "web:animate-out web:fade-out-0 web:zoom-out-95 ",
-                className,
-              )}
-              {...props}
-            />
-          </TextClassContext.Provider>
-        </Animated.View>
-      </HoverCardPrimitive.Overlay>
-    </HoverCardPrimitive.Portal>
-  );
-});
-HoverCardContent.displayName = HoverCardPrimitive.Content.displayName;
+    <HoverCardPrimitive.Trigger data-slot="hover-card-trigger" {...props} />
+  )
+}
 
-export { HoverCard, HoverCardContent, HoverCardTrigger };
+function HoverCardContent({
+  className,
+  align = "center",
+  sideOffset = 4,
+  ...props
+}: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+  return (
+    <HoverCardPrimitive.Portal data-slot="hover-card-portal">
+      <HoverCardPrimitive.Content
+        data-slot="hover-card-content"
+        align={align}
+        sideOffset={sideOffset}
+        className={cn(
+          "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-md border p-4 shadow-md outline-hidden",
+          className
+        )}
+        {...props}
+      />
+    </HoverCardPrimitive.Portal>
+  )
+}
+
+export { HoverCard, HoverCardTrigger, HoverCardContent }
