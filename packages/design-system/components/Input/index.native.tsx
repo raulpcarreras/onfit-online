@@ -1,7 +1,7 @@
 import React from "react";
 import { TextInput, TextInputProps, View } from "react-native";
 import { useThemeBridge } from "../../providers/theme";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 
 export type InputProps = {
   variant?: "outline" | "underlined" | "rounded";

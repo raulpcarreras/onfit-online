@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View } from "react-native";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 
 export interface LoaderProps {
   className?: string;

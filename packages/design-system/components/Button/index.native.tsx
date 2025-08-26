@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Pressable, Text, ViewStyle, TextStyle } from "react-native";
 import { useThemeBridge } from "../../providers/theme";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 
 type Size = "sm" | "md" | "lg" | "icon";
 type Variant = "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";

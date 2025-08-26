@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Calendar as UICalendar } from "../../ui/calendar";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 
 export interface CalendarProps {
   mode?: "single" | "multiple" | "range";

@@ -6,7 +6,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "../../ui/avatar";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 
 export interface AvatarProps {
   src?: string;

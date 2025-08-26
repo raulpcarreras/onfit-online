@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Switch as UISwitch } from "../../ui/switch";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 
 export interface SwitchProps {
   checked?: boolean;

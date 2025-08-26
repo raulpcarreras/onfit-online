@@ -1,15 +1,20 @@
 /* Estilos globales para la web */
 
+/* 1. Importar tokens HSL del design system */
+@import "@repo/design/tokens/index.css";
+
+/* 2. Cargar Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* 3. Aplicar tokens en la capa base */
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground; }
 }
 
-/* Theme bridge mínimo */
+/* 4. Configuración de tema (opcional) */
 :root {
   color-scheme: light;
 }

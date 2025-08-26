@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Button as UIButton, buttonVariants as uiButtonVariants } from "../../ui/button";
-import { cn } from "../../lib/cn";
+import { cn } from "../../lib/utils";
 import { type VariantProps } from "class-variance-authority";
 
 // Re-exportar las variantes originales de shadcn

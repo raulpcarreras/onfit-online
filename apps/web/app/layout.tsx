@@ -3,8 +3,6 @@ import "setimmediate";
 
 /* Importar estilos en el orden correcto */
 
-import "@repo/design/tokens/index.css";
-
 import "./globals.css";
 
 
