@@ -151,15 +151,13 @@ export default function LoginForm() {
         <div className="mt-4 text-center">
           <p className="text-sm text-muted-foreground">
             ¿No tienes cuenta?{" "}
-            <Link href="/register" className="text-primary hover:underline">
-              Regístrate
-            </Link>
+            <span className="text-muted-foreground/60">Regístrate</span>
           </p>
           
           <div className="mt-2">
-            <Link href="/forgot-password" className="text-sm text-muted-foreground hover:text-foreground">
+            <span className="text-sm text-muted-foreground/60">
               ¿Olvidaste tu contraseña?
-            </Link>
+            </span>
           </div>
         </div>
 
