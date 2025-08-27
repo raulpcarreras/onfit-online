@@ -1,92 +1,68 @@
 import * as React from "react";
-import { Pressable, Text, ViewStyle, TextStyle } from "react-native";
+import { Pressable, Text, ActivityIndicator, ViewStyle, TextStyle } from "react-native";
 import { useThemeBridge } from "../../providers/theme";
 import { cn } from "../../lib/utils";
+import { isExtraVariant } from "./variants.shared";
+import { sizeClasses, getExtraVariantStyles, getCoreVariantStyles, type NativeSize } from "./variants.native";
 
-type Size = "sm" | "md" | "lg" | "icon";
-type Variant = "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+export type ButtonVariantCore = "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+export type ButtonVariantExtra = "onfit" | "premium" | "social" | "success" | "warning";
+export type ButtonVariant = ButtonVariantCore | ButtonVariantExtra;
 
 export type ButtonProps = {
-  onPress?: () => void;
+  variant?: ButtonVariant;
+  size?: NativeSize;
   disabled?: boolean;
-  variant?: Variant;
-  size?: Size;
+  isLoading?: boolean;
+  onPress?: () => void;
   style?: ViewStyle;
   textStyle?: TextStyle;
   children?: React.ReactNode;
+  className?: string;
 };
 
-export const Button = ({
-  onPress,
-  disabled,
+export const Button: React.FC<ButtonProps> = ({
   variant = "default",
   size = "md",
+  disabled,
+  isLoading,
+  onPress,
   style,
   textStyle,
+  className,
   children,
-}: ButtonProps) => {
+}) => {
   const { colors } = useThemeBridge();
 
-  // 🎯 Mapear variantes a estilos nativos usando tokens
-  const getVariantStyles = () => {
-    switch (variant) {
-      case "default":
-        return { backgroundColor: colors.primary };
-      case "secondary":
-        return { backgroundColor: colors.secondary };
-      case "outline":
-        return { 
-          backgroundColor: "transparent", 
-          borderWidth: 1, 
-          borderColor: colors.border 
-        };
-      case "ghost":
-        return { backgroundColor: "transparent" };
-      case "destructive":
-        return { backgroundColor: colors.destructive };
-      default:
-        return { backgroundColor: colors.primary };
-    }
-  };
-
-  const getSizeClasses = () => {
-    switch (size) {
-      case "sm":
-        return "h-8 px-3";
-      case "md":
-        return "h-10 px-4";
-      case "lg":
-        return "h-11 px-6";
-      case "icon":
-        return "h-10 w-10";
-      default:
-        return "h-10 px-4";
-    }
-  };
+  const isExtra = isExtraVariant(variant);
+  const { container: bgStyle, label: fgStyle, extraClasses } = isExtra
+    ? getExtraVariantStyles(variant as ButtonVariantExtra, colors)
+    : getCoreVariantStyles(variant as ButtonVariantCore, colors);
 
   return (
     <Pressable
-      disabled={disabled}
+      disabled={disabled || isLoading}
       onPress={onPress}
       className={cn(
-        "rounded-lg justify-center items-center",
-        getSizeClasses(),
-        disabled && "opacity-60"
+        "rounded-lg items-center justify-center active:opacity-95",
+        sizeClasses(size),
+        disabled || isLoading ? "opacity-60" : "",
+        extraClasses,
+        className
       )}
-      style={[
-        getVariantStyles(),
-        style,
-      ]}
+      style={[bgStyle, style]}
+      accessibilityRole="button"
     >
-      <Text 
-        className="font-semibold"
-        style={[
-          { color: variant === "outline" || variant === "ghost" ? colors.foreground : colors["primary-foreground"] },
-          textStyle
-        ]}
-      >
-        {children}
-      </Text>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text
+          className={cn("font-medium")}
+          style={[fgStyle, textStyle]}
+        >
+          {children}
+        </Text>
+      )}
     </Pressable>
   );
 };

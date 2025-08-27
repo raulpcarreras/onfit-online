@@ -30,6 +30,23 @@
   --border: 240 5.9% 90%;
   --input: 240 5.9% 90%;
   --ring: 215 20.2% 65.1%;
+
+  /* Variantes semánticas extra */
+  --onfit: 24.64 100% 50%;
+  --onfit-foreground: 0 0% 100%;
+
+  --premium-from: 272 69% 47%;
+  --premium-to: 330 81% 60%;
+  --premium-foreground: 0 0% 100%;
+
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+
+  --warning: 38 92% 50%;
+  --warning-foreground: 0 0% 100%;
+
+  --info: 217 91% 60%;
+  --info-foreground: 0 0% 100%;
 }
 
 .dark {
@@ -61,4 +78,21 @@
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
   --ring: 217.2 32.6% 17.5%;
+
+  /* Ajustes para buen contraste en dark */
+  --onfit: 24.64 100% 50%;
+  --onfit-foreground: 0 0% 0%;
+
+  --premium-from: 272 69% 55%;
+  --premium-to: 330 81% 65%;
+  --premium-foreground: 0 0% 10%;
+
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 0%;
+
+  --warning: 38 92% 55%;
+  --warning-foreground: 0 0% 0%;
+
+  --info: 217 91% 65%;
+  --info-foreground: 0 0% 0%;
 }

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
-import { type ThemeMode, type ColorTokens } from "../../tokens/index";
 
+type ThemeMode = "light" | "dark";
 type Mode = ThemeMode | "system";
 
 type ThemeBridgeContextType = {
@@ -11,7 +11,7 @@ type ThemeBridgeContextType = {
   resolvedMode: ThemeMode;     // 'light' | 'dark'
   isDark: boolean;
   setMode: (m: Mode) => void;
-  colors: ColorTokens; // mapa de colores tipado
+  colors: Record<string, string>; // mapa de colores CSS variables
 };
 
 const ThemeBridgeContext = React.createContext<ThemeBridgeContextType | null>(null);
@@ -65,6 +65,18 @@ function ThemeBridgeInner({ children }: { children: React.ReactNode }) {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        // Variantes extra para paridad web/native
+        onfit: "hsl(var(--onfit))",
+        "onfit-foreground": "hsl(var(--onfit-foreground))",
+        "premium-from": "hsl(var(--premium-from))",
+        "premium-to": "hsl(var(--premium-to))",
+        "premium-foreground": "hsl(var(--premium-foreground))",
+        success: "hsl(var(--success))",
+        "success-foreground": "hsl(var(--success-foreground))",
+        warning: "hsl(var(--warning))",
+        "warning-foreground": "hsl(var(--warning-foreground))",
+        info: "hsl(var(--info))",
+        "info-foreground": "hsl(var(--info-foreground))",
       },
     }),
     [theme, resolved, setTheme]

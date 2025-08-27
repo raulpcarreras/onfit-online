@@ -23,6 +23,18 @@ export interface ColorTokens {
   border: string;
   input: string;
   ring: string;
+  // Variantes extra
+  onfit: string;
+  "onfit-foreground": string;
+  "premium-from": string;
+  "premium-to": string;
+  "premium-foreground": string;
+  success: string;
+  "success-foreground": string;
+  warning: string;
+  "warning-foreground": string;
+  info: string;
+  "info-foreground": string;
 }
 
 export interface ThemeTokens {
@@ -52,6 +64,18 @@ export const tokens: ThemeTokens = {
     border: "#e5e7eb",
     input: "#ffffff",
     ring: "#f59e0b",
+    // Variantes extra
+    onfit: "#f59e0b",
+    "onfit-foreground": "#ffffff",
+    "premium-from": "#8b5cf6",
+    "premium-to": "#ec4899",
+    "premium-foreground": "#ffffff",
+    success: "#16a34a",
+    "success-foreground": "#ffffff",
+    warning: "#ca8a04",
+    "warning-foreground": "#ffffff",
+    info: "#3b82f6",
+    "info-foreground": "#ffffff",
   },
   dark: {
     background: "#0a0a0a",
@@ -73,6 +97,18 @@ export const tokens: ThemeTokens = {
     border: "#262626",
     input: "#171717",
     ring: "#f59e0b",
+    // Variantes extra
+    onfit: "#f59e0b",
+    "onfit-foreground": "#000000",
+    "premium-from": "#a855f7",
+    "premium-to": "#f472b6",
+    "premium-foreground": "#000000",
+    success: "#16a34a",
+    "success-foreground": "#000000",
+    warning: "#eab308",
+    "warning-foreground": "#000000",
+    info: "#60a5fa",
+    "info-foreground": "#000000",
   },
 };
 

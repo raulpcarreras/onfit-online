@@ -1,39 +1,43 @@
 "use client";
 
 import * as React from "react";
-import { Button as UIButton, buttonVariants as uiButtonVariants } from "../../ui/button";
+import { Button as UIButton, buttonVariants as shadcnVariants } from "../../ui/button";
 import { cn } from "../../lib/utils";
-import { type VariantProps } from "class-variance-authority";
+import {
+  AnyVariant,
+  AnySize,
+  isExtraVariant,
+  extraButtonVariants,
+  mapSizeToBase,
+} from "./variants";
 
-// Re-exportar las variantes originales de shadcn
-export const buttonVariants = uiButtonVariants;
-
-// Mapear tamaños para mantener compatibilidad
-type SizeMapping = {
-  sm: "sm";
-  md: "default"; // shadcn usa "default" en lugar de "md"
-  lg: "lg";
-  icon: "icon";
+export type ButtonProps = Omit<React.ComponentProps<typeof UIButton>, 'variant' | 'size'> & {
+  variant?: AnyVariant;
+  size?: AnySize;
+  onPress?: React.MouseEventHandler<HTMLButtonElement>; // compat alias
 };
 
-export type ButtonProps = React.ComponentProps<"button"> &
-  Omit<VariantProps<typeof uiButtonVariants>, "size"> & {
-    onPress?: React.MouseEventHandler<HTMLButtonElement>;
-    size?: "sm" | "md" | "lg" | "icon"; // Permitir "md" para compatibilidad
-  };
-
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, onPress, variant, size, ...props }, ref) => {
-    // Mapear "md" a "default" para compatibilidad
-    const mappedSize = size === "md" ? "default" : (size || "default");
-    
+  ({ className, variant = "default", size = "default", onPress, onClick, ...props }, ref) => {
+    const baseSize = mapSizeToBase(size);
+
+    // Si la variant NO es extra, la pasamos a shadcn.
+    // Si es extra, forzamos 'default' en shadcn y añadimos las clases propias.
+    const passVariant = isExtraVariant(variant) ? "default" : (variant as any);
+
+    // Clases extra: solo se aplican si it's extra (si no, string vacío)
+    const extra = isExtraVariant(variant)
+      ? extraButtonVariants({ variant: variant as any, size: (size as any) })
+      : "";
+
     return (
       <UIButton
         ref={ref}
-        onClick={onPress}
-        variant={variant}
-        size={mappedSize}
-        className={cn(className)}
+        variant={passVariant}
+        size={baseSize}
+        className={cn(extra, className)}
+        // onPress alias → onClick web
+        onClick={onClick ?? onPress}
         {...props}
       />
     );
@@ -41,3 +45,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+
+// Re-export de variantes base (por si las usan fuera)
+export { shadcnVariants as buttonVariants };
