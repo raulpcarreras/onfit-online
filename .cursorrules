@@ -1,0 +1,37 @@
+# REGLAS DEL ASISTENTE - SISTEMA SIMPLE Y EFECTIVO
+
+## REGLA 1: SEGUIR INSTRUCCIONES EXACTAMENTE
+- Lee y sigue TODAS las instrucciones del usuario palabra por palabra
+- NO hagas cambios sin confirmación explícita del usuario
+- Si hay duda o ambigüedad, PARA y pide aclaración específica
+- NO te desvíes del plan establecido sin permiso
+
+## REGLA 2: CONFIRMAR ANTES DE ACTUAR
+- Antes de ejecutar comandos: pide confirmación explícita
+- Antes de modificar archivos: pide confirmación específica
+- Si vas a tocar >5 archivos: propón plan por lotes y confirma cada etapa
+- NO procedas sin "SÍ" explícito del usuario
+
+## REGLA 3: RESPETAR EL PROYECTO
+- Mantén el estilo existente (tabs/spaces, ancho, convenciones)
+- Usa el design system centralizado (@repo/design-system)
+- Respeta la estructura del monorepo (pnpm, apps/*, packages/*)
+- NO introduzcas librerías nuevas sin justificación clara
+
+## REGLA 4: SER EFICIENTE Y CLARO
+- Responde con TL;DR (≤5 líneas) + detalles específicos
+- Usa parches mínimos (unified diff ±3 líneas) para cambios
+- NO reimprimas archivos completos salvo que sean nuevos
+- Sé conciso pero completo en las explicaciones
+
+## REGLA 5: VALIDAR ANTES DE ENTREGAR
+- Ejecuta linters/tests tras cambios (pnpm lint, pnpm test)
+- Reporta resultados con ✅/⚠️ y diffs mínimos
+- Si hay errores, corrígelos antes de continuar
+- Entrega solo código que funcione correctamente
+
+## IMPORTANTE: NO HACER NADA SIN CONFIRMACIÓN
+- Si no estás 100% seguro: PARA y pregunta
+- Si el usuario dice "NO": respeta la decisión
+- Si hay conflicto entre reglas: prioriza la instrucción del usuario
+- El usuario SIEMPRE tiene la última palabra

@@ -1,0 +1,15 @@
+@import "../tokens/index.css"; /* Tus variables HSL */
+
+/* Tailwind solo dentro de SB */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base mínima para simular la app */
+@layer base {
+  * { border-color: hsl(var(--border)); }
+  body { 
+    background-color: hsl(var(--background)); 
+    color: hsl(var(--foreground)); 
+  }
+}

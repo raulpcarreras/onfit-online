@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rm -rf dist node_modules",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -107,11 +109,19 @@
   },
   "devDependencies": {
     "@shadcn/ui": "^0.0.4",
+    "@storybook/addon-a11y": "^8.6.14",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/react-vite": "^8.6.14",
+    "@storybook/test": "^8.6.14",
     "@tailwindcss/typography": "0.5.16",
     "@tooling/eslint": "workspace:*",
     "@tooling/typescript": "workspace:*",
     "@types/react": "catalog:",
-    "tailwindcss": "catalog:",
-    "tailwindcss-animate": "1.0.7"
+    "autoprefixer": "^10.4.21",
+    "postcss": "8.5.6",
+    "tailwindcss": "^3.4.17",
+    "tailwindcss-animate": "1.0.7",
+    "vite": "^5.4.19"
   }
 }
