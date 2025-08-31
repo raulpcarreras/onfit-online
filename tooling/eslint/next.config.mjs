@@ -1,7 +1,12 @@
 // https://nextjs.org/docs/pages/building-your-application/configuring/eslint
 
-import { FlatCompat } from "@eslint/eslintrc";
+// tooling/eslint/next.config.mjs
 
+import { createRequire } from 'node:module';
+
+
+const require = createRequire(import.meta.url);
+const { FlatCompat } = require('@eslint/eslintrc');
 const compat = new FlatCompat({
     // import.meta.dirname is available after Node.js v20.11.0
     baseDirectory: import.meta.dirname,

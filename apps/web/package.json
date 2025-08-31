@@ -21,6 +21,7 @@
     "@t3-oss/env-nextjs": "0.13.8",
     "@tanstack/react-query": "5.81.5",
     "geist": "1.4.2",
+    "i18next": "^23.16.8",
     "lucide-react": "^0.540.0",
     "next": "15.3.4",
     "next-themes": "0.4.6",
@@ -29,6 +30,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-grid-layout": "^1.5.2",
+    "react-i18next": "^15.7.3",
     "react-mobile-app-button": "1.2.19",
     "react-native-web": "0.20.0",
     "react-resizable": "^3.0.5",
@@ -40,9 +42,11 @@
     "@tooling/jest": "workspace:*",
     "@tooling/typescript": "workspace:*",
     "@types/react": "catalog:",
+    "autoprefixer": "^10.4.21",
     "critters": "0.0.25",
     "cross-env": "7.0.3",
     "postcss": "8.5.6",
+    "tailwindcss": "^3.4.17",
     "tree-kill": "1.2.2"
   }
 }
