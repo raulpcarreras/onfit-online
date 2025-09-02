@@ -1,3 +1,4 @@
+import '@repo/design/tailwind/global.css';
 import 'react-native-reanimated';
 import { LogBox } from 'react-native';
 import { Slot } from 'expo-router';

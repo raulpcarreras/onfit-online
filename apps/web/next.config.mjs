@@ -7,75 +7,57 @@ function withExpo(nextConfig) {
     return {
         ...nextConfig,
         webpack(config, options) {
-            // Configurar cache de webpack para evitar warnings de strings grandes
+            // Cache de webpack
             if (config.cache) {
                 config.cache = {
                     ...config.cache,
-                    type: 'filesystem',
-                    compression: 'gzip',
+                    type: "filesystem",
+                    compression: "gzip",
                     maxMemoryGenerations: 1,
                 };
             }
 
-            // Mix in aliases
-            if (!config.resolve) {
-                config.resolve = {};
-            }
-
+            // Aliases base (RN -> RNW + aliases internos)
+            if (!config.resolve) config.resolve = {};
             config.resolve.alias = {
                 ...(config.resolve.alias || {}),
-                // Alias direct react-native imports to react-native-web
                 "react-native$": "react-native-web",
-                // Alias internal react-native modules to react-native-web
                 "react-native/Libraries/EventEmitter/RCTDeviceEventEmitter$":
                     "react-native-web/dist/vendor/react-native/NativeEventEmitter/RCTDeviceEventEmitter",
                 "react-native/Libraries/vendor/emitter/EventEmitter$":
                     "react-native-web/dist/vendor/react-native/emitter/EventEmitter",
                 "react-native/Libraries/EventEmitter/NativeEventEmitter$":
                     "react-native-web/dist/vendor/react-native/NativeEventEmitter",
-                // Alias temporal de compatibilidad design system
-                '@repo/design-system': '@repo/design', // fallback temporal
             };
 
+            // Prioriza variantes .web.*
             config.resolve.extensions = [
-                ".web.js",
-                ".web.jsx",
-                ".web.ts",
                 ".web.tsx",
+                ".web.ts",
+                ".web.jsx",
+                ".web.js",
                 ...(config.resolve?.extensions ?? []),
             ];
 
-            if (!config.module.rules) {
-                config.module.rules = [];
-            }
-
+            // Regla fuentes (opcional)
+            if (!config.module?.rules) config.module.rules = [];
             config.module.rules.push({
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
                 type: "asset/resource",
             });
 
-            if (!config.plugins) {
-                config.plugins = [];
-            }
-
-            // Expose __DEV__ from Metro.
+            // __DEV__ como en Metro
+            if (!config.plugins) config.plugins = [];
             config.plugins.push(
                 new options.webpack.DefinePlugin({
                     __DEV__: JSON.stringify(process.env.NODE_ENV !== "production"),
                 }),
             );
 
-            // Configurar performance para evitar warnings de strings grandes
-            if (!config.performance) {
-                config.performance = {};
-            }
-            config.performance.hints = false; // Desactivar warnings de performance
-
-            // Execute the user-defined webpack config.
+            // Ejecuta la webpack del usuario si existe
             if (typeof nextConfig.webpack === "function") {
                 return nextConfig.webpack(config, options);
             }
-
             return config;
         },
     };
@@ -84,19 +66,22 @@ function withExpo(nextConfig) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    
 
     transpilePackages: [
+        // RN / Expo básicos
         "react-native",
         "react-native-web",
         "expo",
         "expo-constants",
         "expo-modules-core",
         "@expo/vector-icons",
+        // styling / interop
         "nativewind",
         "react-native-css-interop",
+        // gestos/animaciones
         "react-native-reanimated",
         "react-native-gesture-handler",
+        // otros usados en tu DS
         "@react-native/assets-registry",
         "@rn-primitives/accordion",
         "@rn-primitives/alert-dialog",
@@ -128,27 +113,41 @@ const nextConfig = {
         "@rn-primitives/toolbar",
         "@rn-primitives/tooltip",
         "@rn-primitives/types",
+        // tu design system
+        "@repo/design-system",
     ],
+
     experimental: {
         optimizeServerReact: true,
         forceSwcTransforms: true,
         optimizeCss: true,
-        // dynamicIO: true,
-        // ppr: true,
     },
 
     images: {
         remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "play.google.com",
-            },
-            {
-                protocol: "https",
-                hostname: "developer.apple.com",
-            },
+            { protocol: "https", hostname: "play.google.com" },
+            { protocol: "https", hostname: "developer.apple.com" },
         ],
+    },
+
+    // Extra: alias y extensiones específicas del proyecto (se mezclarán en withExpo)
+    webpack: (config) => {
+        config.resolve.alias = {
+            ...(config.resolve.alias ?? {}),
+            "react-native$": "react-native-web",
+        };
+        config.resolve.extensions = [
+            ".web.tsx",
+            ".web.ts",
+            ".web.jsx",
+            ".web.js",
+            ...(config.resolve.extensions ?? []),
+        ];
+        return config;
     },
 };
 
+// ✅ Exporta UNA sola vez
 export default withExpo(nextConfig);
+
+

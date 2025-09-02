@@ -5,19 +5,12 @@
     "jsx": "preserve",
     "strict": true,
     "skipLibCheck": true,
+    "moduleResolution": "bundler",
     "paths": {
-      "@/assets/*": [
-        "./public/*"
-      ],
-      "@/*": [
-        "./src/*"
-      ],
-      "@repo/design/*": [
-        "../../packages/design-system/*"
-      ],
-      "@repo/*": [
-        "../../packages/*"
-      ]
+      "@/assets/*": ["./public/*"],
+      "@/*": ["./src/*"],
+      "@repo/design/*": ["../../packages/design-system/*"],
+      "@repo/*": ["../../packages/*"]
     }
   },
   "include": [
@@ -25,9 +18,20 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "nativewind-env.d.ts"
+    "src/types/**/*.d.ts",
+    "../packages/design-system/src/types/**/*.d.ts",
+    "../packages/design-system/types/**/*.d.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/*.native.tsx",
+    "**/*.native.ts",
+    "**/tooling/jest/**",
+    "**/jest/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/__tests__/**"
   ]
 }

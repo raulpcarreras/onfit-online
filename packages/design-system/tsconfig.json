@@ -1,6 +1,7 @@
 {
   "extends": "@tooling/typescript/react-library.json",
   "compilerOptions": {
+    "types": ["nativewind/types"],
     "baseUrl": ".",
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
@@ -8,9 +9,9 @@
     "module": "ESNext",
     "paths": {
       "@repo/design/*": ["./*"],
-      "@repo/*": ["../*"]
+      "@repo/*": ["../*"],
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src", "src/types/**/*.d.ts"],
   "exclude": ["node_modules"]
 }

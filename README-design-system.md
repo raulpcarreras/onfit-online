@@ -1,3 +1,4 @@
+
 # Onfit Design System — Guía de Implementación y Mantenimiento
 **Stack relevante:** Turborepo (monorepo) · Next.js 15 (web) · Expo SDK 53 (native) · Tailwind 3.x · nativewind (sin Babel) · shadcn/ui (web) · Supabase
 
