@@ -18,6 +18,7 @@ export default function PrivacyPage() {
               <ArrowLeft className="size-5 text-muted-foreground" />
             </Link>
             <div className="flex items-center gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/favicon.png"
                 alt="ONFIT Logo"

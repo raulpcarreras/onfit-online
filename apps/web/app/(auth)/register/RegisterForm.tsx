@@ -142,18 +142,21 @@ export default function RegisterForm() {
             <div className="flex flex-col items-center text-center">
               {/* Logo adaptativo según tema */}
               {!mounted ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src="/favicon.png"
                   alt="ONFIT Logo"
                   className="h-12 w-auto object-contain"
                 />
               ) : resolvedTheme === "dark" ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img 
                   src="/logos/logo-dark.png" 
                   alt="ONFIT Logo" 
                   className="h-12 w-auto object-contain"
                 />
               ) : (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img 
                   src="/logos/logo-light.png" 
                   alt="ONFIT Logo" 

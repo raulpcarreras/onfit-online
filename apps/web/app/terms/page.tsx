@@ -18,6 +18,7 @@ export default function TermsPage() {
               <ArrowLeft className="size-5 text-muted-foreground" />
             </Link>
             <div className="flex items-center gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/favicon.png"
                 alt="ONFIT Logo"
@@ -92,7 +93,7 @@ export default function TermsPage() {
             <Card className="p-6">
               <h3 className="text-lg font-semibold text-foreground mb-3">6. Limitación de Responsabilidad</h3>
               <p>
-                ONFIT se proporciona "tal como está" sin garantías de ningún tipo. No somos responsables 
+                ONFIT se proporciona &quot;tal como está&quot; sin garantías de ningún tipo. No somos responsables 
                 de lesiones o daños que puedan resultar del uso de nuestros servicios de fitness. 
                 Siempre consulta con un profesional de la salud antes de comenzar un nuevo programa de ejercicios.
               </p>

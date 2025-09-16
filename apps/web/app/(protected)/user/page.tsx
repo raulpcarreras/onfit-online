@@ -14,6 +14,7 @@ import { Button } from "@repo/design/components/Button";
 import { Input } from "@repo/design/components/Input";
 import { Card } from "@repo/design/components/Card";
 import { Checkbox } from "@repo/design/components/Checkbox";
+import { ChecklistItem } from "@repo/design/components/ChecklistItem";
 import { Progress } from "@repo/design/components/Progress";
 
 type KPI = { label: string; value: string; diff?: string; icon: any };
@@ -195,10 +196,10 @@ export default function UserDashboard() {
           <div className="font-medium">Checklist de hoy</div>
           <div className="mt-3 grid sm:grid-cols-2 gap-2">
             {habitos.map((h, index) => (
-              <div 
+              <ChecklistItem 
                 key={h.key} 
-                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:bg-secondary cursor-pointer"
-                onClick={() => {
+                checked={habitStates[index]}
+                onPress={() => {
                   const newStates = [...habitStates];
                   newStates[index] = !habitStates[index];
                   setHabitStates(newStates);
@@ -213,7 +214,7 @@ export default function UserDashboard() {
                   }}
                 />
                 <div className="text-sm">{h.key}</div>
-              </div>
+              </ChecklistItem>
             ))}
           </div>
         </Card>

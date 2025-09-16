@@ -138,18 +138,21 @@ export default function ForgotPasswordForm() {
             {/* Logo centrado en la card */}
             <div className="flex flex-col items-center text-center">
               {!mounted ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src="/favicon.png"
                   alt="ONFIT Logo"
                   className="h-12 w-auto object-contain"
                 />
               ) : resolvedTheme === "dark" ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img 
                   src="/logos/logo-dark.png" 
                   alt="ONFIT Logo" 
                   className="h-12 w-auto object-contain"
                 />
               ) : (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img 
                   src="/logos/logo-light.png" 
                   alt="ONFIT Logo" 

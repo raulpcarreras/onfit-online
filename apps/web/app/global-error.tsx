@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Button } from "@repo/design/components/Button";
 
 export default function GlobalError({
   error,
@@ -24,12 +25,12 @@ export default function GlobalError({
             <p className="text-muted-foreground mb-4">
               Ha ocurrido un error inesperado
             </p>
-            <button
-              onClick={() => reset()}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+            <Button
+              onPress={() => reset()}
+              variant="default"
             >
               Intentar de nuevo
-            </button>
+            </Button>
           </div>
         </div>
       </body>

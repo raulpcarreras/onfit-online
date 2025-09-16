@@ -69,7 +69,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [user?.id]);
+  }, [user]);
 
   const value = useMemo(
     () => ({ profile, loading, error }),

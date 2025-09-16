@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Zap } from "lucide-react";
 import { useUser } from "@/lib/user-provider";
+import { Button } from "@repo/design/components/Button";
 
 interface SuperAdminToggleProps {
   userId: string;
@@ -46,14 +47,11 @@ export default function SuperAdminToggle({
   };
 
   return (
-    <button
-      onClick={handleToggle}
+    <Button
+      onPress={handleToggle}
       disabled={loading || !canToggle}
-      className={`p-2 rounded-lg transition-colors flex items-center gap-2 ${
-        canToggle 
-          ? "hover:bg-secondary" 
-          : "opacity-50 cursor-not-allowed"
-      }`}
+      variant="ghost"
+      size="icon"
       aria-label={
         !canToggle 
           ? "No puedes quitarte tus propios permisos" 
@@ -72,6 +70,6 @@ export default function SuperAdminToggle({
       ) : (
         <Zap className={`size-5 ${isSuperAdmin ? "text-primary" : "text-muted-foreground"}`} />
       )}
-    </button>
+    </Button>
   );
 }

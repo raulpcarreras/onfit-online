@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Topbar from "@/components/dashboard/layout/Topbar";
 import Sidebar from "@/components/dashboard/layout/Sidebar";
 import { userMenuItems } from "@/components/dashboard/layout/menu-config";
+import { Backdrop } from "@repo/design/components/Backdrop";
 
 export default function UserLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -28,11 +29,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
       {/* DRAWER MOBILE */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/20 dark:bg-black/40"
-            onClick={() => setMobileOpen(false)}
-            aria-hidden
-          />
+          <Backdrop onPress={() => setMobileOpen(false)} />
           <div className="absolute top-14 bottom-0 left-0 w-60 max-w-[85%] bg-card border-r border-border shadow-xl">
             <div className="p-2">
               <Sidebar items={userMenuItems} />

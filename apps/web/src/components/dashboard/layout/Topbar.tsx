@@ -80,6 +80,7 @@ export default function Topbar({
             {/* Logo adaptativo según tema */}
             {!mounted ? (
               <div className="w-8 h-8 bg-primary/15 rounded-lg grid place-items-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/favicon.png"
                   alt="ONFIT Logo"
@@ -87,12 +88,14 @@ export default function Topbar({
                 />
               </div>
             ) : resolvedTheme === "dark" ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img 
                 src="/logos/logo-dark.png" 
                 alt="ONFIT Logo" 
                 className="h-8 w-auto object-contain"
               />
             ) : (
+              // eslint-disable-next-line @next/next/no-img-element
               <img 
                 src="/logos/logo-light.png" 
                 alt="ONFIT Logo" 

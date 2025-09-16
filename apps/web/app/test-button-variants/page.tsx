@@ -77,16 +77,16 @@ export default function TestButtonVariantsPage() {
           <Button 
             variant="premium" 
             size="xl"
-            onClick={() => alert('onClick también funciona!')}
+            onPress={() => alert('onPress también funciona!')}
           >
-            Test onClick
+            Test onPress
           </Button>
         </div>
       </section>
 
       {/* Verificación de que md funciona */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Verificación: size="md" debe funcionar</h2>
+        <h2 className="text-2xl font-semibold">Verificación: size=&quot;md&quot; debe funcionar</h2>
         <div className="flex gap-2 flex-wrap">
           <Button size="md" variant="default">Default MD</Button>
           <Button size="md" variant="outline">Outline MD</Button>

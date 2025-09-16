@@ -168,6 +168,7 @@ function ResetPasswordContent() {
               className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
             />
             <div className="flex flex-col items-center text-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/favicon.png"
                 alt="ONFIT Logo"

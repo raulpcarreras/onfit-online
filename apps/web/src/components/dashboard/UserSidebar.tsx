@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { Button } from "@repo/design/components/Button";
 
 export default function UserSidebar() {
   const router = useRouter();
@@ -49,22 +50,23 @@ function Nav() {
   return (
     <nav className="px-3 py-1 space-y-1">
       {items.map((i) => (
-        <button
+        <Button
           key={i.label}
-          onClick={() => router.push(i.href)}
+          onPress={() => router.push(i.href)}
+          variant="ghost"
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium hover:bg-secondary transition-colors"
         >
           <i.icon className="size-[18px] text-muted-foreground" />
           <span>{i.label}</span>
-        </button>
+        </Button>
       ))}
       
       {/* Separador antes del botón de logout */}
       <div className="my-2 border-t border-border/50"></div>
       
       {/* Cerrar sesión como un ítem más del menú */}
-      <button
-        onClick={() => {
+      <Button
+        onPress={() => {
           try {
             Object.keys(window.localStorage).forEach((k) => {
               if (k.startsWith("sb-") || k.toLowerCase().includes("supabase")) {
@@ -75,11 +77,12 @@ function Nav() {
           try { void supabase.auth.signOut({ scope: "global" as any }); } catch {}
           window.location.replace("/");
         }}
+        variant="ghost"
         className="w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium text-foreground hover:bg-secondary transition-colors"
       >
         <LogOut className="size-[18px] text-muted-foreground" />
         <span>Cerrar sesión</span>
-      </button>
+      </Button>
     </nav>
   );
 }
