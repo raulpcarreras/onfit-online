@@ -1,14 +1,25 @@
-import { Redirect } from 'expo-router';
-import { useUser } from '../src/lib/user-provider';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-export default function Index() {
-  const { user } = useUser();
-  
-  // Si no hay usuario, ir a login
-  if (!user) {
-    return <Redirect href="/login" />;
-  }
-  
-  // Si hay usuario, redirigir según su rol
-  return <Redirect href="/admin" />;
+export default function HomeScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>ONFIT13</Text>
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000000',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+});

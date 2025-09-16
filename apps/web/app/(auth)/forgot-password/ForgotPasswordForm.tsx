@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "../../../src/lib/supabase";
 import { Dumbbell, Sun, Moon, Monitor, ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";

@@ -46,7 +46,7 @@ export function ThemeToggle({
     <Button
       variant={variant}
       size={size}
-      onPress={handleThemeChange}
+      onClick={handleThemeChange}
       className={className}
       aria-label={`Cambiar tema a ${themeSetting === "light" ? "oscuro" : themeSetting === "dark" ? "sistema" : "claro"}`}
       {...props}

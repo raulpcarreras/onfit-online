@@ -3,15 +3,18 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
+    ".": "./index",
+    "./web": "./src/web.ts",
+    "./native": "./src/native.ts",
     "./components/*": {
       "browser": "./components/*/index.web",
       "default": "./components/*/index.native"
     },
     "./providers": {
       "browser": "./providers/index.web",
-      "default": "./providers/index.native"
+      "default": "./providers/index.native.tsx"
     },
-    ".": "./index"
+    "./providers/native": "./providers/index.native.tsx"
   },
   "scripts": {
     "clean": "rm -rf dist node_modules",
@@ -24,6 +27,7 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "react-native": "^0.79.0",
     "react-native-web": "^0.20.0"
   },
@@ -106,10 +110,7 @@
     "lucide-react": "^0.540.0",
     "lucide-react-native": "0.525.0",
     "next-themes": "0.4.6",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "react-hook-form": "7.59.0",
-    "react-native": "catalog:",
     "react-native-edge-to-edge": "catalog:",
     "react-native-gesture-handler": "catalog:",
     "react-native-reanimated": "catalog:",
