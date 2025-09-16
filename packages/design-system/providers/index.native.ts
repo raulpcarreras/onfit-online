@@ -1,4 +1,4 @@
 // packages/design-system/providers/index.native.ts
-// Export para native
+// Export para native - sin ciclo
 
-export * from "./index";
+export * from "./Providers.native";

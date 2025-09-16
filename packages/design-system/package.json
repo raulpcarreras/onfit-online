@@ -12,9 +12,10 @@
     },
     "./providers": {
       "browser": "./providers/index.web",
-      "default": "./providers/index.native.tsx"
+      "default": "./providers/index.native"
     },
-    "./providers/native": "./providers/index.native.tsx"
+    "./providers/web": "./providers/index.web",
+    "./providers/native": "./providers/index.native"
   },
   "scripts": {
     "clean": "rm -rf dist node_modules",

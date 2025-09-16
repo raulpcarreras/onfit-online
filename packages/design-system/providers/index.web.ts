@@ -1,4 +1,4 @@
 // packages/design-system/providers/index.web.ts
-// Export para web
+// Export para web - sin ciclo
 
-export * from "./index";
+export * from "./Providers.web";

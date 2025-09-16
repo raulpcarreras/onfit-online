@@ -1,6 +1,6 @@
 "use client";
 
-import { Providers } from "@repo/design/providers";
+import { Providers } from "@repo/design/providers/index.web";
 import { PropsWithChildren } from "react";
 import { loadI18nAsync } from ".";
 

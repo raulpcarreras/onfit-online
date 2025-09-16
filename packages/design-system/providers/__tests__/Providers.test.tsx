@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Providers } from '../index.web';
+import { Providers } from '../Providers.web';
 
 describe('Providers Component (Web)', () => {
   it('should render children correctly', () => {
