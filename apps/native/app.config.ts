@@ -57,7 +57,9 @@ const client = z.object({
 
     SENTRY_DSN: z.string().nullable().default(null),
     EXPO_PUBLIC_SUPABASE_URL: z.string().min(1, "EXPO_PUBLIC_SUPABASE_URL is required"),
-    EXPO_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, "EXPO_PUBLIC_SUPABASE_ANON_KEY is required"),
+    EXPO_PUBLIC_SUPABASE_ANON_KEY: z
+        .string()
+        .min(1, "EXPO_PUBLIC_SUPABASE_ANON_KEY is required"),
 });
 
 const buildTime = z.object({
@@ -236,5 +238,3 @@ const config: import("expo/config").ExpoConfig = {
 export type ClientEnv = z.infer<typeof client>;
 export type BuildEnv = z.infer<typeof buildTime>;
 export default config;
-
-

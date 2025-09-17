@@ -17,7 +17,7 @@ export default function TrainerPage() {
   const onLogout = async () => {
     if (signingOut) return;
     setSigningOut(true);
-    
+
     // Logout server-first: el servidor limpia las cookies
     await fetch("/api/auth/signout", { method: "POST", credentials: "include" });
     window.location.replace("/login");
@@ -27,9 +27,9 @@ export default function TrainerPage() {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="p-8 text-center space-y-6">
         <h1 className="text-3xl font-bold text-foreground">TRAINER PANEL</h1>
-        
-        <Button 
-          onPress={onLogout} 
+
+        <Button
+          onPress={onLogout}
           disabled={signingOut}
           variant="outline"
           className="w-full"

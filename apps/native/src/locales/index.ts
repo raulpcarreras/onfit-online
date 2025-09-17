@@ -15,7 +15,6 @@ declare module "i18next" {
 }
 
 declare global {
-    /* eslint-disable no-var */
     var i18n: typeof locale;
 }
 

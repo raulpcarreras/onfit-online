@@ -7,6 +7,7 @@
 ## 📋 INFORMACIÓN DEL PROYECTO
 
 ### **Stack Tecnológico:**
+
 - **Monorepo**: pnpm + Turbo
 - **Web**: Next.js 15 + Tailwind CSS 3
 - **Native**: Expo SDK 53 + NativeWind 4 + Reanimated 3
@@ -15,6 +16,7 @@
 - **Gestión de estado**: React Context + Providers
 
 ### **Estructura del Monorepo:**
+
 ```
 onfit/
 ├── apps/
@@ -30,6 +32,7 @@ onfit/
 ## 🎨 SISTEMA DE DISEÑO - REGLAS DURAS
 
 ### **❌ PROHIBIDO ABSOLUTAMENTE:**
+
 1. **NO componentes NATIVOS** en implementaciones WEB
 2. **NO CSS hardcodeado** ni colores inventados
 3. **NO estilos ad-hoc** por página
@@ -38,6 +41,7 @@ onfit/
 6. **NO botones feos** o inconsistentes
 
 ### **✅ OBLIGATORIO:**
+
 1. **Usar SOLO** componentes de `@repo/design`
 2. **Seguir** el tema y estilos existentes
 3. **Mantener consistencia** visual con el resto de la app
@@ -49,6 +53,7 @@ onfit/
 ## 🏗️ ARQUITECTURA DE LA APLICACIÓN
 
 ### **Estructura de Rutas (Next.js App Router):**
+
 ```
 apps/web/app/
 ├── (auth)/           # Rutas de autenticación
@@ -63,6 +68,7 @@ apps/web/app/
 ```
 
 ### **Componentes de Layout:**
+
 - **`Sidebar.tsx`**: Navegación lateral
 - **`Topbar.tsx`**: Barra superior con notificaciones y selector de tema
 - **`UserSidebar.tsx`**: Sidebar específico para usuarios
@@ -72,6 +78,7 @@ apps/web/app/
 ## 🔧 COMPONENTES DISPONIBLES
 
 ### **Ubicación del Sistema de Diseño:**
+
 ```
 packages/design-system/
 ├── components/       # Componentes base
@@ -81,6 +88,7 @@ packages/design-system/
 ```
 
 ### **Componentes Principales:**
+
 - **`Button`**: Botones del sistema (web/native)
 - **`Input`**: Campos de entrada
 - **`Card`**: Tarjetas contenedoras
@@ -89,13 +97,14 @@ packages/design-system/
 - **`Text`**: Componentes de texto tipografiado
 
 ### **Importación Correcta:**
+
 ```typescript
 // ✅ CORRECTO - Usar componentes del sistema
-import { Button } from '@repo/design/components/Button';
-import { Card } from '@repo/design/components/Card';
+import { Button } from "@repo/design/components/Button";
+import { Card } from "@repo/design/components/Card";
 
 // ❌ INCORRECTO - No usar componentes nativos en web
-import { Button } from '@repo/design/components/Button/index.native';
+import { Button } from "@repo/design/components/Button/index.native";
 ```
 
 ---
@@ -103,18 +112,21 @@ import { Button } from '@repo/design/components/Button/index.native';
 ## 🎯 PATRONES DE DISEÑO
 
 ### **Botones del Sistema:**
+
 - **Estilo**: Igual que campana de notificación y selector de tema
 - **Colores**: Del tema existente (NO inventar)
 - **Tamaños**: Consistentes con el resto de la app
 - **Estados**: Hover, active, disabled
 
 ### **Layout de Páginas:**
+
 - **Header**: Título de página + acciones principales
 - **Content**: Contenido principal con padding consistente
 - **Cards**: Usar clase `card` para contenedores
 - **Espaciado**: Seguir el sistema de espaciado del tema
 
 ### **Tablas de Datos:**
+
 - **Componente**: `@repo/design/components/Table`
 - **Estilo**: Consistente con `/admin/users`
 - **Paginación**: Si es necesario
@@ -125,12 +137,14 @@ import { Button } from '@repo/design/components/Button/index.native';
 ## 🚫 ERRORES COMUNES A EVITAR
 
 ### **Errores de Diseño:**
+
 1. **Botones feos**: Usar siempre componentes del sistema
 2. **Colores inventados**: Seguir el tema existente
 3. **Layout inconsistente**: Mantener estructura similar a páginas existentes
 4. **Componentes nativos en web**: Verificar imports
 
 ### **Errores de Arquitectura:**
+
 1. **CSS hardcodeado**: Usar clases de Tailwind del tema
 2. **Estilos inline**: Evitar `style={{}}`
 3. **Componentes duplicados**: Reutilizar componentes existentes
@@ -141,6 +155,7 @@ import { Button } from '@repo/design/components/Button/index.native';
 ## 🔍 VERIFICACIÓN DE CALIDAD
 
 ### **Checklist Antes de Entregar:**
+
 - [ ] **¿Usa SOLO componentes del sistema de diseño?**
 - [ ] **¿Mantiene consistencia visual con el resto de la app?**
 - [ ] **¿No tiene CSS hardcodeado ni colores inventados?**
@@ -149,6 +164,7 @@ import { Button } from '@repo/design/components/Button/index.native';
 - [ ] **¿No hay componentes nativos en implementación web?**
 
 ### **Comandos de Verificación:**
+
 ```bash
 # Verificar que la app compila
 pnpm web:dev
@@ -165,6 +181,7 @@ pnpm web:type-check
 ## 📚 EJEMPLOS DE IMPLEMENTACIÓN
 
 ### **Página de Administración (Referencia):**
+
 ```typescript
 // apps/web/app/(protected)/admin/users/page.tsx
 // ✅ Ejemplo de implementación correcta
@@ -174,6 +191,7 @@ pnpm web:type-check
 ```
 
 ### **Componente de Botón (Referencia):**
+
 ```typescript
 // packages/design-system/components/Button/index.web.tsx
 // ✅ Componente base del sistema
@@ -186,16 +204,19 @@ pnpm web:type-check
 ## 🚀 FLUJO DE DESARROLLO RECOMENDADO
 
 ### **Paso 1: Análisis**
+
 1. **Revisar** páginas similares existentes
 2. **Identificar** componentes del sistema a usar
 3. **Planificar** estructura de la página
 
 ### **Paso 2: Implementación**
+
 1. **Crear** estructura básica de la página
 2. **Implementar** usando componentes del sistema
 3. **Mantener** consistencia visual
 
 ### **Paso 3: Verificación**
+
 1. **Revisar** checklist de calidad
 2. **Probar** en diferentes tamaños de pantalla
 3. **Verificar** que no hay regresiones visuales
@@ -205,11 +226,13 @@ pnpm web:type-check
 ## 📞 SOPORTE Y REFERENCIAS
 
 ### **Archivos de Referencia:**
+
 - **`docs/sistema-estilos.md`**: Documentación detallada del sistema de estilos
 - **`docs/seguridad-supabase.md`**: Arquitectura de seguridad y Supabase
 - **`packages/design-system/`**: Código fuente del sistema de diseño
 
 ### **Páginas de Ejemplo:**
+
 - **`/admin/users`**: Gestión de usuarios (referencia principal)
 - **`/admin/dashboard`**: Dashboard de administración
 - **`/trainer`**: Panel de entrenador
@@ -226,5 +249,5 @@ pnpm web:type-check
 
 ---
 
-*Última actualización: 2025-08-22*
-*Versión: 1.0*
+_Última actualización: 2025-08-22_
+_Versión: 1.0_

@@ -10,15 +10,15 @@ export interface ThemeToggleProps {
   size?: "sm" | "md" | "lg" | "icon";
 }
 
-export function ThemeToggle({ 
-  className, 
-  variant = "ghost", 
+export function ThemeToggle({
+  className,
+  variant = "ghost",
   size = "sm",
-  ...props 
+  ...props
 }: ThemeToggleProps) {
   const { setTheme, theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => setMounted(true), []);
   const themeSetting = mounted ? (theme ?? "system") : "system";
 

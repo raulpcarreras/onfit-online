@@ -1,4 +1,4 @@
-import { Calculator } from 'lucide-react-native';
-import { iconWithClassName } from './iconWithClassName';
+import { Calculator } from "lucide-react-native";
+import { iconWithClassName } from "./iconWithClassName";
 iconWithClassName(Calculator);
 export { Calculator };

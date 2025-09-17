@@ -9,24 +9,22 @@ export interface LoaderProps {
   variant?: "default" | "spinner" | "dots";
 }
 
-export function Loader({ 
-  className, 
-  size = "md", 
-  variant = "spinner" 
-}: LoaderProps) {
+export function Loader({ className, size = "md", variant = "spinner" }: LoaderProps) {
   const sizeClasses = {
     sm: "h-4 w-4",
     md: "h-8 w-8",
-    lg: "h-12 w-12"
+    lg: "h-12 w-12",
   };
 
   if (variant === "spinner") {
     return (
-      <div className={cn(
-        "rounded-full border-2 border-muted border-t-primary animate-spin",
-        sizeClasses[size],
-        className
-      )} />
+      <div
+        className={cn(
+          "rounded-full border-2 border-muted border-t-primary animate-spin",
+          sizeClasses[size],
+          className,
+        )}
+      />
     );
   }
 
@@ -38,10 +36,10 @@ export function Loader({
             key={i}
             className={cn(
               "rounded-full bg-primary animate-pulse",
-              size === "sm" ? "h-2 w-2" : size === "md" ? "h-3 w-3" : "h-4 w-4"
+              size === "sm" ? "h-2 w-2" : size === "md" ? "h-3 w-3" : "h-4 w-4",
             )}
             style={{
-              animationDelay: `${i * 0.2}s`
+              animationDelay: `${i * 0.2}s`,
             }}
           />
         ))}

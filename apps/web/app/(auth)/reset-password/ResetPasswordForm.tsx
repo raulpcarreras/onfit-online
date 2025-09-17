@@ -22,18 +22,20 @@ function ResetPasswordContent() {
   const [session, setSession] = useState<any>(null);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     // Verificar si hay una sesión válida de recuperación
     const checkSession = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-              if (user?.aud === 'authenticated') {
-          setSession({ user });
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user?.aud === "authenticated") {
+        setSession({ user });
       } else {
         // Si no hay sesión, redirigir al login
-        router.push('/login?error=invalid-reset-link');
+        router.push("/login?error=invalid-reset-link");
       }
     };
 
@@ -58,30 +60,29 @@ function ResetPasswordContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
-    
+
     try {
       setLoading(true);
       setError("");
-      
+
       const { error: updateError } = await supabase.auth.updateUser({
-        password: password
+        password: password,
       });
-      
+
       if (updateError) throw updateError;
-      
+
       setSuccess(true);
-      
+
       // Cerrar sesión después de cambiar la contraseña
       setTimeout(async () => {
         await supabase.auth.signOut();
-        router.push('/login?message=password-updated');
+        router.push("/login?message=password-updated");
       }, 3000);
-      
     } catch (error: any) {
       console.error("Error al actualizar contraseña:", error);
-      
+
       if (error.message.includes("Password should be at least")) {
         setError("La contraseña debe tener al menos 6 caracteres");
       } else if (error.message.includes("Invalid password")) {
@@ -115,11 +116,9 @@ function ResetPasswordContent() {
               El enlace de recuperación no es válido o ha expirado
             </p>
           </div>
-          
+
           <Link href="/forgot-password">
-            <Button className="w-full">
-              Solicitar nuevo enlace
-            </Button>
+            <Button className="w-full">Solicitar nuevo enlace</Button>
           </Link>
         </div>
       </div>
@@ -146,7 +145,7 @@ function ResetPasswordContent() {
               </p>
             </div>
           </div>
-          
+
           <Link href="/login">
             <Button variant="outline" className="w-full">
               Ir al login
@@ -164,9 +163,7 @@ function ResetPasswordContent() {
         <div className="mb-6">
           <div className="mb-5 relative">
             {/* Botón de tema posicionado absolutamente en la esquina superior derecha */}
-            <ThemeToggle
-              className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
-            />
+            <ThemeToggle className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10" />
             <div className="flex flex-col items-center text-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -187,7 +184,10 @@ function ResetPasswordContent() {
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-foreground mb-2"
+            >
               Nueva contraseña
             </label>
             <div className="relative">
@@ -207,17 +207,16 @@ function ResetPasswordContent() {
                 onPress={() => setShowPwd(!showPwd)}
                 className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
               >
-                {showPwd ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
+                {showPwd ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground mb-2">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-foreground mb-2"
+            >
               Confirmar contraseña
             </label>
             <div className="relative">
@@ -253,11 +252,7 @@ function ResetPasswordContent() {
             </div>
           )}
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading && (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
             )}
@@ -267,7 +262,10 @@ function ResetPasswordContent() {
 
         {/* Footer */}
         <div className="mt-6 text-center">
-          <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/login"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
             Volver al login
           </Link>
         </div>
@@ -278,14 +276,16 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordForm() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Cargando...</p>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Cargando...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <ResetPasswordContent />
     </Suspense>
   );

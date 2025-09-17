@@ -4,20 +4,20 @@ import { useThemeBridge } from "../../providers/theme";
 
 type FC<P = any> = React.FC<React.PropsWithChildren<P>>;
 
-export const Checkbox: FC<{ checked?: boolean; onCheckedChange?: (checked: boolean) => void }> = ({ 
-  checked, 
-  onCheckedChange 
-}) => {
+export const Checkbox: FC<{
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+}> = ({ checked, onCheckedChange }) => {
   const { colors } = useThemeBridge();
-  
+
   return (
     <Pressable onPress={() => onCheckedChange?.(!checked)}>
-      <View 
+      <View
         className="w-4 h-4 border border-input rounded"
-        style={{ 
+        style={{
           backgroundColor: checked ? colors.primary : colors.background,
-          borderColor: colors.primary
-        }} 
+          borderColor: colors.primary,
+        }}
       />
     </Pressable>
   );

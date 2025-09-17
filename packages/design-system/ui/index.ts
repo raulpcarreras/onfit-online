@@ -6,7 +6,7 @@ export * from "./avatar";
 export * from "./badge";
 export * from "./breadcrumb";
 export * from "./button";
-export * from "./calender";
+export * from "./calendar";
 export * from "./card";
 export * from "./carousel";
 export * from "./chart";

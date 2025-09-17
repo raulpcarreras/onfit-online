@@ -7,8 +7,8 @@ type ThemeMode = "light" | "dark";
 type Mode = ThemeMode | "system";
 
 type ThemeBridgeContextType = {
-  mode: Mode;                  // 'light' | 'dark' | 'system'
-  resolvedMode: ThemeMode;     // 'light' | 'dark'
+  mode: Mode; // 'light' | 'dark' | 'system'
+  resolvedMode: ThemeMode; // 'light' | 'dark'
   isDark: boolean;
   setMode: (m: Mode) => void;
   colors: Record<string, string>; // mapa de colores CSS variables
@@ -79,13 +79,11 @@ function ThemeBridgeInner({ children }: { children: React.ReactNode }) {
         "info-foreground": "hsl(var(--info-foreground))",
       },
     }),
-    [theme, resolved, setTheme]
+    [theme, resolved, setTheme],
   );
 
   return (
-    <ThemeBridgeContext.Provider value={value}>
-      {children}
-    </ThemeBridgeContext.Provider>
+    <ThemeBridgeContext.Provider value={value}>{children}</ThemeBridgeContext.Provider>
   );
 }
 

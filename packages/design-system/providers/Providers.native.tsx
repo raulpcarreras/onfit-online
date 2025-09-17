@@ -15,9 +15,9 @@ const KeyboardProvider =
 import { i18n } from "../lib/locale";
 import { useColorScheme } from "../hooks/useColorScheme";
 import { ThemeProvider as NavigationThemeProvider } from "@react-navigation/native";
-import { ThemeProvider } from "./theme";  // ← Importar ThemeProvider nativo
-import SonnerProvider from "./sonner";
-import QueryProvider from "./query";
+import { ThemeProvider } from "./theme"; // ← Importar ThemeProvider nativo
+import { SonnerProvider } from "./sonner";
+import { QueryProvider } from "./query";
 import isWeb from "../lib/isWeb";
 
 configureReanimatedLogger({

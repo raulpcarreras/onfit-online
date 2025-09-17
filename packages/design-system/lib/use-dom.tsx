@@ -14,7 +14,7 @@ export type DomProps<P extends Record<string, any>> = {
 /**
  * Custom hook for dynamically loading and rendering DOM-specific components.
  * Provides a way to lazy load components with proper mounting/unmounting handling.
- * 
+ *
  * NOTE: Always use this hook at the top-level, do not use it inside a component.
  *
  * @template P - Generic type extending object for component props

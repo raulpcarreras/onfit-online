@@ -51,13 +51,14 @@ export default function AdminDashboard() {
   // Verificar que el usuario tenga permisos de admin (super admin o admin normal)
   const isSuperAdmin = !!(user.app_metadata as any)?.is_super_admin;
   const isAdmin = profile.role === "admin";
-  
+
   if (!isSuperAdmin && !isAdmin) {
     return <FullScreenLoader label="Redirigiendo..." />;
   }
 
   // Usar resolvedTheme para evitar problemas de hidratación
-  const ChartStroke = resolvedTheme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
+  const ChartStroke =
+    resolvedTheme === "light" ? "hsl(var(--primary))" : "hsl(var(--primary))";
 
   return (
     <div className="px-4 md:px-5 py-4">
@@ -111,11 +112,15 @@ export default function AdminDashboard() {
                           </span>
                         </td>
                         <td className="px-3 py-2">
-                          <span className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${
-                            user.plan === "PRO" ? "bg-primary text-primary-foreground" :
-                            user.plan === "BASIC" ? "bg-secondary text-secondary-foreground" :
-                            "bg-muted text-muted-foreground"
-                          }`}>
+                          <span
+                            className={`inline-flex items-center px-2 py-1 text-xs rounded-full ${
+                              user.plan === "PRO"
+                                ? "bg-primary text-primary-foreground"
+                                : user.plan === "BASIC"
+                                  ? "bg-secondary text-secondary-foreground"
+                                  : "bg-muted text-muted-foreground"
+                            }`}
+                          >
                             {user.plan}
                           </span>
                         </td>

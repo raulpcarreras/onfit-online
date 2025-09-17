@@ -1,10 +1,16 @@
-import 'react-native-reanimated';
-import { LogBox } from 'react-native';
-import { Slot } from 'expo-router';
+import "react-native-reanimated";
+import { LogBox } from "react-native";
+import { Slot } from "expo-router";
+import { ThemeProvider } from "@repo/design/providers/theme";
+import "../global.css";
 
 // Silenciar warnings de desarrollo
-LogBox.ignoreLogs(['onAnimatedValueUpdate']);
+LogBox.ignoreLogs(["onAnimatedValueUpdate"]);
 
 export default function RootLayout() {
-  return <Slot />;
+  return (
+    <ThemeProvider>
+      <Slot />
+    </ThemeProvider>
+  );
 }

@@ -7,11 +7,15 @@
     "moduleResolution": "bundler",
     "target": "ESNext",
     "module": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
     "paths": {
       "@repo/design/*": ["./*"],
-      "@repo/*": ["../*"],
+      "@repo/*": ["../*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "src", "src/types/**/*.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "**/*.native.ts", "**/*.web.ts"]
 }

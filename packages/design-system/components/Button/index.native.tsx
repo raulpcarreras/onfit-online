@@ -3,9 +3,20 @@ import { Pressable, Text, ActivityIndicator, ViewStyle, TextStyle } from "react-
 import { useThemeBridge } from "../../providers/theme";
 import { cn } from "../../lib/utils";
 import { isExtraVariant } from "./variants.shared";
-import { sizeClasses, getExtraVariantStyles, getCoreVariantStyles, type NativeSize } from "./variants.native";
+import {
+  sizeClasses,
+  getExtraVariantStyles,
+  getCoreVariantStyles,
+  type NativeSize,
+} from "./variants.native";
 
-export type ButtonVariantCore = "default" | "secondary" | "outline" | "ghost" | "link" | "destructive";
+export type ButtonVariantCore =
+  | "default"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "link"
+  | "destructive";
 export type ButtonVariantExtra = "onfit" | "premium" | "social" | "success" | "warning";
 export type ButtonVariant = ButtonVariantCore | ButtonVariantExtra;
 
@@ -35,31 +46,40 @@ export const Button: React.FC<ButtonProps> = ({
   const { colors } = useThemeBridge();
 
   const isExtra = isExtraVariant(variant);
-  const { container: bgStyle, label: fgStyle, extraClasses } = isExtra
-    ? getExtraVariantStyles(variant as ButtonVariantExtra, colors)
-    : getCoreVariantStyles(variant as ButtonVariantCore, colors);
+  const {
+    container: bgStyle,
+    label: fgStyle,
+    extraClasses,
+  } = isExtra
+    ? getExtraVariantStyles(
+        variant as ButtonVariantExtra,
+        colors as unknown as Record<string, string>,
+      )
+    : getCoreVariantStyles(
+        variant as ButtonVariantCore,
+        colors as unknown as Record<string, string>,
+      );
 
   return (
     <Pressable
       disabled={disabled || isLoading}
       onPress={onPress}
-      className={cn(
-        "rounded-lg items-center justify-center active:opacity-95",
-        sizeClasses(size),
-        disabled || isLoading ? "opacity-60" : "",
-        extraClasses,
-        className
-      )}
+      {...({
+        className: cn(
+          "rounded-lg items-center justify-center active:opacity-95",
+          sizeClasses(size),
+          disabled || isLoading ? "opacity-60" : "",
+          extraClasses,
+          className,
+        ),
+      } as any)}
       style={[bgStyle, style]}
       accessibilityRole="button"
     >
       {isLoading ? (
         <ActivityIndicator />
       ) : (
-        <Text
-          className={cn("font-medium")}
-          style={[fgStyle, textStyle]}
-        >
+        <Text {...({ className: cn("font-medium") } as any)} style={[fgStyle, textStyle]}>
           {children}
         </Text>
       )}

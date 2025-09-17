@@ -23,7 +23,7 @@ export const ChecklistItem: React.FC<ChecklistItemProps> = ({
       className={cn(
         "flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:bg-secondary cursor-pointer",
         checked && "bg-secondary",
-        className
+        className,
       )}
       onPress={onPress}
       style={style}

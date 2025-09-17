@@ -7,7 +7,7 @@ import * as React from "react";
 import { ArrowRight } from "../../icons/ArrowRight";
 import { ArrowLeft } from "../../icons/ArrowLeft";
 import { cn } from "../../lib/utils";
-import { Button } from "../button";
+import { Button } from "../../components/Button";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -198,7 +198,6 @@ const CarouselPrevious = React.forwardRef<
 
   return (
     <Button
-      ref={ref}
       variant={variant}
       size={size}
       className={cn(
@@ -227,7 +226,6 @@ const CarouselNext = React.forwardRef<
 
   return (
     <Button
-      ref={ref}
       variant={variant}
       size={size}
       className={cn(

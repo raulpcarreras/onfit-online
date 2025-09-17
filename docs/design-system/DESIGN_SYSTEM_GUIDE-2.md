@@ -1,5 +1,6 @@
 # Onfit — Guía definitiva del sistema de diseño
-*Última revisión: 2025-08-23T09:59:55.371298 UTC*
+
+_Última revisión: 2025-08-23T09:59:55.371298 UTC_
 
 > Este documento explica **cómo está montado el sistema de diseño** en el monorepo,
 > dónde vive cada pieza, cómo se estiliza **web y native**, cómo crear variantes,
@@ -12,8 +13,9 @@
 ---
 
 ## 0) Mapa mental rápido
+
 - **Tokens → Theme → Primitivas → Componentes con variantes → Páginas/Pantallas**
-- **Web** usa Tailwind + componentes shadcn (clases utilitarias, sin CSS “suelto” salvo lo mínimo en `globals.css`).  
+- **Web** usa Tailwind + componentes shadcn (clases utilitarias, sin CSS “suelto” salvo lo mínimo en `globals.css`).
 - **Native** usa **NativeWind** (Tailwind en RN) + primitivas RN envueltas con las mismas **APIs de variantes**.
 - **Theme Bridge**: una capa ligera que **sincroniza tokens** con Tailwind (web y native) y con el `ThemeProvider`/hooks.
 - **Variantes**: `cva` o `tailwind-variants` para definir tamaños, estado, intent, etc. **Una única fuente** compartida.
@@ -22,6 +24,7 @@
 ---
 
 ## 1) Estructura del repo (orientativa)
+
 > Ajusta nombres si en tu repo difieren; mantén **la idea** y los límites entre capas.
 
 ```
@@ -49,6 +52,7 @@ packages/
 ```
 
 ### Import aliases (recomendado)
+
 - `@tokens` → `packages/tokens/src`
 - `@ui` → `packages/ui/src`
 - `@theme` → `packages/ui/src/themes`
@@ -59,7 +63,9 @@ Configúralos en `tsconfig.json` de cada app y en Babel (native).
 ---
 
 ## 2) Tokens de diseño (la “verdad”)
+
 Los **tokens** definen la **identidad visual** y los valores reutilizables:
+
 - **colors** (roles semánticos: `bg`, `fg`, `muted`, `primary`, `success`, `warning`, `destructive`)
 - **space** (4, 8, 12, 16… en `rem`/`px` equivalentes)
 - **radii**, **borderWidth**, **zIndex**
@@ -68,6 +74,7 @@ Los **tokens** definen la **identidad visual** y los valores reutilizables:
 - **durations** (transiciones), **easings**
 
 ### Ejemplo `packages/tokens/src/index.ts`
+
 ```ts
 export const colors = {
   // Paleta base
@@ -144,34 +151,35 @@ export const easings = {{ standard: "cubic-bezier(0.2, 0, 0, 1)" }};
 ---
 
 ## 3) Tailwind (web + native) desde tokens
+
 ### Web (`apps/web/tailwind.config.ts`)
+
 ```ts
 import shared from "@tailwind-config/tailwind.shared";
 
 export default {
-  ...shared({ platform: "web" }),
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
-  ],
+    ...shared({ platform: "web" }),
+    content: [
+        "./app/**/*.{ts,tsx}",
+        "./components/**/*.{ts,tsx}",
+        "../../packages/ui/src/**/*.{ts,tsx}",
+    ],
 };
 ```
 
 ### Native (`apps/native/tailwind.config.js`)
+
 ```js
 const shared = require("@tailwind-config/tailwind.shared").default;
 
 module.exports = {
-  ...shared({ platform: "native" }),
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "../../packages/ui/src/**/*.{ts,tsx}",
-  ],
+    ...shared({ platform: "native" }),
+    content: ["./app/**/*.{ts,tsx}", "../../packages/ui/src/**/*.{ts,tsx}"],
 };
 ```
 
 ### Config compartida (`packages/tailwind-config/tailwind.shared.ts`)
+
 ```ts
 import {{ colors, space, radii, font }} from "@tokens";
 
@@ -215,14 +223,17 @@ export default function shared({{ platform }}: Opts) {{
 ---
 
 ## 4) Theme Bridge (sincroniza runtime)
+
 Objetivo: **mismo API de theme** en web y native con los mismos tokens.
 
 ### API
+
 - `<ThemeProvider initialTheme="system" />`
 - `useTheme()` → `{ theme, setTheme, isDark, tokens }`
 - Variables CSS (web) / Context (native) para que Tailwind/NativeWind resuelvan colores por roles.
 
 ### Implementación base (`packages/ui/src/themes/ThemeProvider.tsx`)
+
 ```tsx
 import * as React from "react";
 import {{ Platform }} from "react-native";
@@ -322,42 +333,47 @@ export const useTheme = () => {
 ---
 
 ## 5) shadcn/ui (web) — cómo mantenerlo “de serie”
+
 - **Nunca** escribas CSS suelto para modificar un componente shadcn: **overridea tokens** o **amplía** clases en un wrapper propio.
-- Mantén los componentes shadcn **generados** en `apps/web/components/ui/*` (o en `packages/ui/src/web/*` si monorepo).  
+- Mantén los componentes shadcn **generados** en `apps/web/components/ui/*` (o en `packages/ui/src/web/*` si monorepo).
 - **Base global** (`globals.css`):
-  - `@tailwind base; @tailwind components; @tailwind utilities;`
-  - Define custom properties mínimas si el generador lo necesita (`--radius`, etc.), conectándolas con tokens.
+    - `@tailwind base; @tailwind components; @tailwind utilities;`
+    - Define custom properties mínimas si el generador lo necesita (`--radius`, etc.), conectándolas con tokens.
 - Si cambias un color de marca: hazlo en **tokens** → Tailwind comparte todo automáticamente.
 - Si hay que “parchear” el markup de shadcn: crea un **wrapper** en `packages/ui/src/components` con tu API estable y deja el shadcn original intacto.
 
 ---
 
 ## 6) Native (Expo + NativeWind)
+
 - **No CSS**: solo clases Tailwind vía **NativeWind** (`className` en RN).
 - Para UI states complejos usa **tailwind-variants** o **cva** (exports neutrales) y aplícalos en ambos mundos.
 - Evita `StyleSheet.create` salvo casos performance críticos; si lo usas, **no** dupliques constantes (usa tokens).
 
 ### Babel (native) — recordatorio
+
 ```js
 // apps/native/babel.config.js
 module.exports = function (api) {
-  api.cache(true);
-  return {
-    presets: ["babel-preset-expo"],
-    plugins: [
-      // otros plugins…
-      "react-native-reanimated/plugin", // SIEMPRE el último
-    ],
-  };
+    api.cache(true);
+    return {
+        presets: ["babel-preset-expo"],
+        plugins: [
+            // otros plugins…
+            "react-native-reanimated/plugin", // SIEMPRE el último
+        ],
+    };
 };
 ```
 
 ---
 
 ## 7) Variantes (cva/tailwind-variants)
+
 Define las variantes **una vez** y úsalas en web/native.
 
 ### Ejemplo con `tailwind-variants` (recomendado cross)
+
 ```ts
 // packages/ui/src/components/button.variants.ts
 import {{ tv }} from "tailwind-variants";
@@ -384,11 +400,13 @@ export const buttonStyles = tv({
 ```
 
 ### Uso en web
+
 ```tsx
 <button className={buttonStyles({ intent: "ghost", size: "sm" })}>…</button>
 ```
 
 ### Uso en native
+
 ```tsx
 import {{ Pressable, Text }} from "react-native";
 import {{ buttonStyles }} from "./button.variants";
@@ -412,9 +430,11 @@ export function Button({ intent, size, children, ...rest }) {
 ---
 
 ## 8) Wrapping (envolver componentes)
+
 Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 
 ### Patrón
+
 - Crea **primitivas** (`View`, `Text`, `Input`, `Pressable`) **extendidas** en `packages/ui/src/primitives` con soporte `className` (native) y clases (web).
 - Encima, crea **componentes** (Button, Card, Sheet…) que usan **las mismas variantes**.
 - Si para web tiras de un shadcn concreto, envuélvelo en tu componente y **no exportes** el interno directamente.
@@ -424,6 +444,7 @@ Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 ---
 
 ## 9) Dónde poner estilos (y dónde no)
+
 - **Sí**: clases Tailwind en componentes, generadas por variantes si hay estados/tamaños.
 - **Sí**: tokens → Tailwind theme → variables → clases.
 - **Sí** (web): `globals.css` mínimo (reset, utilidades globales que no existan en TW, fuentes).
@@ -434,13 +455,16 @@ Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 ---
 
 ## 10) Rutas y páginas
+
 ### Native (Expo Router)
+
 - Estructura de archivos dentro de `apps/native/app/` (grupos como `(public)`, `(protected)`).
 - **Login** debe estar **fuera** del `AuthGuard`. No metas `/login` dentro de un guard dinámico.
 - Estilos: via `className`. Evita inline salvo casos puntuales.
 - Navega con `Link`, `router.push()`.
 
 ### Web (Next.js o Expo Web)
+
 - Crea rutas en `app/` (o `pages/` si legacy).
 - Usa componentes de `@ui` para no divergir estilos.
 - Mantén el layout general con clases utilitarias.
@@ -450,31 +474,37 @@ Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 ## 11) Recetas
 
 ### A) Cambiar color de marca
+
 1. Edita `packages/tokens/src/index.ts` → `colors.light.primary` y `colors.dark.primary`.
-2. Reinicia dev server.  
+2. Reinicia dev server.
 3. Verifica botones/intents (deberían heredar).
 
 ### B) Añadir espaciado 18
+
 1. `space[4.5] = 18` en tokens.
 2. Tailwind shared ya traduce → podrás usar `p-4.5` en ambos mundos.
 
 ### C) Crear un nuevo componente con variantes
+
 1. Define `*.variants.ts` con `tv(...)`.
 2. Implementa `Component.web.tsx` (si usas shadcn) y `Component.native.tsx` (RN), o uno único cross con primitivas `@ui`.
 3. Exporta desde `packages/ui/src/components/index.ts`.
 
 ### D) Wrap de un tercero (ej. datepicker web + RNDateTimePicker)
+
 1. Crea `DatePicker.tsx` en `@ui` con API única.
 2. Usa `Platform.select` para resolver implementación interna.
 3. Estiliza con variantes/clases, no con CSS suelto.
 
 ### E) Dark mode
+
 - No hardcodees `#000/#fff`. Usa `bg`, `fg`, `muted`, etc.
 - Revisa contrastes en `destructive`, `warning` con `text-bg` vs `text-fg` según caso.
 
 ---
 
 ## 12) Calidad, lint y DX
+
 - **Prettier + Tailwind plugin**: ordena clases automáticamente.
 - **ESLint**: evita estilos inline y valores mágicos.
 - **Storybook** (opcional): monta en `packages/ui` para visualizar variantes.
@@ -483,6 +513,7 @@ Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 ---
 
 ## 13) Gotchas comunes
+
 - **AuthGuard loop**: nunca incluyas `/login` dentro del guard.
 - **Reanimated**: plugin **último** en Babel.
 - **expo-router/babel**: desde SDK 50 usa `babel-preset-expo` (no el plugin deprecado).
@@ -491,6 +522,7 @@ Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 ---
 
 ## 14) Checklist para PRs de UI
+
 - [ ] No hay CSS suelto nuevo (web)
 - [ ] No hay `StyleSheet` con colores/espaciados mágicos
 - [ ] Variantes definidas/extendidas en un único sitio
@@ -502,6 +534,7 @@ Objetivo: **API estable** (props limpias), y por dentro decidir la tecnología.
 ---
 
 ## 15) FAQ
+
 **¿Puedo usar inline styles?**  
 Solo si es temporal o muy puntual. Prefiere siempre variantes/clases.
 

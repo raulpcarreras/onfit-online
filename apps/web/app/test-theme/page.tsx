@@ -33,7 +33,7 @@ export default function TestThemePage() {
     <div className="min-h-screen bg-background text-foreground p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl font-bold">Test del ThemeBridge</h1>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Estado del Tema</CardTitle>
@@ -53,7 +53,7 @@ export default function TestThemePage() {
                 <strong>Color primario:</strong> {colors.primary}
               </div>
             </div>
-            
+
             <div className="flex gap-2">
               <Button onPress={() => setMode("light")} variant="outline">
                 Tema Claro
@@ -76,7 +76,7 @@ export default function TestThemePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {Object.entries(colors).map(([key, value]) => (
                 <div key={key} className="flex items-center gap-2">
-                  <div 
+                  <div
                     className="w-6 h-6 rounded border"
                     style={{ backgroundColor: value as string }}
                   />
@@ -99,7 +99,7 @@ export default function TestThemePage() {
               <Button variant="ghost">Ghost</Button>
               <Button variant="destructive">Destructive</Button>
             </div>
-            
+
             <div className="flex gap-2 flex-wrap">
               <Button size="sm">Small</Button>
               <Button size="md">Medium</Button>

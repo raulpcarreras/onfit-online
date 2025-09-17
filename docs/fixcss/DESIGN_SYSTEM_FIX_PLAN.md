@@ -21,16 +21,18 @@ Este documento lista **todos los cambios necesarios** para que **TODOS los compo
 ## 2) Archivos a modificar (lista exacta)
 
 ### Web
+
 - **`apps/web/app/layout.tsx`**
-  - Quitar `./styles/utilities.css`
-  - Importar solo `@repo/design/tokens/index.css` y `@repo/design/tailwind/global.css`
-  - (Opcional) mantener `./globals.css` **si** queda mínimo (ver abajo)
+    - Quitar `./styles/utilities.css`
+    - Importar solo `@repo/design/tokens/index.css` y `@repo/design/tailwind/global.css`
+    - (Opcional) mantener `./globals.css` **si** queda mínimo (ver abajo)
 - **`apps/web/app/styles/utilities.css`**
-  - **Eliminar** (o vaciar): contiene clases `.btn-*`, `.card`, `.surface`, etc. que rompen shadcn
+    - **Eliminar** (o vaciar): contiene clases `.btn-*`, `.card`, `.surface`, etc. que rompen shadcn
 - **`apps/web/app/globals.css`**
-  - **Reducir** a tailwind directives + theme bridge (sin reglas que toquen botones/inputs/links)
+    - **Reducir** a tailwind directives + theme bridge (sin reglas que toquen botones/inputs/links)
 
 ### Native (Ejemplos prioritarios)
+
 - **`apps/native/features/auth/LoginScreen.tsx`**
 - **`apps/native/app/(protected)/admin.tsx`**
 - **`apps/native/app/(protected)/client.tsx`**
@@ -45,27 +47,29 @@ Este documento lista **todos los cambios necesarios** para que **TODOS los compo
 ### 3.1 `apps/web/app/layout.tsx`
 
 **ANTES (extracto relevante):**
+
 ```tsx
-import './globals.css'
-import '@repo/design/tailwind/global.css'
-import './styles/utilities.css'
+import "./globals.css";
+import "@repo/design/tailwind/global.css";
+import "./styles/utilities.css";
 ```
 
 **DESPUÉS (limpio y estable):**
+
 ```tsx
-import '@repo/design/tokens/index.css'
-import '@repo/design/tailwind/global.css'
+import "@repo/design/tokens/index.css";
+import "@repo/design/tailwind/global.css";
 // (Opcional) Si conservas globals.css, debe ser mínimo
 // import './globals.css'
 
-export const metadata = { title: 'onfit', description: 'app' }
+export const metadata = { title: "onfit", description: "app" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="es" suppressHydrationWarning>
-      <body>{children}</body>
-    </html>
-  )
+    return (
+        <html lang="es" suppressHydrationWarning>
+            <body>{children}</body>
+        </html>
+    );
 }
 ```
 
@@ -77,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 Si alguna clase fuese imprescindible, muévela al **DS** como variante/utility **bien nombrada** _dentro de `packages/design-system`_.
 
 **DESPUÉS (archivo eliminado o vacío):**
+
 ```css
 /* (intencionadamente vacío) */
 ```
@@ -86,14 +91,19 @@ Si alguna clase fuese imprescindible, muévela al **DS** como variante/utility *
 ### 3.3 `apps/web/app/globals.css` (mínimo recomendado)
 
 **DESPUÉS (contenido sugerido):**
+
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Theme bridge mínimo */
-:root { color-scheme: light; }
-.dark { color-scheme: dark; }
+:root {
+    color-scheme: light;
+}
+.dark {
+    color-scheme: dark;
+}
 
 /* NO añadir reglas globales de botones, inputs, links, etc. */
 ```
@@ -107,22 +117,27 @@ Si alguna clase fuese imprescindible, muévela al **DS** como variante/utility *
 **ANTES (usaba StyleSheet y colores hardcodeados / locales)**
 
 **DESPUÉS (DS + NativeWind):**
+
 ```tsx
-import { View, Text } from 'react-native'
-import { Button } from '@repo/design/ui/button'
-import { Input } from '@repo/design/ui/input'
+import { View, Text } from "react-native";
+import { Button } from "@repo/design/ui/button";
+import { Input } from "@repo/design/ui/input";
 
 export default function LoginScreen() {
-  return (
-    <View className="flex-1 items-center justify-center gap-6 bg-background px-6">
-      <Text className="text-2xl font-semibold text-foreground">Iniciar sesión</Text>
-      <View className="w-full gap-3">
-        <Input placeholder="Email" className="w-full" keyboardType="email-address" />
-        <Input placeholder="Password" className="w-full" secureTextEntry />
-        <Button className="w-full mt-2">Entrar</Button>
-      </View>
-    </View>
-  )
+    return (
+        <View className="flex-1 items-center justify-center gap-6 bg-background px-6">
+            <Text className="text-2xl font-semibold text-foreground">Iniciar sesión</Text>
+            <View className="w-full gap-3">
+                <Input
+                    placeholder="Email"
+                    className="w-full"
+                    keyboardType="email-address"
+                />
+                <Input placeholder="Password" className="w-full" secureTextEntry />
+                <Button className="w-full mt-2">Entrar</Button>
+            </View>
+        </View>
+    );
 }
 ```
 
@@ -131,16 +146,18 @@ export default function LoginScreen() {
 ### 3.5 `apps/native/app/(protected)/admin.tsx`
 
 **ANTES (extracto):**
+
 ```tsx
-<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-  <Text>Admin</Text>
+<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <Text>Admin</Text>
 </View>
 ```
 
 **DESPUÉS (NativeWind):**
+
 ```tsx
 <View className="flex-1 items-center justify-center bg-background">
-  <Text className="text-foreground">Admin</Text>
+    <Text className="text-foreground">Admin</Text>
 </View>
 ```
 
@@ -151,9 +168,11 @@ export default function LoginScreen() {
 ## 4) Reglas para Cursor (prompt listo para pegar)
 
 **Sistema (siempre activo):**
+
 - “No introduzcas CSS nuevo en `apps/**`. Cualquier cambio visual se hace en `packages/design-system/**` usando tokens, Tailwind y CVA. Mantén shadcn por defecto.”
 
 **Instrucciones concretas:**
+
 1. Elimina el import de `./styles/utilities.css` en `apps/web/app/layout.tsx` y añade `@repo/design/tokens/index.css`.
 2. Vacía o elimina `apps/web/app/styles/utilities.css`.
 3. Reduce `apps/web/app/globals.css` a las tailwind directives y el theme bridge mínimo (no afectar a botones/inputs/links).
@@ -163,6 +182,7 @@ export default function LoginScreen() {
 7. Si detectas un estilo global que cambie el aspecto por defecto de shadcn, **elíminalo o muévelo al DS** como variant.
 
 **Validación automática (sugerencias):**
+
 - ESLint rule para bloquear `style={{…}}` en `apps/native/**` (whitelist puntual).
 - Finder que falle CI si detecta `.css` fuera de `packages/design-system/**` y `apps/web/app/globals.css`.
 

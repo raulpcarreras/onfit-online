@@ -18,14 +18,14 @@ export function Badge({
     default: "bg-primary",
     secondary: "bg-secondary",
     destructive: "bg-destructive",
-    outline: "border border-input bg-background"
+    outline: "border border-input bg-background",
   };
 
   const textClasses = {
     default: "text-primary-foreground",
     secondary: "text-secondary-foreground",
     destructive: "text-destructive-foreground",
-    outline: "text-foreground"
+    outline: "text-foreground",
   };
 
   return (
@@ -33,7 +33,7 @@ export function Badge({
       className={cn(
         "flex-row items-center rounded-full border px-2.5 py-0.5",
         variantClasses[variant],
-        className
+        className,
       )}
       {...props}
     >

@@ -7,7 +7,6 @@ export function Table({ className, ...props }: React.HTMLAttributes<HTMLTableEle
   return <table className={cn("w-full caption-bottom text-sm", className)} {...props} />;
 }
 
-
 export function TableBody({
   className,
   ...props
@@ -67,15 +66,11 @@ export function TableFooter({
 }: React.HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <tfoot
-      className={cn(
-        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
-        className
-      )}
+      className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
       {...props}
     />
   );
 }
-
 
 export function TableHeader({
   className,

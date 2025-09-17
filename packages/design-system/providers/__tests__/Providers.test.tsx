@@ -1,32 +1,32 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { Providers } from '../Providers.web';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { Providers } from "../Providers.web";
 
-describe('Providers Component (Web)', () => {
-  it('should render children correctly', () => {
+describe("Providers Component (Web)", () => {
+  it("should render children correctly", () => {
     render(
       <Providers>
         <div data-testid="test-child">Test Content</div>
-      </Providers>
+      </Providers>,
     );
-    
-    expect(screen.getByTestId('test-child')).toBeInTheDocument();
-    expect(screen.getByText('Test Content')).toBeInTheDocument();
+
+    expect(screen.getByTestId("test-child")).toBeInTheDocument();
+    expect(screen.getByText("Test Content")).toBeInTheDocument();
   });
 
-  it('should render multiple children', () => {
+  it("should render multiple children", () => {
     render(
       <Providers>
         <div data-testid="child-1">Child 1</div>
         <div data-testid="child-2">Child 2</div>
-      </Providers>
+      </Providers>,
     );
-    
-    expect(screen.getByTestId('child-1')).toBeInTheDocument();
-    expect(screen.getByTestId('child-2')).toBeInTheDocument();
+
+    expect(screen.getByTestId("child-1")).toBeInTheDocument();
+    expect(screen.getByTestId("child-2")).toBeInTheDocument();
   });
 
-  it('should provide theme context', () => {
+  it("should provide theme context", () => {
     const TestComponent = () => {
       return <div data-testid="theme-test">Theme Test</div>;
     };
@@ -34,13 +34,13 @@ describe('Providers Component (Web)', () => {
     render(
       <Providers>
         <TestComponent />
-      </Providers>
+      </Providers>,
     );
-    
-    expect(screen.getByTestId('theme-test')).toBeInTheDocument();
+
+    expect(screen.getByTestId("theme-test")).toBeInTheDocument();
   });
 
-  it('should handle empty children', () => {
+  it("should handle empty children", () => {
     render(<Providers>{null}</Providers>);
     // Should not throw error
     expect(document.body).toBeInTheDocument();

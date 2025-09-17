@@ -1,4 +1,4 @@
-import { LifeBuoy } from 'lucide-react-native';
-import { iconWithClassName } from './iconWithClassName';
+import { LifeBuoy } from "lucide-react-native";
+import { iconWithClassName } from "./iconWithClassName";
 iconWithClassName(LifeBuoy);
 export { LifeBuoy };

@@ -1,18 +1,18 @@
 "use client";
 
 import React from "react";
-import { 
-  Home, 
-  Dumbbell, 
-  Utensils, 
-  Calendar, 
-  TrendingUp, 
-  CheckCircle2, 
-  MessageSquare, 
-  CreditCard, 
-  Settings, 
-  HelpCircle, 
-  LogOut 
+import {
+  Home,
+  Dumbbell,
+  Utensils,
+  Calendar,
+  TrendingUp,
+  CheckCircle2,
+  MessageSquare,
+  CreditCard,
+  Settings,
+  HelpCircle,
+  LogOut,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
@@ -20,11 +20,13 @@ import { Button } from "@repo/design/components/Button";
 
 export default function UserSidebar() {
   const router = useRouter();
-  
+
   return (
     <div className="h-full flex flex-col">
       <div className="px-4 pt-6 pb-2">
-        <h2 className="text-xs font-mono tracking-wider text-muted-foreground font-medium pl-2">MENU</h2>
+        <h2 className="text-xs font-mono tracking-wider text-muted-foreground font-medium pl-2">
+          MENU
+        </h2>
       </div>
       <Nav />
     </div>
@@ -33,7 +35,7 @@ export default function UserSidebar() {
 
 function Nav() {
   const router = useRouter();
-  
+
   const items = [
     { label: "Inicio (Hoy)", icon: Home, href: "/user" },
     { label: "Entrenamiento", icon: Dumbbell, href: "/training" },
@@ -46,7 +48,7 @@ function Nav() {
     { label: "Ajustes", icon: Settings, href: "/user/settings" },
     { label: "Ayuda", icon: HelpCircle, href: "/user/help" },
   ];
-  
+
   return (
     <nav className="px-3 py-1 space-y-1">
       {items.map((i) => (
@@ -60,10 +62,10 @@ function Nav() {
           <span>{i.label}</span>
         </Button>
       ))}
-      
+
       {/* Separador antes del botón de logout */}
       <div className="my-2 border-t border-border/50"></div>
-      
+
       {/* Cerrar sesión como un ítem más del menú */}
       <Button
         onPress={() => {
@@ -74,7 +76,9 @@ function Nav() {
               }
             });
           } catch {}
-          try { void supabase.auth.signOut({ scope: "global" as any }); } catch {}
+          try {
+            void supabase.auth.signOut({ scope: "global" as any });
+          } catch {}
           window.location.replace("/");
         }}
         variant="ghost"

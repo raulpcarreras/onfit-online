@@ -31,8 +31,8 @@ export function Select({
   className,
 }: SelectProps) {
   const selectedOpt = React.useMemo(
-    () => (value ? options.find((o) => o.value === value) ?? null : null),
-    [options, value]
+    () => (value ? (options.find((o) => o.value === value) ?? null) : null),
+    [options, value],
   );
 
   const handleChange = React.useCallback(
@@ -47,7 +47,7 @@ export function Select({
 
       if (nextValue !== undefined) onChange?.(nextValue);
     },
-    [onChange]
+    [onChange],
   );
 
   const uiValue = (selectedOpt ?? value ?? "") as any;
@@ -60,8 +60,12 @@ export function Select({
 
       <SelectContent>
         {options.map((opt) => (
-          <SelectItem key={opt.value} value={opt.value as any} label={opt.label} disabled={opt.disabled}>
-            {(_s) => opt.label}
+          <SelectItem
+            key={opt.value}
+            value={opt.value as any}
+            disabled={opt.disabled}
+          >
+            {opt.label}
           </SelectItem>
         ))}
       </SelectContent>

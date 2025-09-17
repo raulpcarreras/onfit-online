@@ -1,1 +1,1 @@
-export { ThemeToggle } from "./index.web";
+export { ThemeToggle } from "./index.native";

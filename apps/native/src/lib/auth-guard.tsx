@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import { useRouter } from 'expo-router';
-import { useUser } from './user-provider';
-import { View, ActivityIndicator } from 'react-native';
+import React, { useEffect } from "react";
+import { useRouter } from "expo-router";
+import { useUser } from "./user-provider";
+import { View, ActivityIndicator } from "react-native";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, role, loading } = useUser();
@@ -12,20 +12,20 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
     if (!user) {
       // No hay sesión, redirigir a login
-      router.replace('/login');
+      router.replace("/login");
       return;
     }
 
     // Hay sesión, redirigir según rol
-    if (role === 'admin') {
-      router.replace('/admin');
-    } else if (role === 'trainer') {
-      router.replace('/trainer');
-    } else if (role === 'user') {
-      router.replace('/client');
+    if (role === "admin") {
+      router.replace("/admin");
+    } else if (role === "trainer") {
+      router.replace("/trainer");
+    } else if (role === "user") {
+      router.replace("/client");
     } else {
       // Rol no reconocido, ir a login
-      router.replace('/login');
+      router.replace("/login");
     }
   }, [user, role, loading, router]);
 

@@ -3,7 +3,7 @@
 **Fecha**: Enero 2025  
 **Versión del Proyecto**: 0.2.18  
 **Auditor**: Análisis Técnico Especializado  
-**Tipo**: Auditoría Integral de Arquitectura y Código  
+**Tipo**: Auditoría Integral de Arquitectura y Código
 
 ---
 
@@ -12,6 +12,7 @@
 He completado una auditoría exhaustiva de su proyecto ONFIT13, un monorepo moderno que incluye aplicaciones web y nativas con un sistema de diseño compartido. El proyecto demuestra una arquitectura sólida y está correctamente configurado para aprovechar **React 19**, contrario a las restricciones previas que indicaban incompatibilidad.
 
 ### 🎯 Hallazgos Clave
+
 - **Compatibilidad React 19**: ✅ **CONFIRMADA** - El proyecto ya utiliza React 19.0.0
 - **Arquitectura**: Monorepo bien estructurado con pnpm workspaces
 - **Stack Tecnológico**: Moderno y actualizado
@@ -27,27 +28,30 @@ He completado una auditoría exhaustiva de su proyecto ONFIT13, un monorepo mode
 ### 1. 🏗️ ARQUITECTURA DEL MONOREPO
 
 **✅ FORTALEZAS:**
+
 - Estructura modular con separación clara de responsabilidades
 - Configuración optimizada de pnpm workspaces
 - Turbo para build system eficiente
 - Gestión centralizada de dependencias con catalog
 
 **⚡ CONFIGURACIÓN ACTUAL:**
+
 ```yaml
 # pnpm-workspace.yaml - EXCELENTE
 packages:
-  - apps/*
-  - packages/*
-  - tooling/*
+    - apps/*
+    - packages/*
+    - tooling/*
 
 catalog:
-  react: 19.0.0          # ✅ React 19 YA IMPLEMENTADO
-  react-dom: 19.0.0      # ✅ Compatible
-  react-native: 0.79.4   # ✅ Última versión estable
-  tailwindcss: 3.4.17    # ✅ Actualizado
+    react: 19.0.0 # ✅ React 19 YA IMPLEMENTADO
+    react-dom: 19.0.0 # ✅ Compatible
+    react-native: 0.79.4 # ✅ Última versión estable
+    tailwindcss: 3.4.17 # ✅ Actualizado
 ```
 
 **📊 MÉTRICAS DEL PROYECTO:**
+
 - **Dependencias totales**: ~2,400 paquetes
 - **Archivos TypeScript**: 371 archivos
 - **Documentación**: 37+ archivos MD (excelente cobertura)
@@ -55,6 +59,7 @@ catalog:
 - **Gestión de paquetes**: pnpm 10.12.4 con Corepack
 
 **🏛️ ESTRUCTURA DEL MONOREPO:**
+
 ```
 pho-monorepo/
 ├── apps/
@@ -78,11 +83,13 @@ pho-monorepo/
 **✅ EVALUACIÓN POSITIVA:**
 
 **Componentes Disponibles:**
+
 - **UI Primitivos**: 49 componentes exportados (Radix UI + RN Primitives)
 - **Componentes de Alto Nivel**: 19 componentes personalizados
 - **Cross-Platform**: Soporte completo web/native
 
 **Arquitectura Técnica:**
+
 ```typescript
 // packages/design-system/ - Estructura excelente
 ├── components/        # Componentes de alto nivel
@@ -103,6 +110,7 @@ pho-monorepo/
 ```
 
 **🔧 Stack Técnico:**
+
 - **Styling**: Tailwind CSS + NativeWind 4.1.23
 - **Componentes Web**: Radix UI (todas las versiones ^1.x.x)
 - **Componentes Native**: RN Primitives 1.2.0
@@ -111,6 +119,7 @@ pho-monorepo/
 - **Forms**: React Hook Form 7.59.0 + Zod 3.25.67
 
 **🎨 TOKENS DE DISEÑO:**
+
 ```typescript
 // Excelente sistema de tokens CSS variables
 colors: {
@@ -125,34 +134,35 @@ colors: {
 **🚀 RECOMENDACIONES DE MEJORA:**
 
 1. **Aprovechar React 19 Features:**
-   ```typescript
-   // Implementar nuevos hooks de React 19
-   import { useActionState, useFormStatus } from 'react';
-   
-   // En componentes de formulario
-   export function FormComponent() {
-     const [state, formAction] = useActionState(submitForm, null);
-     const { pending } = useFormStatus();
-     
-     return (
-       <form action={formAction}>
-         <Button disabled={pending}>
-           {pending ? 'Enviando...' : 'Enviar'}
-         </Button>
-       </form>
-     );
-   }
-   ```
+
+    ```typescript
+    // Implementar nuevos hooks de React 19
+    import { useActionState, useFormStatus } from 'react';
+
+    // En componentes de formulario
+    export function FormComponent() {
+      const [state, formAction] = useActionState(submitForm, null);
+      const { pending } = useFormStatus();
+
+      return (
+        <form action={formAction}>
+          <Button disabled={pending}>
+            {pending ? 'Enviando...' : 'Enviar'}
+          </Button>
+        </form>
+      );
+    }
+    ```
 
 2. **Optimización de Bundle:**
-   - Implementar tree-shaking más agresivo
-   - Lazy loading para componentes pesados
-   - Code splitting por plataforma
+    - Implementar tree-shaking más agresivo
+    - Lazy loading para componentes pesados
+    - Code splitting por plataforma
 
 3. **Mejoras de Accesibilidad:**
-   - Auditoría completa de WCAG 2.1
-   - Testing automatizado de accesibilidad
-   - Documentación de patrones accesibles
+    - Auditoría completa de WCAG 2.1
+    - Testing automatizado de accesibilidad
+    - Documentación de patrones accesibles
 
 ---
 
@@ -161,28 +171,30 @@ colors: {
 **✅ CONFIGURACIÓN AVANZADA:**
 
 **Next.js 15 Features Activas:**
+
 ```javascript
 // next.config.mjs - MUY BIEN CONFIGURADO
 const nextConfig = {
-  reactStrictMode: true,
-  experimental: {
-    optimizeServerReact: true,    // ✅ Server Components
-    forceSwcTransforms: true,     // ✅ SWC Compiler
-    optimizeCss: true,            // ✅ CSS Optimization
-    // dynamicIO: true,           // 🔄 Considerar activar
-    // ppr: true,                 // 🔄 Partial Prerendering
-  },
-  transpilePackages: [
-    "react-native",
-    "react-native-web",
-    "expo",
-    "@rn-primitives/*",
-    // ... 30+ paquetes optimizados
-  ]
+    reactStrictMode: true,
+    experimental: {
+        optimizeServerReact: true, // ✅ Server Components
+        forceSwcTransforms: true, // ✅ SWC Compiler
+        optimizeCss: true, // ✅ CSS Optimization
+        // dynamicIO: true,           // 🔄 Considerar activar
+        // ppr: true,                 // 🔄 Partial Prerendering
+    },
+    transpilePackages: [
+        "react-native",
+        "react-native-web",
+        "expo",
+        "@rn-primitives/*",
+        // ... 30+ paquetes optimizados
+    ],
 };
 ```
 
 **Stack Técnico Actual:**
+
 - **Framework**: Next.js 15.3.4 (última versión)
 - **React**: 19.0.0 (✅ implementado correctamente)
 - **Estado Global**: @legendapp/state 3.0.0-beta.30
@@ -193,86 +205,93 @@ const nextConfig = {
 - **Fonts**: Geist Sans + Geist Mono
 
 **🔒 SEGURIDAD Y AUTENTICACIÓN:**
+
 ```typescript
 // Middleware de autenticación implementado
 // apps/web/middleware.ts
 export async function middleware(request: NextRequest) {
-  // Server-side auth validation
-  // Role-based redirects (admin, trainer, user)
+    // Server-side auth validation
+    // Role-based redirects (admin, trainer, user)
 }
 
 // Server-side user validation
-const { data: { user } } = await supabase.auth.getUser();
+const {
+    data: { user },
+} = await supabase.auth.getUser();
 const { data: profile } = await supabase
-  .from("profiles")
-  .select("role")
-  .eq("id", user.id)
-  .maybeSingle();
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
 ```
 
 **📱 PWA CONFIGURATION:**
+
 ```typescript
 // Excelente configuración PWA
 export const metadata: Metadata = {
-  title: "ONFIT13",
-  description: "Tu app de fitness personalizada",
-  manifest: '/manifest.json',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'ONFIT13',
-  },
+    title: "ONFIT13",
+    description: "Tu app de fitness personalizada",
+    manifest: "/manifest.json",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "default",
+        title: "ONFIT13",
+    },
 };
 ```
 
 **🚀 OPORTUNIDADES DE OPTIMIZACIÓN:**
 
 1. **React 19 Server Components:**
-   ```typescript
-   // Migrar componentes a Server Components
-   async function UserDashboard({ userId }: { userId: string }) {
-     const userData = await getUserData(userId); // Sin useEffect!
-     const workouts = await getWorkouts(userId);
-     
-     return (
-       <div>
-         <UserProfile user={userData} />
-         <WorkoutList workouts={workouts} />
-       </div>
-     );
-   }
-   ```
+
+    ```typescript
+    // Migrar componentes a Server Components
+    async function UserDashboard({ userId }: { userId: string }) {
+      const userData = await getUserData(userId); // Sin useEffect!
+      const workouts = await getWorkouts(userId);
+
+      return (
+        <div>
+          <UserProfile user={userData} />
+          <WorkoutList workouts={workouts} />
+        </div>
+      );
+    }
+    ```
 
 2. **Nueva API `use`:**
-   ```typescript
-   import { use } from 'react';
-   
-   function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
-     const user = use(userPromise); // Reemplaza useEffect + useState
-     return <Profile user={user} />;
-   }
-   ```
+
+    ```typescript
+    import { use } from 'react';
+
+    function UserProfile({ userPromise }: { userPromise: Promise<User> }) {
+      const user = use(userPromise); // Reemplaza useEffect + useState
+      return <Profile user={user} />;
+    }
+    ```
 
 3. **Activar Features Experimentales:**
-   ```javascript
-   experimental: {
-     dynamicIO: true,    // Mejor streaming de datos
-     ppr: true,          // Partial Prerendering
-   }
-   ```
+
+    ```javascript
+    experimental: {
+      dynamicIO: true,    // Mejor streaming de datos
+      ppr: true,          // Partial Prerendering
+    }
+    ```
 
 4. **Optimización de Imágenes:**
-   ```javascript
-   images: {
-     remotePatterns: [
-       { protocol: "https", hostname: "play.google.com" },
-       { protocol: "https", hostname: "developer.apple.com" },
-     ],
-     // Agregar más optimizaciones
-     formats: ['image/webp', 'image/avif'],
-     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-   }
-   ```
+    ```javascript
+    images: {
+      remotePatterns: [
+        { protocol: "https", hostname: "play.google.com" },
+        { protocol: "https", hostname: "developer.apple.com" },
+      ],
+      // Agregar más optimizaciones
+      formats: ['image/webp', 'image/avif'],
+      deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    }
+    ```
 
 ---
 
@@ -281,6 +300,7 @@ export const metadata: Metadata = {
 **✅ CONFIGURACIÓN EMPRESARIAL:**
 
 **Expo SDK 53 Features:**
+
 - **React Native**: 0.79.5 (última versión estable)
 - **React**: 19.0.0 (✅ compatible y funcionando)
 - **New Architecture**: Habilitada (`newArchEnabled: true`)
@@ -288,29 +308,32 @@ export const metadata: Metadata = {
 - **Build System**: EAS Build con cache personalizado
 
 **Configuración Avanzada:**
+
 ```typescript
 // app.config.ts - CONFIGURACIÓN PROFESIONAL
 const config: ExpoConfig = {
-  name: "ONFIT13",
-  sdkVersion: "53.0.0",
-  newArchEnabled: true,              // ✅ Nueva arquitectura
-  runtimeVersion: {
-    policy: "nativeVersion",         // ✅ Versionado inteligente
-  },
-  experiments: {
-    typedRoutes: true,               // ✅ Type-safe routing
-    buildCacheProvider: {            // ✅ Cache optimizado
-      plugin: "@tooling/expo-github-cache",
-      options: {
-        owner: "raulpcarreras",
-        repo: "onfit-online-artifacts"
-      }
-    }
-  }
+    name: "ONFIT13",
+    sdkVersion: "53.0.0",
+    newArchEnabled: true, // ✅ Nueva arquitectura
+    runtimeVersion: {
+        policy: "nativeVersion", // ✅ Versionado inteligente
+    },
+    experiments: {
+        typedRoutes: true, // ✅ Type-safe routing
+        buildCacheProvider: {
+            // ✅ Cache optimizado
+            plugin: "@tooling/expo-github-cache",
+            options: {
+                owner: "raulpcarreras",
+                repo: "onfit-online-artifacts",
+            },
+        },
+    },
 };
 ```
 
 **🔧 Stack Nativo:**
+
 - **Animaciones**: React Native Reanimated 3.17.5
 - **Navegación**: Expo Router + React Navigation 7.1.14
 - **Estado**: Legend State (compartido con web)
@@ -320,6 +343,7 @@ const config: ExpoConfig = {
 - **Monitoring**: Sentry React Native 6.14.0
 
 **📱 CONFIGURACIÓN MULTIPLATAFORMA:**
+
 ```typescript
 // iOS Configuration
 ios: {
@@ -332,7 +356,7 @@ ios: {
   }
 },
 
-// Android Configuration  
+// Android Configuration
 android: {
   package: "app.myapp.com",
   versionCode: 5,
@@ -348,6 +372,7 @@ android: {
 ```
 
 **⚠️ ÁREA DE ATENCIÓN:**
+
 ```bash
 # Vulnerabilidad detectada en dependencias
 ┌─────────────────────┬────────────────────────────────────────┐
@@ -362,41 +387,42 @@ android: {
 **🚀 OPTIMIZACIONES RECOMENDADAS:**
 
 1. **React 19 en Native:**
-   ```typescript
-   // Usar nuevos hooks
-   import { useActionState } from 'react';
-   
-   function LoginForm() {
-     const [state, formAction] = useActionState(loginAction, null);
-     
-     return (
-       <View>
-         <TextInput placeholder="Email" />
-         <Button onPress={formAction} disabled={state.pending}>
-           {state.pending ? 'Iniciando...' : 'Iniciar Sesión'}
-         </Button>
-       </View>
-     );
-   }
-   ```
+
+    ```typescript
+    // Usar nuevos hooks
+    import { useActionState } from 'react';
+
+    function LoginForm() {
+      const [state, formAction] = useActionState(loginAction, null);
+
+      return (
+        <View>
+          <TextInput placeholder="Email" />
+          <Button onPress={formAction} disabled={state.pending}>
+            {state.pending ? 'Iniciando...' : 'Iniciar Sesión'}
+          </Button>
+        </View>
+      );
+    }
+    ```
 
 2. **Optimización de Bundle:**
-   ```javascript
-   // metro.config.js optimizations
-   module.exports = {
-     resolver: {
-       alias: {
-         '@repo/design': path.resolve(__dirname, '../../packages/design-system'),
-       },
-     },
-     transformer: {
-       minifierConfig: {
-         keep_fnames: true,
-         mangle: { keep_fnames: true },
-       },
-     },
-   };
-   ```
+    ```javascript
+    // metro.config.js optimizations
+    module.exports = {
+        resolver: {
+            alias: {
+                "@repo/design": path.resolve(__dirname, "../../packages/design-system"),
+            },
+        },
+        transformer: {
+            minifierConfig: {
+                keep_fnames: true,
+                mangle: { keep_fnames: true },
+            },
+        },
+    };
+    ```
 
 ---
 
@@ -405,51 +431,56 @@ android: {
 **✅ CONFIGURACIÓN PROFESIONAL:**
 
 **Linting y Formatting:**
+
 ```json
 // Configuración ESLint moderna
 {
-  "name": "@tooling/eslint",
-  "exports": {
-    "./expo": "./expo.config.js",
-    "./next": "./next.config.mjs", 
-    "./react": "./react.config.js"
-  },
-  "devDependencies": {
-    "eslint": "9.30.0",
-    "eslint-config-expo": "9.2.0",
-    "eslint-config-next": "15.3.4",
-    "eslint-plugin-react-compiler": "19.1.0-rc.2"  // ✅ React 19 ready
-  }
+    "name": "@tooling/eslint",
+    "exports": {
+        "./expo": "./expo.config.js",
+        "./next": "./next.config.mjs",
+        "./react": "./react.config.js"
+    },
+    "devDependencies": {
+        "eslint": "9.30.0",
+        "eslint-config-expo": "9.2.0",
+        "eslint-config-next": "15.3.4",
+        "eslint-plugin-react-compiler": "19.1.0-rc.2" // ✅ React 19 ready
+    }
 }
 ```
 
 **Prettier Configuration:**
+
 ```json
 {
-  "trailingComma": "all",
-  "endOfLine": "lf", 
-  "printWidth": 90,
-  "tabWidth": 4,
-  "overrides": [
-    {
-      "files": ["*.jsx", "*.tsx", "*.json"],
-      "options": { "tabWidth": 2 }
-    }
-  ]
+    "trailingComma": "all",
+    "endOfLine": "lf",
+    "printWidth": 90,
+    "tabWidth": 4,
+    "overrides": [
+        {
+            "files": ["*.jsx", "*.tsx", "*.json"],
+            "options": { "tabWidth": 2 }
+        }
+    ]
 }
 ```
 
 **TypeScript Setup:**
+
 - **Versión**: TypeScript 5.8.3
 - **Configuraciones**: Estrictas y optimizadas
 - **Soporte**: Node.js 24.0.7 types
 
 **Build System:**
+
 - **Turbo 2.5.4**: Builds paralelos y cache inteligente
 - **pnpm 10.12.4**: Gestión eficiente de dependencias
 - **Configuración de cache**: Filesystem + compresión gzip
 
 **Testing Infrastructure:**
+
 - **Jest**: Configurado para cada workspace
 - **Coverage**: ⚠️ Solo 4 archivos de test (CRÍTICO)
 - **React Testing Library**: Disponible pero subutilizada
@@ -481,6 +512,7 @@ Severity: 1 low | 1 moderate | 1 critical
 ```
 
 **🔧 Acción Requerida Inmediata:**
+
 ```bash
 # Resolver vulnerabilidades
 pnpm audit fix
@@ -493,24 +525,26 @@ pnpm audit --audit-level high
 **🛡️ Recomendaciones de Seguridad Adicionales:**
 
 1. **Dependencias Actualizadas:**
-   ```bash
-   # Mantener dependencias actualizadas
-   pnpm update --latest
-   pnpm dedupe
-   ```
+
+    ```bash
+    # Mantener dependencias actualizadas
+    pnpm update --latest
+    pnpm dedupe
+    ```
 
 2. **Variables de Entorno:**
-   ```bash
-   # Verificar que todas las variables sensibles estén en .env
-   # No hay secretos hardcodeados en el código ✅
-   ```
+
+    ```bash
+    # Verificar que todas las variables sensibles estén en .env
+    # No hay secretos hardcodeados en el código ✅
+    ```
 
 3. **Configuración HTTPS:**
-   ```typescript
-   // Asegurar HTTPS en producción
-   // Configurar CSP headers
-   // Implementar rate limiting
-   ```
+    ```typescript
+    // Asegurar HTTPS en producción
+    // Configurar CSP headers
+    // Implementar rate limiting
+    ```
 
 ---
 
@@ -525,9 +559,10 @@ pnpm audit --audit-level high
 ```
 
 **📁 Testing Setup Actual:**
+
 ```
 ├── apps/web/__tests__/         # Tests web
-├── apps/native/__tests__/      # Tests native  
+├── apps/native/__tests__/      # Tests native
 ├── packages/design-system/     # Sin tests ❌
 └── tooling/jest/              # Configuración Jest ✅
 ```
@@ -535,42 +570,45 @@ pnpm audit --audit-level high
 **🚀 Plan de Mejora de Testing:**
 
 1. **Testing Unitario:**
-   ```typescript
-   // Ejemplo para componentes
-   import { render, screen } from '@testing-library/react-native';
-   import { Button } from '@repo/design';
-   
-   describe('Button Component', () => {
-     it('should render correctly', () => {
-       render(<Button>Test Button</Button>);
-       expect(screen.getByText('Test Button')).toBeTruthy();
-     });
-   });
-   ```
+
+    ```typescript
+    // Ejemplo para componentes
+    import { render, screen } from '@testing-library/react-native';
+    import { Button } from '@repo/design';
+
+    describe('Button Component', () => {
+      it('should render correctly', () => {
+        render(<Button>Test Button</Button>);
+        expect(screen.getByText('Test Button')).toBeTruthy();
+      });
+    });
+    ```
 
 2. **Testing de Integración:**
-   ```typescript
-   // Tests para flujos completos
-   import { renderHook } from '@testing-library/react-hooks';
-   import { useUser } from '../lib/user-provider';
-   
-   describe('User Authentication Flow', () => {
-     it('should authenticate user correctly', async () => {
-       // Test completo de autenticación
-     });
-   });
-   ```
+
+    ```typescript
+    // Tests para flujos completos
+    import { renderHook } from "@testing-library/react-hooks";
+    import { useUser } from "../lib/user-provider";
+
+    describe("User Authentication Flow", () => {
+        it("should authenticate user correctly", async () => {
+            // Test completo de autenticación
+        });
+    });
+    ```
 
 3. **E2E Testing:**
-   ```bash
-   # Implementar Playwright o Detox
-   pnpm add -D @playwright/test
-   pnpm add -D detox
-   ```
+    ```bash
+    # Implementar Playwright o Detox
+    pnpm add -D @playwright/test
+    pnpm add -D detox
+    ```
 
 **📊 Objetivos de Cobertura:**
+
 - **Inmediato**: 30% cobertura (2 semanas)
-- **Corto plazo**: 60% cobertura (1 mes)  
+- **Corto plazo**: 60% cobertura (1 mes)
 - **Objetivo**: 80% cobertura (2 meses)
 
 ---
@@ -580,6 +618,7 @@ pnpm audit --audit-level high
 ### 🎯 PRIORIDAD ALTA (1-2 semanas)
 
 #### 1. **✅ APROVECHAR REACT 19 (YA COMPATIBLE)**
+
 ```typescript
 // ACCIÓN INMEDIATA: Implementar nuevos hooks
 import { useActionState, useFormStatus, use } from 'react';
@@ -612,6 +651,7 @@ function ProfileView({ userPromise }: { userPromise: Promise<User> }) {
 **Esfuerzo**: Medio - Migración gradual
 
 #### 2. **🔒 RESOLVER VULNERABILIDADES DE SEGURIDAD**
+
 ```bash
 # ACCIÓN INMEDIATA
 pnpm audit fix
@@ -629,6 +669,7 @@ echo "pnpm audit --audit-level high" >> .github/workflows/security.yml
 **Esfuerzo**: Bajo - Update directo
 
 #### 3. **🧪 IMPLEMENTAR TESTING COMPREHENSIVO**
+
 ```bash
 # Plan de Testing - Fase 1
 pnpm add -D @testing-library/react-native
@@ -647,6 +688,7 @@ echo "coverageThreshold: { global: { branches: 30, functions: 30, lines: 30, sta
 ### 🎯 PRIORIDAD MEDIA (2-4 semanas)
 
 #### 4. **⚡ OPTIMIZACIONES DE RENDIMIENTO**
+
 ```javascript
 // Next.js 15 - Activar features experimentales
 experimental: {
@@ -668,13 +710,14 @@ module.exports = {
 ```
 
 #### 5. **📱 OPTIMIZACIÓN NATIVA**
+
 ```typescript
 // Implementar lazy loading
 const LazyComponent = lazy(() => import('./HeavyComponent'));
 
 // Optimizar imágenes
 import { Image } from 'expo-image';
-<Image 
+<Image
   source={{ uri: imageUrl }}
   contentFit="cover"
   transition={200}
@@ -686,30 +729,33 @@ enableScreens();
 ```
 
 #### 6. **🎨 MEJORAS DEL DESIGN SYSTEM**
+
 ```typescript
 // Implementar variantes avanzadas
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        // Más variantes...
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-      },
-    }
-  }
+    "inline-flex items-center justify-center rounded-md text-sm font-medium",
+    {
+        variants: {
+            variant: {
+                default: "bg-primary text-primary-foreground hover:bg-primary/90",
+                destructive:
+                    "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                // Más variantes...
+            },
+            size: {
+                default: "h-10 px-4 py-2",
+                sm: "h-9 rounded-md px-3",
+                lg: "h-11 rounded-md px-8",
+            },
+        },
+    },
 );
 ```
 
 ### 🎯 PRIORIDAD BAJA (1-2 meses)
 
 #### 7. **📚 DOCUMENTACIÓN AVANZADA**
+
 ```bash
 # Storybook para design system
 pnpm add -D @storybook/react-native
@@ -721,43 +767,45 @@ pnpm add -D @microsoft/api-extractor
 ```
 
 #### 8. **🚀 CI/CD AVANZADO**
+
 ```yaml
 # .github/workflows/ci.yml
 name: CI/CD Pipeline
 on: [push, pull_request]
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: pnpm install
-      - name: Run tests
-        run: pnpm test --coverage
-      - name: Security audit
-        run: pnpm audit --audit-level high
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+            - name: Install dependencies
+              run: pnpm install
+            - name: Run tests
+              run: pnpm test --coverage
+            - name: Security audit
+              run: pnpm audit --audit-level high
 ```
 
 ---
 
 ## 📈 MÉTRICAS DE CALIDAD
 
-| Área | Estado Actual | Puntuación | Objetivo | Timeline |
-|------|---------------|------------|----------|----------|
-| **Arquitectura** | ✅ Excelente | 9.5/10 | 10/10 | Mantener |
-| **React 19 Compatibility** | ✅ Implementado | 10/10 | 10/10 | ✅ Completo |
-| **Seguridad** | ⚠️ 3 vulnerabilidades | 7/10 | 9.5/10 | 1 semana |
-| **Testing** | 🔴 Crítico | 2/10 | 8/10 | 2 meses |
-| **Performance** | ✅ Bueno | 8/10 | 9.5/10 | 1 mes |
-| **Documentación** | ✅ Muy buena | 9/10 | 9.5/10 | 2 meses |
-| **DevX** | ✅ Excelente | 9/10 | 9.5/10 | Mantener |
-| **Mantenibilidad** | ✅ Buena | 8/10 | 9/10 | 1 mes |
+| Área                       | Estado Actual         | Puntuación | Objetivo | Timeline    |
+| -------------------------- | --------------------- | ---------- | -------- | ----------- |
+| **Arquitectura**           | ✅ Excelente          | 9.5/10     | 10/10    | Mantener    |
+| **React 19 Compatibility** | ✅ Implementado       | 10/10      | 10/10    | ✅ Completo |
+| **Seguridad**              | ⚠️ 3 vulnerabilidades | 7/10       | 9.5/10   | 1 semana    |
+| **Testing**                | 🔴 Crítico            | 2/10       | 8/10     | 2 meses     |
+| **Performance**            | ✅ Bueno              | 8/10       | 9.5/10   | 1 mes       |
+| **Documentación**          | ✅ Muy buena          | 9/10       | 9.5/10   | 2 meses     |
+| **DevX**                   | ✅ Excelente          | 9/10       | 9.5/10   | Mantener    |
+| **Mantenibilidad**         | ✅ Buena              | 8/10       | 9/10     | 1 mes       |
 
 ### 🎯 PUNTUACIÓN GLOBAL: **7.8/10**
+
 **Objetivo**: **9.2/10** en 2 meses
 
 ---
@@ -765,24 +813,28 @@ jobs:
 ## 🔄 PLAN DE IMPLEMENTACIÓN
 
 ### 📅 SEMANA 1-2: CRÍTICO
+
 - [ ] Resolver vulnerabilidades de seguridad
 - [ ] Configurar testing básico (30% cobertura)
 - [ ] Implementar hooks de React 19 en formularios principales
 - [ ] Documentar APIs críticas
 
-### 📅 SEMANA 3-4: ALTO IMPACTO  
+### 📅 SEMANA 3-4: ALTO IMPACTO
+
 - [ ] Migrar componentes clave a Server Components
 - [ ] Optimizar bundle size (web y native)
 - [ ] Implementar lazy loading
 - [ ] Mejorar cobertura de testing (60%)
 
 ### 📅 MES 2: OPTIMIZACIÓN
+
 - [ ] Activar features experimentales de Next.js 15
 - [ ] Implementar E2E testing
 - [ ] Optimizaciones de rendimiento nativo
 - [ ] Storybook para design system
 
 ### 📅 MES 3: EXCELENCIA
+
 - [ ] Cobertura de testing 80%+
 - [ ] Documentación completa
 - [ ] CI/CD avanzado
@@ -795,17 +847,18 @@ jobs:
 ### 🧠 React 19 - Oportunidades Específicas
 
 **1. Compiler de React:**
+
 ```typescript
 // Antes (React 18)
 const ExpensiveComponent = memo(({ data, filter }) => {
-  const filteredData = useMemo(() => 
+  const filteredData = useMemo(() =>
     data.filter(item => item.category === filter), [data, filter]
   );
-  
+
   const handleClick = useCallback((id) => {
     onItemClick(id);
   }, [onItemClick]);
-  
+
   return <ItemList data={filteredData} onClick={handleClick} />;
 });
 
@@ -813,16 +866,17 @@ const ExpensiveComponent = memo(({ data, filter }) => {
 function ExpensiveComponent({ data, filter }) {
   // El compiler optimiza automáticamente
   const filteredData = data.filter(item => item.category === filter);
-  
+
   const handleClick = (id) => {
     onItemClick(id);
   };
-  
+
   return <ItemList data={filteredData} onClick={handleClick} />;
 }
 ```
 
 **2. Actions y Formularios:**
+
 ```typescript
 // Sistema de formularios optimizado
 function WorkoutForm() {
@@ -833,14 +887,14 @@ function WorkoutForm() {
         duration: formData.get('duration'),
         exercises: JSON.parse(formData.get('exercises'))
       };
-      
+
       await createWorkout(workout);
       return { success: true, message: 'Entrenamiento creado' };
     } catch (error) {
       return { success: false, message: error.message };
     }
   }, null);
-  
+
   return (
     <form action={formAction}>
       <input name="name" placeholder="Nombre del entrenamiento" />
@@ -865,6 +919,7 @@ function SubmitButton() {
 ### 🏗️ Arquitectura Escalable
 
 **Patrón de Módulos por Feature:**
+
 ```
 apps/web/src/
 ├── features/
@@ -889,17 +944,18 @@ apps/web/src/
 ### 📊 Performance Monitoring
 
 **Métricas Clave a Monitorear:**
+
 ```typescript
 // Web Vitals
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from "web-vitals";
 
 function sendToAnalytics(metric) {
-  // Enviar métricas a servicio de analytics
-  analytics.track('web-vital', {
-    name: metric.name,
-    value: metric.value,
-    id: metric.id,
-  });
+    // Enviar métricas a servicio de analytics
+    analytics.track("web-vital", {
+        name: metric.name,
+        value: metric.value,
+        id: metric.id,
+    });
 }
 
 getCLS(sendToAnalytics);
@@ -931,11 +987,13 @@ getTTFB(sendToAnalytics);
 ### 🚀 IMPACTO ESPERADO:
 
 **Corto Plazo (1 mes):**
+
 - Seguridad: 7/10 → 9.5/10
 - Testing: 2/10 → 6/10
 - Performance: 8/10 → 9/10
 
 **Medio Plazo (2-3 meses):**
+
 - Testing: 6/10 → 8.5/10
 - Mantenibilidad: 8/10 → 9.5/10
 - **Puntuación Global: 7.8/10 → 9.2/10**
@@ -951,12 +1009,12 @@ Con las mejoras propuestas, especialmente en testing y las optimizaciones de Rea
 ---
 
 **📧 Contacto para Seguimiento:**  
-*Este informe técnico requiere seguimiento para implementación de recomendaciones*
+_Este informe técnico requiere seguimiento para implementación de recomendaciones_
 
 **🔄 Próxima Revisión:**  
-*Recomendada en 4 semanas para evaluar progreso en testing y optimizaciones*
+_Recomendada en 4 semanas para evaluar progreso en testing y optimizaciones_
 
 ---
 
-*Informe generado por auditoría técnica especializada - Enero 2025*  
-*Versión: 1.0 | Confidencial - Uso Interno*
+_Informe generado por auditoría técnica especializada - Enero 2025_  
+_Versión: 1.0 | Confidencial - Uso Interno_

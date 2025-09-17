@@ -9,22 +9,19 @@ export interface FullScreenLoaderProps {
   size?: "sm" | "md" | "lg";
 }
 
-export function FullScreenLoader({ 
-  label = "Cargando...", 
+export function FullScreenLoader({
+  label = "Cargando...",
   className,
-  size = "lg"
+  size = "lg",
 }: FullScreenLoaderProps) {
   return (
-    <View className={cn(
-      "min-h-screen justify-center items-center bg-background",
-      className
-    )}>
+    <View
+      className={cn("min-h-screen justify-center items-center bg-background", className)}
+    >
       <View className="items-center gap-4">
         <Loader size={size} variant="spinner" />
         {label && (
-          <Text className="text-sm text-muted-foreground text-center">
-            {label}
-          </Text>
+          <Text className="text-sm text-muted-foreground text-center">{label}</Text>
         )}
       </View>
     </View>

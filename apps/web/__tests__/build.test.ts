@@ -59,7 +59,7 @@ test("Next.js build completes", async () => {
         expect(result).toContain("other shared chunks (total)");
 
         // Check for static route indicator
-        expect(result).toContain("○  (Static)  prerendered as static content");
+        expect(result).toContain("○  (Static)   prerendered as static content");
     } finally {
         // The process kill check has been moved to the afterAll block
     }

@@ -19,11 +19,13 @@ type SidebarProps = {
 
 export default function Sidebar({ items }: SidebarProps) {
   const router = useRouter();
-  
+
   return (
     <div className="h-full flex flex-col">
       <div className="px-4 pt-6 pb-2">
-        <h2 className="text-xs font-mono tracking-wider text-muted-foreground font-medium pl-2">MENU</h2>
+        <h2 className="text-xs font-mono tracking-wider text-muted-foreground font-medium pl-2">
+          MENU
+        </h2>
       </div>
       <Nav items={items} />
     </div>
@@ -32,7 +34,7 @@ export default function Sidebar({ items }: SidebarProps) {
 
 function Nav({ items }: { items: SidebarItem[] }) {
   const router = useRouter();
-  
+
   return (
     <nav className="px-3 py-1 space-y-1">
       {items.map((i) => (
@@ -52,10 +54,10 @@ function Nav({ items }: { items: SidebarItem[] }) {
           <span className="text-sm font-medium">{i.label}</span>
         </Button>
       ))}
-      
+
       {/* Separador antes del botón de logout */}
       <div className="my-2 border-t border-border/50"></div>
-      
+
       {/* Cerrar sesión como un ítem más del menú */}
       <Button
         onPress={async () => {

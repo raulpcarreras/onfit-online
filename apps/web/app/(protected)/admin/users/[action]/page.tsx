@@ -25,11 +25,11 @@ export default function UserManagementPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { users, refreshUsers } = useUsers();
-  
+
   const action = params.action as string;
   const userId = searchParams.get("id");
   const isEditing = Boolean(action === "edit" && userId);
-  
+
   const [formData, setFormData] = useState<UserFormData>({
     full_name: "",
     email: "",
@@ -39,7 +39,7 @@ export default function UserManagementPage() {
     is_super_admin: false,
     email_confirmed: false,
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function UserManagementPage() {
   // Cargar datos del usuario si estamos editando
   useEffect(() => {
     if (isEditing && userId && users.length > 0) {
-      const user = users.find(u => u.id === userId);
+      const user = users.find((u) => u.id === userId);
       if (user) {
         setFormData({
           full_name: user.full_name || "",
@@ -99,61 +99,63 @@ export default function UserManagementPage() {
     if (!formData.password) {
       throw new Error("La contraseña es obligatoria");
     }
-    
+
     // Validación de fortaleza de contraseña
     const passwordStrength = getPasswordStrength(formData.password);
     if (passwordStrength.score < 2) {
-      throw new Error("La contraseña es demasiado débil. Debe cumplir al menos 3 criterios de seguridad");
+      throw new Error(
+        "La contraseña es demasiado débil. Debe cumplir al menos 3 criterios de seguridad",
+      );
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       throw new Error("Las contraseñas no coinciden");
     }
 
-          const response = await fetch("/api/admin/create-user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          full_name: formData.full_name,
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-          is_super_admin: formData.is_super_admin,
-          email_confirmed: formData.email_confirmed,
-        }),
-      });
+    const response = await fetch("/api/admin/create-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        full_name: formData.full_name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        is_super_admin: formData.is_super_admin,
+        email_confirmed: formData.email_confirmed,
+      }),
+    });
 
-                if (!response.ok) {
-              const errorData = await response.json();
-              let errorMessage = "Error al crear usuario";
-              
-              // Traducir errores específicos
-              switch (errorData.error) {
-                case "email_already_exists":
-                  errorMessage = "Este email ya está registrado en el sistema";
-                  break;
-                case "email_already_exists_in_profiles":
-                  errorMessage = "Este email ya existe en la base de datos";
-                  break;
-                case "password_required":
-                  errorMessage = "La contraseña es obligatoria";
-                  break;
-                case "password_too_short":
-                  errorMessage = "La contraseña debe tener al menos 8 caracteres";
-                  break;
-                case "invalid_role":
-                  errorMessage = "El rol seleccionado no es válido";
-                  break;
-                default:
-                  errorMessage = errorData.error || "Error al crear usuario";
-              }
-              
-              throw new Error(errorMessage);
-            }
+    if (!response.ok) {
+      const errorData = await response.json();
+      let errorMessage = "Error al crear usuario";
+
+      // Traducir errores específicos
+      switch (errorData.error) {
+        case "email_already_exists":
+          errorMessage = "Este email ya está registrado en el sistema";
+          break;
+        case "email_already_exists_in_profiles":
+          errorMessage = "Este email ya existe en la base de datos";
+          break;
+        case "password_required":
+          errorMessage = "La contraseña es obligatoria";
+          break;
+        case "password_too_short":
+          errorMessage = "La contraseña debe tener al menos 8 caracteres";
+          break;
+        case "invalid_role":
+          errorMessage = "El rol seleccionado no es válido";
+          break;
+        default:
+          errorMessage = errorData.error || "Error al crear usuario";
+      }
+
+      throw new Error(errorMessage);
+    }
 
     setSuccess("Usuario creado exitosamente");
     await refreshUsers();
-    
+
     // Redirigir después de 2 segundos
     setTimeout(() => {
       router.push("/admin/users");
@@ -179,7 +181,7 @@ export default function UserManagementPage() {
 
     setSuccess("Usuario actualizado exitosamente");
     await refreshUsers();
-    
+
     // Redirigir después de 2 segundos
     setTimeout(() => {
       router.push("/admin/users");
@@ -189,7 +191,7 @@ export default function UserManagementPage() {
   const getPasswordStrength = (password: string) => {
     let score = 0;
     const tips = [];
-    
+
     // Longitud mínima
     if (password.length >= 8) {
       score += 1;
@@ -197,7 +199,7 @@ export default function UserManagementPage() {
     } else {
       tips.push({ text: "Al menos 8 caracteres", fulfilled: false });
     }
-    
+
     // Mayúsculas
     if (/[A-Z]/.test(password)) {
       score += 1;
@@ -205,7 +207,7 @@ export default function UserManagementPage() {
     } else {
       tips.push({ text: "Incluir mayúsculas", fulfilled: false });
     }
-    
+
     // Números
     if (/\d/.test(password)) {
       score += 1;
@@ -213,7 +215,7 @@ export default function UserManagementPage() {
     } else {
       tips.push({ text: "Incluir números", fulfilled: false });
     }
-    
+
     // Caracteres especiales
     if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
       score += 1;
@@ -221,31 +223,35 @@ export default function UserManagementPage() {
     } else {
       tips.push({ text: "Incluir caracteres especiales", fulfilled: false });
     }
-    
+
     // Bonus por longitud extra
     if (password.length >= 12) {
       score += 1;
     }
-    
+
     const labels = ["Muy débil", "Débil", "Media", "Fuerte", "Muy fuerte"];
     const label = labels[Math.min(score, 4)];
-    
+
     return { score: Math.min(score, 4), label, tips };
   };
 
   const handleInputChange = (field: keyof UserFormData, value: any) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
 
   const pageTitle = isEditing ? "Editar Usuario" : "Crear Nuevo Usuario";
-  const pageDescription = isEditing 
+  const pageDescription = isEditing
     ? "Modifica la información del usuario seleccionado"
     : "Añade un nuevo usuario al sistema";
   const submitText = isEditing ? "Guardar Cambios" : "Crear Usuario";
-  const submitIcon = isEditing ? <Save className="h-4 w-4" /> : <UserPlus className="h-4 w-4" />;
+  const submitIcon = isEditing ? (
+    <Save className="h-4 w-4" />
+  ) : (
+    <UserPlus className="h-4 w-4" />
+  );
 
   // Usar EXACTAMENTE el mismo estilo que la página de usuarios
   const card = "bg-card rounded-lg border border-border p-4";
@@ -260,7 +266,7 @@ export default function UserManagementPage() {
               <h1 className="text-2xl font-bold">{pageTitle}</h1>
               <p className="text-muted-foreground">{pageDescription}</p>
             </div>
-            <Button 
+            <Button
               className="flex items-center gap-2"
               onPress={() => router.push("/admin/users")}
             >
@@ -348,38 +354,51 @@ export default function UserManagementPage() {
                       )}
                     </Button>
                   </div>
-                  
+
                   {/* Barra de fortaleza de contraseña */}
                   {formData.password && (
                     <div className="mt-2">
                       <div className="flex items-center justify-between text-xs mb-1">
                         <span className="text-muted-foreground">Fortaleza:</span>
-                        <span className={`font-medium ${
-                          getPasswordStrength(formData.password).score === 0 ? "text-red-500" :
-                          getPasswordStrength(formData.password).score === 1 ? "text-orange-500" :
-                          getPasswordStrength(formData.password).score === 2 ? "text-yellow-500" :
-                          getPasswordStrength(formData.password).score === 3 ? "text-blue-500" :
-                          "text-green-500"
-                        }`}>
+                        <span
+                          className={`font-medium ${
+                            getPasswordStrength(formData.password).score === 0
+                              ? "text-red-500"
+                              : getPasswordStrength(formData.password).score === 1
+                                ? "text-orange-500"
+                                : getPasswordStrength(formData.password).score === 2
+                                  ? "text-yellow-500"
+                                  : getPasswordStrength(formData.password).score === 3
+                                    ? "text-blue-500"
+                                    : "text-green-500"
+                          }`}
+                        >
                           {getPasswordStrength(formData.password).label}
                         </span>
                       </div>
                       <div className="w-full bg-muted rounded-full h-2">
-                        <div 
+                        <div
                           className={`h-2 rounded-full transition-all duration-300 ${
-                            getPasswordStrength(formData.password).score === 0 ? "bg-red-500 w-1/5" :
-                            getPasswordStrength(formData.password).score === 1 ? "bg-orange-500 w-2/5" :
-                            getPasswordStrength(formData.password).score === 2 ? "bg-yellow-500 w-3/5" :
-                            getPasswordStrength(formData.password).score === 3 ? "bg-blue-500 w-4/5" :
-                            "bg-green-500 w-full"
+                            getPasswordStrength(formData.password).score === 0
+                              ? "bg-red-500 w-1/5"
+                              : getPasswordStrength(formData.password).score === 1
+                                ? "bg-orange-500 w-2/5"
+                                : getPasswordStrength(formData.password).score === 2
+                                  ? "bg-yellow-500 w-3/5"
+                                  : getPasswordStrength(formData.password).score === 3
+                                    ? "bg-blue-500 w-4/5"
+                                    : "bg-green-500 w-full"
                           }`}
                         />
                       </div>
                       <div className="mt-1 text-xs text-muted-foreground">
                         {getPasswordStrength(formData.password).tips.map((tip, index) => (
-                          <div key={index} className={`flex items-center gap-1 ${
-                            tip.fulfilled ? "text-green-600" : "text-muted-foreground"
-                          }`}>
+                          <div
+                            key={index}
+                            className={`flex items-center gap-1 ${
+                              tip.fulfilled ? "text-green-600" : "text-muted-foreground"
+                            }`}
+                          >
                             {tip.fulfilled ? "✓" : "○"} {tip.text}
                           </div>
                         ))}
@@ -398,7 +417,9 @@ export default function UserManagementPage() {
                       id="confirmPassword"
                       type={showConfirmPwd ? "text" : "password"}
                       value={formData.confirmPassword}
-                      onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange("confirmPassword", e.target.value)
+                      }
                       placeholder="••••••••"
                       required
                       className="flex-1"
@@ -407,7 +428,9 @@ export default function UserManagementPage() {
                       variant="ghost"
                       size="sm"
                       className="p-2"
-                      aria-label={showConfirmPwd ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      aria-label={
+                        showConfirmPwd ? "Ocultar contraseña" : "Mostrar contraseña"
+                      }
                       onPress={() => setShowConfirmPwd(!showConfirmPwd)}
                     >
                       {showConfirmPwd ? (
@@ -428,11 +451,13 @@ export default function UserManagementPage() {
               </label>
               <Select
                 value={formData.role}
-                onChange={(value: string) => handleInputChange("role", value as "user" | "trainer" | "admin")}
+                onChange={(value: string) =>
+                  handleInputChange("role", value as "user" | "trainer" | "admin")
+                }
                 options={[
                   { value: "user", label: "👤 Usuario - Acceso básico" },
                   { value: "trainer", label: "🏋️ Trainer - Gestión de entrenamientos" },
-                  { value: "admin", label: "⚙️ Admin - Gestión del sistema" }
+                  { value: "admin", label: "⚙️ Admin - Gestión del sistema" },
                 ]}
                 className="w-full"
               />
@@ -451,14 +476,20 @@ export default function UserManagementPage() {
                   <Checkbox
                     id="email_confirmed"
                     checked={formData.email_confirmed}
-                    onCheckedChange={(checked: boolean) => handleInputChange("email_confirmed", checked)}
+                    onCheckedChange={(checked: boolean) =>
+                      handleInputChange("email_confirmed", checked)
+                    }
                   />
-                  <label htmlFor="email_confirmed" className="text-sm text-muted-foreground">
+                  <label
+                    htmlFor="email_confirmed"
+                    className="text-sm text-muted-foreground"
+                  >
                     Email ya validado (no requiere confirmación)
                   </label>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  ✅ Si está marcado, el usuario podrá acceder inmediatamente sin confirmar email
+                  ✅ Si está marcado, el usuario podrá acceder inmediatamente sin
+                  confirmar email
                 </p>
               </div>
             )}
@@ -472,7 +503,9 @@ export default function UserManagementPage() {
                 <Checkbox
                   id="is_super_admin"
                   checked={Boolean(formData.is_super_admin)}
-                  onCheckedChange={(checked: boolean) => handleInputChange("is_super_admin", checked)}
+                  onCheckedChange={(checked: boolean) =>
+                    handleInputChange("is_super_admin", checked)
+                  }
                 />
                 <label htmlFor="is_super_admin" className="text-sm text-muted-foreground">
                   Otorgar permisos de super administrador
@@ -485,7 +518,9 @@ export default function UserManagementPage() {
 
             {/* Alertas - Usando el mismo estilo que el manejo de errores de la página de usuarios */}
             {error && (
-              <div className={`${card} border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-800`}>
+              <div
+                className={`${card} border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-800`}
+              >
                 <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
                   <span className="font-medium">Error:</span>
                   <span>{error}</span>
@@ -494,7 +529,9 @@ export default function UserManagementPage() {
             )}
 
             {success && (
-              <div className={`${card} border-green-200 bg-green-50 dark:bg-green-950/20 dark:border-green-800`}>
+              <div
+                className={`${card} border-green-200 bg-green-50 dark:bg-green-950/20 dark:border-green-800`}
+              >
                 <div className="flex items-center gap-2 text-green-700 dark:text-green-300">
                   <span className="font-medium">Éxito:</span>
                   <span>{success}</span>
@@ -504,11 +541,7 @@ export default function UserManagementPage() {
 
             {/* Botones de Acción - Usando el mismo estilo que los botones de la página de usuarios */}
             <div className="flex gap-3 pt-4">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="flex-1"
-              >
+              <Button type="submit" disabled={loading} className="flex-1">
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />

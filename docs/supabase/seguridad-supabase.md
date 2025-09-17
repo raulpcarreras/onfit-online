@@ -13,12 +13,14 @@ Este documento describe el estado actual de seguridad, la arquitectura de autent
 ONFIT implementa un sistema de autenticación de dos niveles que proporciona flexibilidad y seguridad:
 
 #### **Nivel 1: Super Admin (JWT)**
+
 - **Ubicación**: `user.app_metadata.is_super_admin` en JWT
 - **Propósito**: Permisos máximos del sistema
 - **Gestión**: Endpoint `/api/admin/grant-super`
 - **Independencia**: No afecta roles funcionales
 
 #### **Nivel 2: Roles Funcionales (Base de Datos)**
+
 - **Ubicación**: `public.profiles.role`
 - **Valores**: `user`, `trainer`, `admin`
 - **Propósito**: Funcionalidades específicas por rol
@@ -42,6 +44,7 @@ graph TD
 ### 📊 Configuración de Base de Datos
 
 #### **Variables de Entorno Requeridas**
+
 ```bash
 # Cliente (públicas)
 NEXT_PUBLIC_SUPABASE_URL=your-project-url
@@ -53,6 +56,7 @@ ADMIN_INTERNAL_SECRET=your-internal-secret
 ```
 
 #### **Migración de Base de Datos**
+
 - **Archivo**: `supabase/migrations/20250821231824_super-admin.sql`
 - **Función**: `public.is_super_admin()` para leer JWT
 - **Políticas RLS**: Configuradas en `public.profiles`
@@ -60,6 +64,7 @@ ADMIN_INTERNAL_SECRET=your-internal-secret
 ### 🔒 Row Level Security (RLS)
 
 #### **Políticas Implementadas**
+
 ```sql
 -- Lectura: Usuario propio o super admin
 create policy "profiles select own"
@@ -88,6 +93,7 @@ with check (auth.uid() = id or public.is_super_admin());
 ### 🔑 Gestión de Super Admin
 
 #### **Endpoint**: `POST /api/admin/grant-super`
+
 - **Propósito**: Activar/desactivar super admin
 - **Protección**: Solo super admins pueden acceder
 - **Operación**: Modifica `app_metadata.is_super_admin`
@@ -96,15 +102,16 @@ with check (auth.uid() = id or public.is_super_admin());
 ```typescript
 // Ejemplo de uso
 const response = await fetch("/api/admin/grant-super", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: "user@example.com", enable: true })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: "user@example.com", enable: true }),
 });
 ```
 
 ### 👥 Gestión de Roles
 
 #### **Endpoint**: `POST /api/admin/promote-role`
+
 - **Propósito**: Cambiar roles funcionales
 - **Protección**: Solo super admins pueden acceder
 - **Operación**: Modifica `profiles.role`
@@ -113,15 +120,16 @@ const response = await fetch("/api/admin/grant-super", {
 ```typescript
 // Ejemplo de uso
 const response = await fetch("/api/admin/promote-role", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ userId: "user-id", role: "admin" })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId: "user-id", role: "admin" }),
 });
 ```
 
 ### 📋 Listado de Usuarios
 
 #### **Endpoint**: `GET /api/admin/users`
+
 - **Propósito**: Obtener lista de usuarios con permisos
 - **Protección**: Super admin O admin funcional
 - **Datos**: Combina `profiles` + `auth.users`
@@ -134,11 +142,12 @@ const response = await fetch("/api/admin/promote-role", {
 ### 🔒 Server-Side Rendering (SSR) Guards
 
 #### **Layout Admin**: `apps/web/app/(protected)/admin/layout.tsx`
+
 ```typescript
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const supabase = await supabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
-  
+
   if (!user) redirect("/login?redirect=/admin/dashboard");
 
   // 1) Super Admin (JWT)
@@ -166,6 +175,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 ### 🚫 Middleware de Protección
 
 #### **Archivo**: `apps/web/middleware.ts`
+
 - **Propósito**: Verificación básica de cookies
 - **Alcance**: Solo verifica autenticación básica
 - **NO maneja**: Roles ni permisos específicos
@@ -177,6 +187,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 ### 🔘 SuperAdminToggle
 
 #### **Ubicación**: `apps/web/src/components/admin/SuperAdminToggle.tsx`
+
 - **Propósito**: Activar/desactivar super admin
 - **Protección**: Auto-protección contra auto-desactivación
 - **Estados**: Activo, inactivo, loading, disabled
@@ -187,14 +198,15 @@ const isCurrentUser = user?.email === userEmail;
 const canToggle = !isCurrentUser || !isCurrentlySuperAdmin;
 
 if (isCurrentUser && isCurrentlySuperAdmin) {
-  alert("No puedes quitarte tus propios permisos de super admin");
-  return;
+    alert("No puedes quitarte tus propios permisos de super admin");
+    return;
 }
 ```
 
 ### 📊 Página de Gestión
 
 #### **Ubicación**: `apps/web/app/(protected)/admin/users/page.tsx`
+
 - **Funcionalidades**: Lista usuarios, gestión de permisos, filtros
 - **Protección**: Solo super admins pueden gestionar
 - **Datos**: Tiempo real desde APIs protegidas
@@ -206,6 +218,7 @@ if (isCurrentUser && isCurrentlySuperAdmin) {
 ### 🔍 Verificación del Sistema
 
 #### **Script**: `npm run verify-super-admin`
+
 - **Propósito**: Verificación completa del sistema
 - **Verificaciones**: BD, APIs, usuarios, permisos
 - **Uso**: Monitoreo regular y debugging
@@ -213,6 +226,7 @@ if (isCurrentUser && isCurrentlySuperAdmin) {
 ### 👑 Gestión de Super Admin
 
 #### **Script**: `npm run manage-super-admin`
+
 ```bash
 # Listar super admins
 npm run manage-super-admin list
@@ -230,6 +244,7 @@ npm run manage-super-admin user@email.com check
 ### 📊 Monitoreo en Tiempo Real
 
 #### **Script**: `npm run monitor-admin`
+
 - **Propósito**: Monitoreo de cambios en tiempo real
 - **Funcionalidades**: Logs de cambios, estadísticas, alertas
 - **Uso**: Supervisión continua del sistema
@@ -294,6 +309,7 @@ npm run manage-super-admin user@email.com check
 ## 📅 Historial de Cambios
 
 ### **v1.0.0** - 22/08/2025
+
 - ✅ Implementación completa del sistema Super Admin
 - ✅ Separación total de responsabilidades
 - ✅ APIs protegidas y funcionales
@@ -306,11 +322,13 @@ npm run manage-super-admin user@email.com check
 ## 👥 Contacto y Soporte
 
 ### 🔧 Mantenimiento
+
 - **Desarrollador**: Raúl P. Carreras
 - **Repositorio**: [https://github.com/raulpcarreras/onfit-online](https://github.com/raulpcarreras/onfit-online)
 - **Documentación**: `/docs/` en el repositorio
 
 ### 🚨 Emergencias
+
 - **Super Admin comprometido**: Usar scripts de desactivación inmediata
 - **Acceso no autorizado**: Revisar logs y RLS policies
 - **Problemas de BD**: Verificar migraciones y funciones

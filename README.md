@@ -26,6 +26,7 @@ onfit/
 ## 🛠️ Comandos Principales
 
 ### Desarrollo
+
 ```bash
 # Web
 pnpm web:dev          # Inicia desarrollo web
@@ -39,6 +40,7 @@ pnpm native:run:android # Compila y ejecuta en Android
 ```
 
 ### Monorepo
+
 ```bash
 pnpm lint             # Lint en todas las apps
 pnpm test             # Tests en todas las apps
@@ -56,6 +58,7 @@ Este monorepo usa **pnpm** con `pnpm-workspace.yaml`:
 > No usamos `workspaces` en `package.json`. Toda la resolución la hace pnpm vía `pnpm-workspace.yaml`.
 
 ### Verificar Workspaces
+
 ```bash
 # Ver todos los paquetes detectados
 pnpm -w list --depth=1
@@ -68,6 +71,7 @@ pnpm -F native list
 ## 🎨 Tailwind y Estilos
 
 ### Tailwind en apps/web
+
 La app web usa el preset compartido del design system:
 
 - `import sharedConfig from "@repo/design/tailwind/tailwind.config"`
@@ -76,29 +80,34 @@ La app web usa el preset compartido del design system:
 Así garantizamos que las clases usadas por los wrappers del DS se incluyan en la build.
 
 ### Orden de CSS (web)
-1) `@repo/design/tokens/index.css`  ← variables HSL canónicas
-2) `./app/globals.css`              ← @tailwind base/components/utilities + resets
-3) Cualquier CSS de features/páginas
+
+1. `@repo/design/tokens/index.css` ← variables HSL canónicas
+2. `./app/globals.css` ← @tailwind base/components/utilities + resets
+3. Cualquier CSS de features/páginas
 
 > No dupliques tokens en `globals.css`. Si ves "líneas blancas" en tablas, revisa que las **variables** provengan de `tokens/index.css`.
 
 ## 📦 Gestión de Dependencias
 
 ### Dependencias Compartidas
+
 - **Design System**: `@repo/design` - Componentes y tokens para ambas plataformas
 - **Bottom Sheet**: `@repo/bottom-sheet` - Componente nativo compartido
 
 ### Regla de importación de componentes
+
 - ✅ `@repo/design/components/Button` (wrappers del DS)
 - ❌ `@repo/design/ui/button` (shadcn interno, no lo uses desde apps)
 
 Los wrappers mantienen API homogénea (p.ej. `onPress` en web/native).
 
 ### Utilidad de clases
+
 Usa **solo** `@repo/design/lib/utils` (re-exporta clsx + tailwind-merge).
 Evita `lib/cn.ts` para no mezclar comportamientos.
 
 ### Instalación
+
 ```bash
 # Añadir a una app específica
 pnpm -F web add react-query
@@ -120,12 +129,14 @@ pnpm -w add -D turbo
 ## 🔍 Troubleshooting
 
 ### Warning DEP0169 (url.parse)
+
 ```bash
 # Ya manejado en scripts con NODE_OPTIONS=--no-deprecation
 # Es normal en Node 20/22
 ```
 
 ### Expo Doctor Issues
+
 ```bash
 # Verificar estado de Expo
 pnpm -F native exec npx expo-doctor

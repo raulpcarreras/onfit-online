@@ -2,7 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../src/lib/supabase";
-import { Dumbbell, Sun, Moon, Monitor, ArrowLeft, CheckCircle, AlertCircle } from "lucide-react";
+import {
+  Dumbbell,
+  Sun,
+  Moon,
+  Monitor,
+  ArrowLeft,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { Button } from "@repo/design/components/Button";
@@ -17,38 +25,37 @@ export default function ForgotPasswordForm() {
   const [error, setError] = useState("");
   const { setTheme, theme, resolvedTheme } = useTheme() as any;
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => setMounted(true), []);
   const themeSetting = mounted ? (theme ?? "system") : "system";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email.trim()) {
       setError("Por favor, introduce tu email");
       return;
     }
-    
+
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError("Por favor, introduce un email válido");
       return;
     }
-    
+
     try {
       setLoading(true);
       setError("");
-      
+
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       });
-      
+
       if (resetError) throw resetError;
-      
+
       setSuccess(true);
-      
     } catch (error: any) {
       console.error("Error al enviar email de recuperación:", error);
-      
+
       if (error.message.includes("User not found")) {
         setError("No existe una cuenta con este email");
       } else if (error.message.includes("Too many requests")) {
@@ -72,8 +79,7 @@ export default function ForgotPasswordForm() {
         <div className="w-full max-w-md bg-card border border-border rounded-lg p-6 shadow-lg text-center">
           {/* Header */}
           <div className="mb-6">
-            <div className="mb-5">
-            </div>
+            <div className="mb-5"></div>
           </div>
 
           {/* Success Message */}
@@ -109,12 +115,9 @@ export default function ForgotPasswordForm() {
             >
               Enviar otro email
             </Button>
-            
+
             <Link href="/login">
-              <Button
-                variant="ghost"
-                className="w-full"
-              >
+              <Button variant="ghost" className="w-full">
                 Volver al login
               </Button>
             </Link>
@@ -131,10 +134,8 @@ export default function ForgotPasswordForm() {
         <div className="mb-6">
           <div className="mb-5 relative">
             {/* Botón de tema posicionado absolutamente en la esquina superior derecha */}
-                         <ThemeToggle
-               className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
-             />
-            
+            <ThemeToggle className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10" />
+
             {/* Logo centrado en la card */}
             <div className="flex flex-col items-center text-center">
               {!mounted ? (
@@ -146,21 +147,21 @@ export default function ForgotPasswordForm() {
                 />
               ) : resolvedTheme === "dark" ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img 
-                  src="/logos/logo-dark.png" 
-                  alt="ONFIT Logo" 
+                <img
+                  src="/logos/logo-dark.png"
+                  alt="ONFIT Logo"
                   className="h-12 w-auto object-contain"
                 />
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img 
-                  src="/logos/logo-light.png" 
-                  alt="ONFIT Logo" 
+                <img
+                  src="/logos/logo-light.png"
+                  alt="ONFIT Logo"
                   className="h-12 w-auto object-contain"
                 />
               )}
             </div>
-            
+
             <div className="mt-4 border-t border-border/50" />
             <h2 className="text-lg font-semibold text-foreground mt-4 mb-2">
               Recuperar contraseña
@@ -174,7 +175,10 @@ export default function ForgotPasswordForm() {
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-foreground mb-2"
+            >
               Email
             </label>
             <Input
@@ -195,11 +199,7 @@ export default function ForgotPasswordForm() {
             </div>
           )}
 
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={loading}
-          >
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading && (
               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
             )}
@@ -209,7 +209,10 @@ export default function ForgotPasswordForm() {
 
         {/* Footer */}
         <div className="mt-6 text-center">
-          <Link href="/login" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+          <Link
+            href="/login"
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Volver al login
           </Link>

@@ -1,4 +1,3 @@
-
 // Import shared setup
 import "@tooling/jest/jest-shared-setup";
 

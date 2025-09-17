@@ -1,8 +1,9 @@
-export { 
-  Carousel, 
-  CarouselApi, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
+export {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
 } from "./index.web";
+
+export type { CarouselApi } from "./index.web";

@@ -11,7 +11,12 @@ type UserCtx = {
   isSuperAdmin: boolean; // Helper para verificar super admin
 };
 
-const Ctx = createContext<UserCtx>({ user: null, loading: true, error: null, isSuperAdmin: false });
+const Ctx = createContext<UserCtx>({
+  user: null,
+  loading: true,
+  error: null,
+  isSuperAdmin: false,
+});
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -46,11 +51,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const isSuperAdmin = !!(user?.app_metadata as any)?.is_super_admin;
-  const value = useMemo(() => ({ user, loading, error: error, isSuperAdmin }), [user, loading, error, isSuperAdmin]);
+  const value = useMemo(
+    () => ({ user, loading, error: error, isSuperAdmin }),
+    [user, loading, error, isSuperAdmin],
+  );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 
 export const useUser = () => useContext(Ctx);
-
-

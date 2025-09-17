@@ -80,50 +80,50 @@ packages/design-system/
 ### 1) `.storybook/main.ts`
 
 ```ts
-import type { StorybookConfig } from '@storybook/react-vite';
+import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
-  framework: '@storybook/react-vite',
-  stories: [
-    // Stories del propio package
-    '../stories/**/*.stories.@(ts|tsx)',
-    // (Opcional) stories junto a componentes
-    '../{components,ui}/**/*.stories.@(ts|tsx)',
-  ],
-  addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/addon-a11y',
-    {
-      name: '@storybook/addon-styling',
-      options: {
-        postCss: true,
-      },
+    framework: "@storybook/react-vite",
+    stories: [
+        // Stories del propio package
+        "../stories/**/*.stories.@(ts|tsx)",
+        // (Opcional) stories junto a componentes
+        "../{components,ui}/**/*.stories.@(ts|tsx)",
+    ],
+    addons: [
+        "@storybook/addon-essentials",
+        "@storybook/addon-interactions",
+        "@storybook/addon-a11y",
+        {
+            name: "@storybook/addon-styling",
+            options: {
+                postCss: true,
+            },
+        },
+    ],
+    docs: {
+        autodocs: "tag",
     },
-  ],
-  docs: {
-    autodocs: 'tag',
-  },
-  core: {
-    disableTelemetry: true,
-  },
-  viteFinal: async (config, { configType }) => {
-    // Ajustes útiles en monorepos
-    config.optimizeDeps = config.optimizeDeps || {};
-    config.optimizeDeps.include = [
-      ...(config.optimizeDeps.include || []),
-      'react',
-      'react-dom',
-      'clsx',
-      'tailwind-merge',
-    ];
+    core: {
+        disableTelemetry: true,
+    },
+    viteFinal: async (config, { configType }) => {
+        // Ajustes útiles en monorepos
+        config.optimizeDeps = config.optimizeDeps || {};
+        config.optimizeDeps.include = [
+            ...(config.optimizeDeps.include || []),
+            "react",
+            "react-dom",
+            "clsx",
+            "tailwind-merge",
+        ];
 
-    // Asegura resolución TS en pnpm workspaces
-    config.resolve = config.resolve || {};
-    config.resolve.dedupe = ['react', 'react-dom'];
+        // Asegura resolución TS en pnpm workspaces
+        config.resolve = config.resolve || {};
+        config.resolve.dedupe = ["react", "react-dom"];
 
-    return config;
-  },
+        return config;
+    },
 };
 export default config;
 ```
@@ -131,21 +131,21 @@ export default config;
 ### 2) `.storybook/preview.ts`
 
 ```ts
-import type { Preview } from '@storybook/react';
-import '../.storybook/preview.css'; // Tailwind + tokens HSL
+import type { Preview } from "@storybook/react";
+import "../.storybook/preview.css"; // Tailwind + tokens HSL
 
 const preview: Preview = {
-  parameters: {
-    controls: { expanded: true },
-    layout: 'padded',
-    backgrounds: {
-      default: 'app',
-      values: [
-        { name: 'app', value: 'hsl(0 0% 100%)' },
-        { name: 'dark', value: 'hsl(240 3% 7%)' },
-      ],
+    parameters: {
+        controls: { expanded: true },
+        layout: "padded",
+        backgrounds: {
+            default: "app",
+            values: [
+                { name: "app", value: "hsl(0 0% 100%)" },
+                { name: "dark", value: "hsl(240 3% 7%)" },
+            ],
+        },
     },
-  },
 };
 
 export default preview;
@@ -165,8 +165,12 @@ export default preview;
 
 /* Base mínima para simular la app */
 @layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
 }
 ```
 
@@ -177,16 +181,16 @@ export default preview;
 ### `tailwind.config.ts` (en `packages/design-system/`)
 
 ```ts
-import type { Config } from 'tailwindcss';
-import preset from './tailwind.preset';
+import type { Config } from "tailwindcss";
+import preset from "./tailwind.preset";
 
 export default {
-  presets: [preset],
-  content: [
-    './{components,ui,stories}/**/*.{ts,tsx}',
-    './.storybook/**/*.{ts,tsx,css}',
-  ],
-  darkMode: ['class', '[data-theme="dark"]'],
+    presets: [preset],
+    content: [
+        "./{components,ui,stories}/**/*.{ts,tsx}",
+        "./.storybook/**/*.{ts,tsx,css}",
+    ],
+    darkMode: ["class", '[data-theme="dark"]'],
 } satisfies Config;
 ```
 
@@ -196,10 +200,10 @@ export default {
 
 ```cjs
 module.exports = {
-  plugins: {
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
 };
 ```
 
@@ -214,21 +218,21 @@ module.exports = {
 > Elige si documentas el **wrapper** (`components/Button/index.web`) o el shadcn `ui/button`. Recomendado: **wrapper** si existe.
 
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '../components/Button'; // o '../ui/button' si prefieres
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "../components/Button"; // o '../ui/button' si prefieres
 
 const meta = {
-  title: 'Components/Button',
-  component: Button as any,
-  tags: ['autodocs'],
-  args: {
-    children: 'Button',
-    variant: 'default',
-    size: 'default',
-  },
-  argTypes: {
-    onClick: { action: 'click' },
-  },
+    title: "Components/Button",
+    component: Button as any,
+    tags: ["autodocs"],
+    args: {
+        children: "Button",
+        variant: "default",
+        size: "default",
+    },
+    argTypes: {
+        onClick: { action: "click" },
+    },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -237,28 +241,48 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 export const Variants: Story = {
-  render: (args) => (
-    <div className="flex gap-3 flex-wrap">
-      <Button {...args} variant="default">Default</Button>
-      <Button {...args} variant="secondary">Secondary</Button>
-      <Button {...args} variant="outline">Outline</Button>
-      <Button {...args} variant="ghost">Ghost</Button>
-      <Button {...args} variant="link">Link</Button>
-      {/* Si añadiste variantes extra en /components/Button/variants.ts */}
-      <Button {...args} variant="onfit">Onfit</Button>
-    </div>
-  ),
+    render: (args) => (
+        <div className="flex gap-3 flex-wrap">
+            <Button {...args} variant="default">
+                Default
+            </Button>
+            <Button {...args} variant="secondary">
+                Secondary
+            </Button>
+            <Button {...args} variant="outline">
+                Outline
+            </Button>
+            <Button {...args} variant="ghost">
+                Ghost
+            </Button>
+            <Button {...args} variant="link">
+                Link
+            </Button>
+            {/* Si añadiste variantes extra en /components/Button/variants.ts */}
+            <Button {...args} variant="onfit">
+                Onfit
+            </Button>
+        </div>
+    ),
 };
 
 export const Sizes: Story = {
-  render: (args) => (
-    <div className="flex gap-3 items-center">
-      <Button {...args} size="sm">sm</Button>
-      <Button {...args} size="default">default</Button>
-      <Button {...args} size="lg">lg</Button>
-      <Button {...args} size="icon" aria-label="icon button">👍</Button>
-    </div>
-  ),
+    render: (args) => (
+        <div className="flex gap-3 items-center">
+            <Button {...args} size="sm">
+                sm
+            </Button>
+            <Button {...args} size="default">
+                default
+            </Button>
+            <Button {...args} size="lg">
+                lg
+            </Button>
+            <Button {...args} size="icon" aria-label="icon button">
+                👍
+            </Button>
+        </div>
+    ),
 };
 ```
 
@@ -268,10 +292,10 @@ export const Sizes: Story = {
 
 ```jsonc
 {
-  "scripts": {
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
-  }
+    "scripts": {
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build",
+    },
 }
 ```
 
@@ -287,9 +311,9 @@ export const Sizes: Story = {
 
 ## ✅ Verificación rápida (checklist)
 
-1. `pnpm --filter @repo/design storybook` arranca en `http://localhost:6006` ✔️  
-2. Ves `Components/Button` con variantes y tamaños ✔️  
-3. El fondo cambia correctamente entre light/dark en **Backgrounds** ✔️  
+1. `pnpm --filter @repo/design storybook` arranca en `http://localhost:6006` ✔️
+2. Ves `Components/Button` con variantes y tamaños ✔️
+3. El fondo cambia correctamente entre light/dark en **Backgrounds** ✔️
 4. No aparecen errores de `Unknown at rule @tailwind` (Storybook procesa PostCSS) ✔️
 
 ---

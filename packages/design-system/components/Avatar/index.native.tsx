@@ -12,9 +12,9 @@ export const AvatarImage = (props: ImageProps) => (
 
 export const AvatarFallback = ({ children }: { children?: React.ReactNode }) => {
   const { colors } = useThemeBridge();
-  
+
   return (
-    <View 
+    <View
       className="w-8 h-8 rounded-full items-center justify-center"
       style={{ backgroundColor: `${colors.primary}26` }}
     >

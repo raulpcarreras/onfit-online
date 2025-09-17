@@ -9,12 +9,13 @@ import Animated, {
   useAnimatedRef,
   runOnJS,
   SharedValue,
+  AnimatedRef,
 } from "react-native-reanimated";
 
 import { ChevronLeft } from "../../icons/ChevronLeft";
 import { ChevronRight } from "../../icons/ChevronRight";
 import { cn } from "../../lib/utils";
-import { Button } from "../button";
+import { Button } from "../../components/Button";
 import { HStack } from "../stack";
 
 /** Only supported on web */
@@ -28,7 +29,7 @@ type CarouselContextType = {
   itemWidth: number;
   autoPlay: boolean;
   autoPlayInterval: number;
-  scrollViewRef: React.RefObject<Animated.ScrollView>;
+  scrollViewRef: AnimatedRef<Animated.ScrollView>;
   scrollTo: (index: number) => void;
   registerItem: (id: string) => number;
 };
@@ -271,7 +272,6 @@ const CarouselPrevious = forwardRef<
 
   return (
     <Button
-      ref={ref}
       variant={variant}
       size={size}
       className={cn(
@@ -305,7 +305,6 @@ const CarouselNext = forwardRef<
 
   return (
     <Button
-      ref={ref}
       variant={variant}
       size={size}
       className={cn(

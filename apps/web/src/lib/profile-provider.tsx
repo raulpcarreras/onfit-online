@@ -51,7 +51,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
         if (profileData && user.app_metadata) {
           profileData = {
             ...profileData,
-            is_super_admin: !!(user.app_metadata as any)?.is_super_admin
+            is_super_admin: !!(user.app_metadata as any)?.is_super_admin,
           };
         }
 
@@ -71,10 +71,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
     };
   }, [user]);
 
-  const value = useMemo(
-    () => ({ profile, loading, error }),
-    [profile, loading, error]
-  );
+  const value = useMemo(() => ({ profile, loading, error }), [profile, loading, error]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

@@ -18,7 +18,7 @@ export const ChecklistItem = React.forwardRef<HTMLDivElement, ChecklistItemProps
         className={cn(
           "flex items-center gap-2 px-3 py-2 rounded-lg border border-border hover:bg-secondary cursor-pointer",
           checked && "bg-secondary",
-          className
+          className,
         )}
         onClick={onPress}
         {...props}
@@ -26,7 +26,7 @@ export const ChecklistItem = React.forwardRef<HTMLDivElement, ChecklistItemProps
         {children}
       </div>
     );
-  }
+  },
 );
 
 ChecklistItem.displayName = "ChecklistItem";

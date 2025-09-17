@@ -1,9 +1,9 @@
-import React from 'react';
-import { supabase } from './supabase';
+import React from "react";
+import { supabase } from "./supabase";
 
 type Session = any;
 type User = any;
-type Role = 'user' | 'trainer' | 'admin' | null;
+type Role = "user" | "trainer" | "admin" | null;
 type Ctx = { user: User | null; role: Role; loading: boolean };
 
 export const UserContext = React.createContext<Ctx>({
@@ -50,26 +50,29 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   // Cargar rol cuando hay user id (y no refetch si no cambia)
   React.useEffect(() => {
     let active = true;
-    if (!user?.id) { setRole(null); return; }
+    if (!user?.id) {
+      setRole(null);
+      return;
+    }
     supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
       .single()
       .then(({ data }: any) => {
         if (active) setRole((data?.role as Role) ?? null);
       });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [user?.id]);
 
   const value = React.useMemo<Ctx>(
     () => ({ user, role, loading: !hydrated }),
-    [user, role, hydrated]
+    [user, role, hydrated],
   );
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 }
 
 export const useUser = () => React.useContext(UserContext);
-
-

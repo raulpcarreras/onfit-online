@@ -42,7 +42,7 @@ export default function OnfitAuth() {
         .select("role")
         .eq("id", user?.user?.id)
         .maybeSingle();
-      if (profile?.role === "admin") router.replace("/admin");
+      if (profile?.role === "admin") router.replace("/(protected)/admin" as any);
       else router.replace("/");
     } catch (e: any) {
       Alert.alert("Error de inicio de sesión", e?.message ?? "Inténtalo de nuevo");
@@ -75,7 +75,7 @@ export default function OnfitAuth() {
   const maxWidth = Math.min(width * 0.9, 400);
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.background }}>
+    <SafeAreaView className="flex-1" style={{ backgroundColor: colors["background"] }}>
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -90,31 +90,31 @@ export default function OnfitAuth() {
           }}
           keyboardShouldPersistTaps="handled"
         >
-          <View 
+          <View
             className="gap-3 p-5 rounded-xl"
-            style={{ 
+            style={{
               width: maxWidth,
-              backgroundColor: colors.card 
+              backgroundColor: colors["card"],
             }}
           >
             {/* Logo y título */}
             <View className="flex-row items-center gap-2.5 justify-center">
-              <View 
+              <View
                 className="w-9 h-9 rounded-xl justify-center items-center"
-                style={{ backgroundColor: `${colors.primary}33` }}
+                style={{ backgroundColor: `${colors["primary"]}33` }}
               >
                 <Text className="text-primary font-semibold">ON</Text>
               </View>
               <View>
-                <Text 
+                <Text
                   className="text-lg font-semibold"
-                  style={{ color: colors.foreground }}
+                  style={{ color: colors["foreground"] }}
                 >
                   ONFIT13
                 </Text>
-                <Text 
+                <Text
                   className="text-xs text-center"
-                  style={{ color: colors.mutedForeground }}
+                  style={{ color: colors["muted-foreground"] }}
                 >
                   Accede con tu cuenta
                 </Text>
@@ -122,30 +122,30 @@ export default function OnfitAuth() {
             </View>
 
             {/* Email */}
-            <Text 
+            <Text
               className="text-xs mt-1.5"
-              style={{ color: colors.mutedForeground }}
+              style={{ color: colors["muted-foreground"] }}
             >
               Email
             </Text>
             <TextInput
               className="border border-input rounded-lg px-2.5 py-2"
               style={{
-                backgroundColor: colors.muted,
-                color: colors.foreground,
+                backgroundColor: colors["muted"],
+                color: colors["foreground"],
               }}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
               placeholder="tu@correo.com"
-              placeholderTextColor={colors.mutedForeground}
+              placeholderTextColor={colors["muted-foreground"]}
             />
 
             {/* Contraseña */}
-            <Text 
+            <Text
               className="text-xs mt-1.5"
-              style={{ color: colors.mutedForeground }}
+              style={{ color: colors["muted-foreground"] }}
             >
               Contraseña
             </Text>
@@ -153,23 +153,20 @@ export default function OnfitAuth() {
               <TextInput
                 className="flex-1 border border-input rounded-lg px-2.5 py-2"
                 style={{
-                  backgroundColor: colors.muted,
-                  color: colors.foreground,
+                  backgroundColor: colors["muted"],
+                  color: colors["foreground"],
                 }}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={!showPwd}
                 placeholder="••••••••"
-                placeholderTextColor={colors.mutedForeground}
+                placeholderTextColor={colors["muted-foreground"]}
               />
               <Pressable
                 className="border border-input rounded-lg px-2 py-1.5"
                 onPress={() => setShowPwd(!showPwd)}
               >
-                <Text 
-                  className="text-xs"
-                  style={{ color: colors.foreground }}
-                >
+                <Text className="text-xs" style={{ color: colors["foreground"] }}>
                   {showPwd ? "Ocultar" : "Ver"}
                 </Text>
               </Pressable>
@@ -178,16 +175,16 @@ export default function OnfitAuth() {
             {/* Botón de login */}
             <Pressable
               className="rounded-lg py-2.5 items-center mt-2.5"
-              style={{ 
-                backgroundColor: colors.primary,
-                opacity: loading ? 0.6 : 1 
+              style={{
+                backgroundColor: colors["primary"],
+                opacity: loading ? 0.6 : 1,
               }}
               onPress={handleSubmit}
               disabled={loading}
             >
-              <Text 
+              <Text
                 className="font-semibold"
-                style={{ color: colors.primaryForeground }}
+                style={{ color: colors["primary-foreground"] }}
               >
                 {loading ? "Entrando..." : "Entrar"}
               </Text>
@@ -195,25 +192,19 @@ export default function OnfitAuth() {
 
             {/* Links */}
             <View className="flex-row justify-between mt-2.5">
-              <Text 
-                className="text-xs"
-                style={{ color: colors.mutedForeground }}
-              >
+              <Text className="text-xs" style={{ color: colors["muted-foreground"] }}>
                 Olvidé mi contraseña
               </Text>
               <Pressable onPress={handleSignUp} disabled={loading}>
-                <Text 
-                  className="text-xs"
-                  style={{ color: colors.mutedForeground }}
-                >
+                <Text className="text-xs" style={{ color: colors["muted-foreground"] }}>
                   {loading ? "..." : "Crear cuenta nueva"}
                 </Text>
               </Pressable>
             </View>
 
-            <Text 
+            <Text
               className="text-xs mt-3 text-center"
-              style={{ color: colors.mutedForeground }}
+              style={{ color: colors["muted-foreground"] }}
             >
               Al continuar aceptas los Términos y la Política de Privacidad.
             </Text>

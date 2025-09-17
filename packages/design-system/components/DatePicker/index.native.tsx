@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, Text, Pressable } from "react-native";
 import { Button } from "../Button";
-import { CalendarIcon } from "../../icons/Calendar";
+import { Calendar as CalendarIcon } from "../../icons/Calendar";
 
 interface DatePickerProps {
   date?: Date;
@@ -10,11 +10,11 @@ interface DatePickerProps {
   disabled?: boolean;
 }
 
-export const DatePicker = ({ 
-  date, 
-  onSelect, 
+export const DatePicker = ({
+  date,
+  onSelect,
   placeholder = "Seleccionar fecha",
-  disabled = false 
+  disabled = false,
 }: DatePickerProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -25,10 +25,10 @@ export const DatePicker = ({
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return date.toLocaleDateString("es-ES", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -45,7 +45,7 @@ export const DatePicker = ({
           {date ? formatDate(date) : placeholder}
         </Text>
       </Button>
-      
+
       {isOpen && (
         <View className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-lg z-50">
           <View className="p-4">
@@ -53,7 +53,7 @@ export const DatePicker = ({
               Selecciona una fecha
             </Text>
             <View className="flex-row justify-between">
-              <Pressable 
+              <Pressable
                 className="px-3 py-2 bg-primary rounded-md"
                 onPress={() => {
                   onSelect?.(new Date());
@@ -62,7 +62,7 @@ export const DatePicker = ({
               >
                 <Text className="text-primary-foreground">Hoy</Text>
               </Pressable>
-              <Pressable 
+              <Pressable
                 className="px-3 py-2 bg-secondary rounded-md"
                 onPress={() => {
                   onSelect?.(undefined);

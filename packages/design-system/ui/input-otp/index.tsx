@@ -191,8 +191,7 @@ const InputOTPGroup = React.forwardRef<View, React.ComponentProps<typeof View>>(
 );
 InputOTPGroup.displayName = "InputOTPGroup";
 
-interface InputOTPSlotProps
-  extends Omit<React.ComponentProps<typeof View>, "children"> {
+interface InputOTPSlotProps extends Omit<React.ComponentProps<typeof View>, "children"> {
   index: number;
   children?:
     | React.ReactNode
@@ -225,14 +224,13 @@ const InputOTPSlot = React.forwardRef<View, InputOTPSlotProps>(
 );
 InputOTPSlot.displayName = "InputOTPSlot";
 
-const InputOTPSeparator = React.forwardRef<
-  View,
-  React.ComponentProps<typeof View>
->(({ ...props }, ref) => (
-  <View ref={ref} role="separator" {...props}>
-    <Dot className="text-foreground" />
-  </View>
-));
+const InputOTPSeparator = React.forwardRef<View, React.ComponentProps<typeof View>>(
+  ({ ...props }, ref) => (
+    <View ref={ref} role="separator" {...props}>
+      <Dot className="text-foreground" />
+    </View>
+  ),
+);
 InputOTPSeparator.displayName = "InputOTPSeparator";
 
 export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };

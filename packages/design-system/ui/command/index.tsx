@@ -221,7 +221,11 @@ const CommandDialog = ({
   "aria-label": ariaLabel,
   "aria-labelledby": ariaLabelBy,
   ...props
-}: React.PropsWithChildren<React.ComponentPropsWithoutRef<typeof Dialog>>) => (
+}: React.PropsWithChildren<Omit<React.ComponentPropsWithoutRef<typeof Dialog>, 'className' | 'aria-label' | 'aria-labelledby'>> & {
+  className?: string;
+  "aria-label"?: string;
+  "aria-labelledby"?: string;
+}) => (
   <Dialog {...props}>
     <DialogTitle children={ariaLabel} />
     <DialogContent

@@ -9,7 +9,9 @@ import AdminLayoutClient from "./layout-client";
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await supabaseServerClient();
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (!user) redirect("/login?redirect=/admin/dashboard");
 
   // 1) Super Admin (JWT)

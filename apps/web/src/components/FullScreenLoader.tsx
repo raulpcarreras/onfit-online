@@ -5,7 +5,9 @@ type FullScreenLoaderProps = {
   label?: string;
 };
 
-export default function FullScreenLoader({ label = "Cargando..." }: FullScreenLoaderProps) {
+export default function FullScreenLoader({
+  label = "Cargando...",
+}: FullScreenLoaderProps) {
   return (
     <div className="min-h-screen grid place-items-center bg-neutral-950 text-white">
       <div className="flex flex-col items-center gap-3">
@@ -15,5 +17,3 @@ export default function FullScreenLoader({ label = "Cargando..." }: FullScreenLo
     </div>
   );
 }
-
-

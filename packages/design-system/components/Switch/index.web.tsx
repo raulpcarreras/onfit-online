@@ -23,7 +23,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 Switch.displayName = "Switch";

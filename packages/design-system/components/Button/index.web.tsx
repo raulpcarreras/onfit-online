@@ -11,14 +11,20 @@ import {
   mapSizeToBase,
 } from "./variants";
 
-export type ButtonProps = Omit<React.ComponentProps<typeof UIButton>, 'variant' | 'size'> & {
+export type ButtonProps = Omit<
+  React.ComponentProps<typeof UIButton>,
+  "variant" | "size"
+> & {
   variant?: AnyVariant;
   size?: AnySize;
   onPress?: React.MouseEventHandler<HTMLButtonElement>; // compat alias
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", onPress, onClick, ...props }, ref) => {
+  (
+    { className, variant = "default", size = "default", onPress, onClick, ...props },
+    ref,
+  ) => {
     const baseSize = mapSizeToBase(size);
 
     // Si la variant NO es extra, la pasamos a shadcn.
@@ -27,7 +33,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Clases extra: solo se aplican si it's extra (si no, string vacío)
     const extra = isExtraVariant(variant)
-      ? extraButtonVariants({ variant: variant as any, size: (size as any) })
+      ? extraButtonVariants({ variant: variant as any, size: size as any })
       : "";
 
     return (
@@ -41,7 +47,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 Button.displayName = "Button";

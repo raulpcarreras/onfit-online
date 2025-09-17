@@ -10,9 +10,9 @@
 - **Una sola fuente de verdad** para colores, tipografía y radii: `packages/design-system/tokens/index.css`.
 - **Tailwind** leyendo **variables CSS** (HSL) desde los tokens.
 - **Wrappers** en `packages/design-system/components/*` con API unificada:
-  - `Button` → siempre `onPress`, `variant`, `size`.
-  - `Input`  → coherente (errores, disabled, etc.).
-  - `Select` → **string-in / string-out** (adaptador a `Option` interno).
+    - `Button` → siempre `onPress`, `variant`, `size`.
+    - `Input` → coherente (errores, disabled, etc.).
+    - `Select` → **string-in / string-out** (adaptador a `Option` interno).
 - **shadcn/ui** sigue existiendo en `packages/design-system/ui/*`, pero **no se importa directamente** desde las apps; se usa a través de los wrappers.
 - **Reglas anti‑regresión**: ESLint prohíbe `<button>` y `onClick` en apps; codemod aplicado.
 
@@ -55,68 +55,68 @@ packages/design-system/
 
 ```css
 :root {
-  /* Base */
-  --radius: 0.5rem;
+    /* Base */
+    --radius: 0.5rem;
 
-  /* Light theme */
-  --background: 0 0% 98%;
-  --foreground: 222.2 47.4% 11.2%;
+    /* Light theme */
+    --background: 0 0% 98%;
+    --foreground: 222.2 47.4% 11.2%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 47.4% 11.2%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
 
-  --primary: 38 92% 50%;
-  --primary-foreground: 0 0% 100%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 100%;
 
-  --secondary: 240 5% 96%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-  --muted: 240 5% 96%;
-  --muted-foreground: 215 16% 47%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 215 16% 47%;
 
-  --accent: 38 92% 50%;
-  --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-  --border: 240 5.9% 90%;
-  --input: 240 5.9% 90%;
-  --ring: 215 20.2% 65.1%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 215 20.2% 65.1%;
 }
 
 .dark {
-  /* Dark theme */
-  --background: 240 7% 8%;
-  --foreground: 0 0% 96%;
+    /* Dark theme */
+    --background: 240 7% 8%;
+    --foreground: 0 0% 96%;
 
-  --card: 240 6% 10%;
-  --card-foreground: 0 0% 96%;
+    --card: 240 6% 10%;
+    --card-foreground: 0 0% 96%;
 
-  --popover: 240 6% 10%;
-  --popover-foreground: 0 0% 96%;
+    --popover: 240 6% 10%;
+    --popover-foreground: 0 0% 96%;
 
-  --primary: 38 92% 50%;
-  --primary-foreground: 0 0% 0%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 0%;
 
-  --secondary: 240 3% 15%;
-  --secondary-foreground: 0 0% 96%;
+    --secondary: 240 3% 15%;
+    --secondary-foreground: 0 0% 96%;
 
-  --muted: 240 3% 15%;
-  --muted-foreground: 215 16% 72%;
+    --muted: 240 3% 15%;
+    --muted-foreground: 215 16% 72%;
 
-  --accent: 38 92% 50%;
-  --accent-foreground: 240 10% 3.9%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 240 10% 3.9%;
 
-  --destructive: 0 72% 44%;
-  --destructive-foreground: 0 0% 100%;
+    --destructive: 0 72% 44%;
+    --destructive-foreground: 0 0% 100%;
 
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 217.2 32.6% 17.5%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217.2 32.6% 17.5%;
 }
 ```
 
@@ -141,56 +141,56 @@ Aseguraos de que el `tailwind.config.ts` de **apps/web** (y si procede, de `pack
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
-  content: [
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-    "../../packages/design-system/**/*.{ts,tsx}",
-  ],
-  theme: {
-    container: {
-      center: true,
-      padding: "1rem",
-      screens: { "2xl": "1400px" },
+    darkMode: ["class"],
+    content: [
+        "./app/**/*.{ts,tsx}",
+        "./src/**/*.{ts,tsx}",
+        "../../packages/design-system/**/*.{ts,tsx}",
+    ],
+    theme: {
+        container: {
+            center: true,
+            padding: "1rem",
+            screens: { "2xl": "1400px" },
+        },
+        extend: {
+            borderRadius: {
+                lg: "0.5rem",
+                xl: "0.75rem",
+                "2xl": "1rem",
+            },
+            colors: {
+                background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+
+                card: "hsl(var(--card))",
+                "card-foreground": "hsl(var(--card-foreground))",
+
+                popover: "hsl(var(--popover))",
+                "popover-foreground": "hsl(var(--popover-foreground))",
+
+                primary: "hsl(var(--primary))",
+                "primary-foreground": "hsl(var(--primary-foreground))",
+
+                secondary: "hsl(var(--secondary))",
+                "secondary-foreground": "hsl(var(--secondary-foreground))",
+
+                muted: "hsl(var(--muted))",
+                "muted-foreground": "hsl(var(--muted-foreground))",
+
+                accent: "hsl(var(--accent))",
+                "accent-foreground": "hsl(var(--accent-foreground))",
+
+                destructive: "hsl(var(--destructive))",
+                "destructive-foreground": "hsl(var(--destructive-foreground))",
+
+                border: "hsl(var(--border))",
+                input: "hsl(var(--input))",
+                ring: "hsl(var(--ring))",
+            },
+        },
     },
-    extend: {
-      borderRadius: {
-        lg: "0.5rem",
-        xl: "0.75rem",
-        "2xl": "1rem",
-      },
-      colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-
-        card: "hsl(var(--card))",
-        "card-foreground": "hsl(var(--card-foreground))",
-
-        popover: "hsl(var(--popover))",
-        "popover-foreground": "hsl(var(--popover-foreground))",
-
-        primary: "hsl(var(--primary))",
-        "primary-foreground": "hsl(var(--primary-foreground))",
-
-        secondary: "hsl(var(--secondary))",
-        "secondary-foreground": "hsl(var(--secondary-foreground))",
-
-        muted: "hsl(var(--muted))",
-        "muted-foreground": "hsl(var(--muted-foreground))",
-
-        accent: "hsl(var(--accent))",
-        "accent-foreground": "hsl(var(--accent-foreground))",
-
-        destructive: "hsl(var(--destructive))",
-        "destructive-foreground": "hsl(var(--destructive-foreground))",
-
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-      },
-    },
-  },
-  plugins: [require("tailwindcss-animate")],
+    plugins: [require("tailwindcss-animate")],
 };
 
 export default config;
@@ -213,21 +213,21 @@ import { buttonVariants as base } from "@repo/design/ui/button"; // estilos base
 import type { VariantProps } from "class-variance-authority";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof base> & {
-    onPress?: React.MouseEventHandler<HTMLButtonElement>;
-  };
+    VariantProps<typeof base> & {
+        onPress?: React.MouseEventHandler<HTMLButtonElement>;
+    };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, onPress, onClick, ...props }, ref) => {
-    return (
-      <button
-        ref={ref}
-        className={cn(base({ variant, size }), className)}
-        onClick={onPress ?? onClick}
-        {...props}
-      />
-    );
-  }
+    ({ className, variant, size, onPress, onClick, ...props }, ref) => {
+        return (
+            <button
+                ref={ref}
+                className={cn(base({ variant, size }), className)}
+                onClick={onPress ?? onClick}
+                {...props}
+            />
+        );
+    },
 );
 
 Button.displayName = "Button";
@@ -254,7 +254,7 @@ import { Input as UIInput } from "@repo/design/ui/input";
 export type InputProps = React.ComponentProps<typeof UIInput>;
 
 export function Input(props: InputProps) {
-  return <UIInput {...props} />;
+    return <UIInput {...props} />;
 }
 ```
 
@@ -275,62 +275,62 @@ Supongamos que `@repo/design/ui/select` usa `Option = { value: string; label: st
 ```tsx
 import * as React from "react";
 import {
-  Select as UISelect,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select as UISelect,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@repo/design/ui/select";
 
 export type SelectOption = {
-  value: string;
-  label: string;
-  disabled?: boolean;
+    value: string;
+    label: string;
+    disabled?: boolean;
 };
 
 export type SelectProps = {
-  value?: string;
-  onChange?: (value: string) => void;
-  options: SelectOption[];
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
+    value?: string;
+    onChange?: (value: string) => void;
+    options: SelectOption[];
+    placeholder?: string;
+    disabled?: boolean;
+    className?: string;
 };
 
 export function Select({
-  value,
-  onChange,
-  options,
-  placeholder = "Selecciona…",
-  disabled,
-  className,
+    value,
+    onChange,
+    options,
+    placeholder = "Selecciona…",
+    disabled,
+    className,
 }: SelectProps) {
-  const selected = React.useMemo(
-    () => options.find((o) => o.value === value) ?? null,
-    [value, options]
-  );
+    const selected = React.useMemo(
+        () => options.find((o) => o.value === value) ?? null,
+        [value, options],
+    );
 
-  return (
-    <UISelect
-      // @ts-expect-error: UISelect espera Option|null
-      value={selected}
-      // UISelect devuelve Option → devolvemos string al consumidor
-      onValueChange={(opt: any) => onChange?.(opt?.value ?? "")}
-      disabled={disabled}
-    >
-      <SelectTrigger className={className}>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>
-        {options.map((opt) => (
-          // @ts-expect-error: SelectItem espera Option
-          <SelectItem key={opt.value} value={opt} disabled={opt.disabled}>
-            {({ pressed }: any) => <span>{opt.label}</span>}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </UISelect>
-  );
+    return (
+        <UISelect
+            // @ts-expect-error: UISelect espera Option|null
+            value={selected}
+            // UISelect devuelve Option → devolvemos string al consumidor
+            onValueChange={(opt: any) => onChange?.(opt?.value ?? "")}
+            disabled={disabled}
+        >
+            <SelectTrigger className={className}>
+                <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+                {options.map((opt) => (
+                    // @ts-expect-error: SelectItem espera Option
+                    <SelectItem key={opt.value} value={opt} disabled={opt.disabled}>
+                        {({ pressed }: any) => <span>{opt.label}</span>}
+                    </SelectItem>
+                ))}
+            </SelectContent>
+        </UISelect>
+    );
 }
 ```
 
@@ -373,22 +373,21 @@ export * from "./components";
 
 ```js
 module.exports = {
-  // ...
-  rules: {
-    "no-restricted-syntax": [
-      "error",
-      {
-        selector: 'JSXOpeningElement[name.name="button"]',
-        message: "Usa <Button/> del design system, no <button>.",
-      },
-      {
-        selector:
-          'JSXAttribute[name.name="onClick"]',
-        message:
-          "Usa onPress en el Button del design system; en otros componentes maneja el wrapper correspondiente.",
-      },
-    ],
-  },
+    // ...
+    rules: {
+        "no-restricted-syntax": [
+            "error",
+            {
+                selector: 'JSXOpeningElement[name.name="button"]',
+                message: "Usa <Button/> del design system, no <button>.",
+            },
+            {
+                selector: 'JSXAttribute[name.name="onClick"]',
+                message:
+                    "Usa onPress en el Button del design system; en otros componentes maneja el wrapper correspondiente.",
+            },
+        ],
+    },
 };
 ```
 
@@ -408,10 +407,10 @@ npx jscodeshift -t ./codemods/design-ui-to-components.js apps/web
 
 ## 6) Sustitución por pantallas (propuesta)
 
-1) **Auth** (`/login`, `/register`, `/forgot-password`, `/reset-password`)  
-2) **Admin** (Topbar/Sidebar, `/admin/users`)  
-3) **User** (dashboard widgets principales)  
-4) **Shared pages** (settings, profile)  
+1. **Auth** (`/login`, `/register`, `/forgot-password`, `/reset-password`)
+2. **Admin** (Topbar/Sidebar, `/admin/users`)
+3. **User** (dashboard widgets principales)
+4. **Shared pages** (settings, profile)
 
 En cada pantalla: sustituir `<button>`, `<input>`, selects nativos, y clases pegadas por wrappers + variantes.
 
@@ -425,6 +424,7 @@ En cada pantalla: sustituir `<button>`, `<input>`, selects nativos, y clases peg
 - **Build:** `pnpm --filter web build`
 
 ### Casos a validar
+
 - Tema claro/oscuro (tokens aplican).
 - `Button`: `variant`, `size`, `disabled`, `onPress`.
 - `Input`: estados (focus, error si procede).

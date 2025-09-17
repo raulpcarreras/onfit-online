@@ -13,11 +13,11 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen bg-background text-foreground">
       {/* TOPBAR - Ahora ocupa todo el ancho */}
       <header className="fixed top-0 left-0 right-0 z-30">
-        <Topbar 
-          variant="user" 
+        <Topbar
+          variant="user"
           brandName="Online"
           showBreadcrumb={false}
-          onOpenMenu={() => setMobileOpen(true)} 
+          onOpenMenu={() => setMobileOpen(true)}
         />
       </header>
 
@@ -39,9 +39,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
       )}
 
       {/* MAIN CONTENT - Ahora con padding-top para despejar la topbar */}
-      <main className="pt-14 lg:ml-52">
-        {children}
-      </main>
+      <main className="pt-14 lg:ml-52">{children}</main>
     </div>
   );
 }

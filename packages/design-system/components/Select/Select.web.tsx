@@ -38,8 +38,8 @@ export function Select({
 }: SelectProps) {
   // Mapea el string actual a su Option (si existe)
   const selectedOpt = React.useMemo(
-    () => (value ? options.find((o) => o.value === value) ?? null : null),
-    [options, value]
+    () => (value ? (options.find((o) => o.value === value) ?? null) : null),
+    [options, value],
   );
 
   // Normaliza el evento del UI (puede ser string u Option)
@@ -55,7 +55,7 @@ export function Select({
 
       if (nextValue !== undefined) onChange?.(nextValue);
     },
-    [onChange]
+    [onChange],
   );
 
   // Pasamos al UI lo que necesite: si acepta Option, le damos Option; si no, string.

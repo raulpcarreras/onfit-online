@@ -12,11 +12,11 @@ interface SuperAdminToggleProps {
   onToggle: (enabled: boolean) => Promise<void>;
 }
 
-export default function SuperAdminToggle({ 
-  userId, 
-  userEmail, 
-  isCurrentlySuperAdmin, 
-  onToggle 
+export default function SuperAdminToggle({
+  userId,
+  userEmail,
+  isCurrentlySuperAdmin,
+  onToggle,
 }: SuperAdminToggleProps) {
   const [loading, setLoading] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(isCurrentlySuperAdmin);
@@ -53,22 +53,24 @@ export default function SuperAdminToggle({
       variant="ghost"
       size="icon"
       aria-label={
-        !canToggle 
-          ? "No puedes quitarte tus propios permisos" 
-          : isSuperAdmin 
-            ? "Quitar super admin" 
+        !canToggle
+          ? "No puedes quitarte tus propios permisos"
+          : isSuperAdmin
+            ? "Quitar super admin"
             : "Otorgar super admin"
       }
       title={
-        !canToggle 
-          ? "No puedes quitarte tus propios permisos de super admin" 
+        !canToggle
+          ? "No puedes quitarte tus propios permisos de super admin"
           : `${isSuperAdmin ? "Quitar" : "Otorgar"} super admin a ${userEmail}`
       }
     >
       {loading ? (
         <div className="size-4 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin" />
       ) : (
-        <Zap className={`size-5 ${isSuperAdmin ? "text-primary" : "text-muted-foreground"}`} />
+        <Zap
+          className={`size-5 ${isSuperAdmin ? "text-primary" : "text-muted-foreground"}`}
+        />
       )}
     </Button>
   );

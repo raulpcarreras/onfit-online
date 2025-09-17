@@ -2,7 +2,7 @@ Perfecto — vamos directos al grano con los códigos que te pide Cursor para ce
 
 ⸻
 
-1) SQL — Limpieza de triggers duplicados + fix de función
+1. SQL — Limpieza de triggers duplicados + fix de función
 
 Pega esto tal cual en el SQL editor de Supabase (idempotente: lo puedes ejecutar varias veces sin romper nada):
 
@@ -11,7 +11,7 @@ Pega esto tal cual en el SQL editor de Supabase (idempotente: lo puedes ejecutar
 -- =========================================
 
 -- 1) Elimina duplicados
-DROP TRIGGER IF EXISTS trg_on_auth_user_created       ON auth.users;
+DROP TRIGGER IF EXISTS trg_on_auth_user_created ON auth.users;
 DROP TRIGGER IF EXISTS trg_on_auth_user_updated_email ON auth.users;
 
 -- 2) Asegura los triggers canónicos (por si faltaran)
@@ -22,56 +22,63 @@ SECURITY DEFINER
 SET search_path TO 'public','pg_temp'
 AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, full_name, role)
-  VALUES (NEW.id, NEW.email, COALESCE(NEW.raw_user_meta_data->>'full_name',''), 'user')
-  ON CONFLICT (id) DO NOTHING;
-  RETURN NEW;
+INSERT INTO public.profiles (id, email, full_name, role)
+VALUES (NEW.id, NEW.email, COALESCE(NEW.raw_user_meta_data->>'full_name',''), 'user')
+ON CONFLICT (id) DO NOTHING;
+RETURN NEW;
 END;
-$$;
+
+$$
+;
 
 CREATE OR REPLACE FUNCTION public.sync_profile_email()
 RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path TO 'public','pg_temp'
-AS $$
+AS
+$$
+
 BEGIN
-  IF NEW.email IS DISTINCT FROM OLD.email THEN
-    UPDATE public.profiles SET email = NEW.email WHERE id = NEW.id;
-  END IF;
-  RETURN NEW;
+IF NEW.email IS DISTINCT FROM OLD.email THEN
+UPDATE public.profiles SET email = NEW.email WHERE id = NEW.id;
+END IF;
+RETURN NEW;
 END;
-$$;
+
+$$
+;
 
 -- Crea/repone los triggers canónicos con nombres consistentes
-DO $$
+DO
+$$
+
 BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_trigger
-    WHERE tgrelid = 'auth.users'::regclass AND tgname = 'on_auth_user_created'
-  ) THEN
-    CREATE TRIGGER on_auth_user_created
-      AFTER INSERT ON auth.users
-      FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-  END IF;
+IF NOT EXISTS (
+SELECT 1 FROM pg_trigger
+WHERE tgrelid = 'auth.users'::regclass AND tgname = 'on_auth_user_created'
+) THEN
+CREATE TRIGGER on_auth_user_created
+AFTER INSERT ON auth.users
+FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+END IF;
 
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_trigger
-    WHERE tgrelid = 'auth.users'::regclass AND tgname = 'on_auth_email_updated'
-  ) THEN
-    CREATE TRIGGER on_auth_email_updated
-      AFTER UPDATE OF email ON auth.users
-      FOR EACH ROW EXECUTE FUNCTION public.sync_profile_email();
-  END IF;
+IF NOT EXISTS (
+SELECT 1 FROM pg_trigger
+WHERE tgrelid = 'auth.users'::regclass AND tgname = 'on_auth_email_updated'
+) THEN
+CREATE TRIGGER on_auth_email_updated
+AFTER UPDATE OF email ON auth.users
+FOR EACH ROW EXECUTE FUNCTION public.sync_profile_email();
+END IF;
 END $$;
-
 
 -- =========================================
 -- 🔹 PUBLIC.PROFILES — Un solo trigger de updated_at
 -- =========================================
 
 -- 1) Elimina duplicados y el trigger “modtime”
-DROP TRIGGER IF EXISTS trg_profiles_updated_at  ON public.profiles;
+DROP TRIGGER IF EXISTS trg_profiles_updated_at ON public.profiles;
 DROP TRIGGER IF EXISTS update_profiles_modtime ON public.profiles;
 
 -- 2) Asegura la función “update_updated_at_column”
@@ -82,10 +89,12 @@ SECURITY DEFINER
 SET search_path TO 'public','pg_temp'
 AS $$
 BEGIN
-  NEW.updated_at := now();
-  RETURN NEW;
+NEW.updated_at := now();
+RETURN NEW;
 END;
-$$;
+
+$$
+;
 
 -- 3) Crea un único trigger claro
 DROP TRIGGER IF EXISTS set_updated_at ON public.profiles;
@@ -103,12 +112,16 @@ RETURNS trigger
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path TO 'public','pg_temp'
-AS $$
+AS
+$$
+
 BEGIN
-  NEW.updated_at = now();
-  RETURN NEW;
+NEW.updated_at = now();
+RETURN NEW;
 END;
-$$;
+
+$$
+;
 
 
 -- =========================================
@@ -229,3 +242,4 @@ await supabaseAdmin.auth.admin.createUser({
 	•	Tu endpoint de creación de usuarios se vuelve idempotente y robusto.
 
 Si quieres, te paso los tests rápidos (SQL + curl) para validar que ya se crea el usuario + perfil sin colisiones.
+$$

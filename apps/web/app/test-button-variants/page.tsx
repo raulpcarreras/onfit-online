@@ -6,7 +6,7 @@ export default function TestButtonVariantsPage() {
   return (
     <div className="container mx-auto p-8 space-y-8">
       <h1 className="text-3xl font-bold">Test Button Variants - Variantes Extra</h1>
-      
+
       {/* Variantes shadcn (deben funcionar igual que antes) */}
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Variantes shadcn (nativas)</h2>
@@ -55,11 +55,19 @@ export default function TestButtonVariantsPage() {
 
       {/* Combinaciones variantes + tamaños extra */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Combinaciones variantes + tamaños extra</h2>
+        <h2 className="text-2xl font-semibold">
+          Combinaciones variantes + tamaños extra
+        </h2>
         <div className="flex gap-2 flex-wrap items-center">
-          <Button variant="onfit" size="xl">OnFit XL</Button>
-          <Button variant="premium" size="2xl">Premium 2XL</Button>
-          <Button variant="success" size="md">Success MD</Button>
+          <Button variant="onfit" size="xl">
+            OnFit XL
+          </Button>
+          <Button variant="premium" size="2xl">
+            Premium 2XL
+          </Button>
+          <Button variant="success" size="md">
+            Success MD
+          </Button>
         </div>
       </section>
 
@@ -67,17 +75,17 @@ export default function TestButtonVariantsPage() {
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Compatibilidad onPress</h2>
         <div className="flex gap-2 flex-wrap">
-          <Button 
-            variant="onfit" 
+          <Button
+            variant="onfit"
             size="lg"
-            onPress={() => alert('onPress funciona correctamente!')}
+            onPress={() => alert("onPress funciona correctamente!")}
           >
             Test onPress
           </Button>
-          <Button 
-            variant="premium" 
+          <Button
+            variant="premium"
             size="xl"
-            onPress={() => alert('onPress también funciona!')}
+            onPress={() => alert("onPress también funciona!")}
           >
             Test onPress
           </Button>
@@ -86,11 +94,19 @@ export default function TestButtonVariantsPage() {
 
       {/* Verificación de que md funciona */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Verificación: size=&quot;md&quot; debe funcionar</h2>
+        <h2 className="text-2xl font-semibold">
+          Verificación: size=&quot;md&quot; debe funcionar
+        </h2>
         <div className="flex gap-2 flex-wrap">
-          <Button size="md" variant="default">Default MD</Button>
-          <Button size="md" variant="outline">Outline MD</Button>
-          <Button size="md" variant="onfit">OnFit MD</Button>
+          <Button size="md" variant="default">
+            Default MD
+          </Button>
+          <Button size="md" variant="outline">
+            Outline MD
+          </Button>
+          <Button size="md" variant="onfit">
+            OnFit MD
+          </Button>
         </div>
       </section>
     </div>

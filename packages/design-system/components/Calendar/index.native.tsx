@@ -18,22 +18,22 @@ export const Calendar = ({
   ...props
 }: CalendarProps) => {
   const { colors } = useThemeBridge();
-  
+
   // Implementación básica para React Native
   // TODO: Implementar calendario completo con react-native-calendars
   return (
-    <View 
+    <View
       className="p-4 rounded-lg border border-input"
       style={[
-        { 
-          backgroundColor: colors.background, 
-          borderColor: colors.border 
+        {
+          backgroundColor: colors.background,
+          borderColor: colors.border,
         },
-        style
+        style,
       ]}
       {...props}
     >
-      <Text 
+      <Text
         className="text-base text-center mb-4"
         style={{ color: colors["muted-foreground"] }}
       >
@@ -44,7 +44,7 @@ export const Calendar = ({
         style={{ backgroundColor: colors.primary }}
         onPress={() => onSelect?.(new Date())}
       >
-        <Text 
+        <Text
           className="text-sm font-semibold"
           style={{ color: colors["primary-foreground"] }}
         >

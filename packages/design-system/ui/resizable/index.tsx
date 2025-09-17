@@ -90,7 +90,7 @@ interface ResizableHandleProps extends React.ComponentPropsWithRef<typeof Animat
   className?: string;
 }
 
-const ResizablePanelGroup = forwardRef<
+const ResizablePanelGroup: React.ForwardRefExoticComponent<ResizablePanelGroupProps & React.RefAttributes<ImperativePanelGroupHandle>> = forwardRef<
   ImperativePanelGroupHandle,
   ResizablePanelGroupProps
 >(({ direction = "horizontal", className = "", children, style, ...props }, ref) => {

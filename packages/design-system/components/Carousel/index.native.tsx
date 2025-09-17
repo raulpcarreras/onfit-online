@@ -22,8 +22,8 @@ export const CarouselApi = {
 // Carousel Content
 export const CarouselContent = ({ children, className, ...props }: any) => {
   return (
-    <ScrollView 
-      horizontal 
+    <ScrollView
+      horizontal
       showsHorizontalScrollIndicator={false}
       className="flex-row"
       {...props}
@@ -45,7 +45,7 @@ export const CarouselItem = ({ children, className, ...props }: any) => {
 // Carousel Next
 export const CarouselNext = ({ onPress, className, ...props }: any) => {
   return (
-    <Pressable 
+    <Pressable
       className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-background border border-border shadow-sm flex items-center justify-center hover:bg-accent"
       onPress={onPress}
       {...props}
@@ -58,7 +58,7 @@ export const CarouselNext = ({ onPress, className, ...props }: any) => {
 // Carousel Previous
 export const CarouselPrevious = ({ onPress, className, ...props }: any) => {
   return (
-    <Pressable 
+    <Pressable
       className="absolute left-2 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-background border border-border shadow-sm flex items-center justify-center hover:bg-accent"
       onPress={onPress}
       {...props}

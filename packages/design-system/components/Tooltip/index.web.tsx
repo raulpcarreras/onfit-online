@@ -20,16 +20,14 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     return (
       <TooltipProvider delayDuration={delayDuration}>
         <UITooltip>
-          <TooltipTrigger asChild>
-            {children}
-          </TooltipTrigger>
+          <TooltipTrigger asChild>{children}</TooltipTrigger>
           <TooltipContent className={className} {...props}>
             {content}
           </TooltipContent>
         </UITooltip>
       </TooltipProvider>
     );
-  }
+  },
 );
 
 Tooltip.displayName = "Tooltip";

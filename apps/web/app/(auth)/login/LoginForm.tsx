@@ -12,11 +12,13 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
-  const [loginErrors, setLoginErrors] = useState<{ email?: string; password?: string }>({});
+  const [loginErrors, setLoginErrors] = useState<{ email?: string; password?: string }>(
+    {},
+  );
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { loading, loginWithPassword } = useLoginActions();
-  
+
   useEffect(() => setMounted(true), []);
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -24,11 +26,12 @@ export default function LoginForm() {
     // Validación simple de login
     const errs: typeof loginErrors = {};
     if (!email) errs.email = "Campo requerido";
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Email no válido";
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      errs.email = "Email no válido";
     if (!password) errs.password = "Campo requerido";
     setLoginErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    
+
     try {
       await loginWithPassword(email, password);
     } catch (error: any) {
@@ -36,7 +39,7 @@ export default function LoginForm() {
       if (!error.message.includes("Invalid login credentials")) {
         console.error("Error de login:", error);
       }
-      
+
       if (error.message.includes("Invalid login credentials")) {
         setLoginErrors({ email: "Credenciales incorrectas" });
       } else {
@@ -50,11 +53,9 @@ export default function LoginForm() {
       <div className="w-full max-w-sm bg-card border border-border rounded-lg p-5 shadow-lg">
         <div className="mb-5 relative">
           {/* Botón de tema posicionado absolutamente en la esquina superior derecha */}
-          <ThemeToggle
-            className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10"
-          />
-          
-                                {/* Logo centrado en la card (sin interferencia del botón) */}
+          <ThemeToggle className="absolute top-0 right-0 p-2 rounded-lg hover:bg-secondary transition-colors focus:outline-none focus:ring-0 z-10" />
+
+          {/* Logo centrado en la card (sin interferencia del botón) */}
           <div className="flex flex-col items-center text-center">
             {/* Logo adaptativo según tema */}
             {!mounted ? (
@@ -66,16 +67,16 @@ export default function LoginForm() {
               />
             ) : resolvedTheme === "dark" ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img 
-                src="/logos/logo-dark.png" 
-                alt="ONFIT Logo" 
+              <img
+                src="/logos/logo-dark.png"
+                alt="ONFIT Logo"
                 className="h-12 w-auto object-contain"
               />
             ) : (
               // eslint-disable-next-line @next/next/no-img-element
-              <img 
-                src="/logos/logo-light.png" 
-                alt="ONFIT Logo" 
+              <img
+                src="/logos/logo-light.png"
+                alt="ONFIT Logo"
                 className="h-12 w-auto object-contain"
               />
             )}
@@ -88,7 +89,9 @@ export default function LoginForm() {
 
         <form onSubmit={onSubmit} className="space-y-3">
           <div>
-            <label htmlFor="email" className="text-xs text-muted-foreground">Email</label>
+            <label htmlFor="email" className="text-xs text-muted-foreground">
+              Email
+            </label>
             <Input
               id="email"
               name="email"
@@ -96,9 +99,7 @@ export default function LoginForm() {
               placeholder="tu@correo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`mt-1 ${
-                loginErrors.email ? "border-red-500" : ""
-              }`}
+              className={`mt-1 ${loginErrors.email ? "border-red-500" : ""}`}
             />
             {loginErrors.email && (
               <p className="mt-1 text-xs text-red-500">{loginErrors.email}</p>
@@ -106,7 +107,9 @@ export default function LoginForm() {
           </div>
 
           <div>
-            <label htmlFor="password" className="text-xs text-muted-foreground">Contraseña</label>
+            <label htmlFor="password" className="text-xs text-muted-foreground">
+              Contraseña
+            </label>
             <div className="mt-1 flex items-stretch gap-2">
               <Input
                 id="password"
@@ -115,9 +118,7 @@ export default function LoginForm() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`flex-1 ${
-                  loginErrors.password ? "border-red-500" : ""
-                }`}
+                className={`flex-1 ${loginErrors.password ? "border-red-500" : ""}`}
               />
               <Button
                 type="button"
@@ -156,7 +157,7 @@ export default function LoginForm() {
             ¿No tienes cuenta?{" "}
             <span className="text-muted-foreground/60">Regístrate</span>
           </p>
-          
+
           <div className="mt-2">
             <span className="text-sm text-muted-foreground/60">
               ¿Olvidaste tu contraseña?
@@ -172,7 +173,8 @@ export default function LoginForm() {
           y la{" "}
           <Link href="/privacy" className="text-primary hover:underline">
             Política de Privacidad
-          </Link>.
+          </Link>
+          .
         </p>
       </div>
     </div>

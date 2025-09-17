@@ -28,12 +28,12 @@ export function ThemeProvider({
   defaultMode = "system",
 }: {
   children: React.ReactNode;
-  storage?: Storage;     // opcional: pásale AsyncStorage adaptado
+  storage?: Storage; // opcional: pásale AsyncStorage adaptado
   defaultMode?: Mode;
 }) {
   const [mode, setMode] = React.useState<Mode>(defaultMode);
   const [system, setSystem] = React.useState<ThemeMode>(
-    (Appearance.getColorScheme() || "light") as ThemeMode
+    (Appearance.getColorScheme() || "light") as ThemeMode,
   );
 
   // Suscribirse a cambios del sistema
@@ -62,7 +62,7 @@ export function ThemeProvider({
       setMode(m);
       storage?.setItem?.(STORAGE_KEY, m);
     },
-    [storage]
+    [storage],
   );
 
   const resolvedMode: ThemeMode = mode === "system" ? system : mode;
@@ -75,13 +75,11 @@ export function ThemeProvider({
       setMode: setModeAndPersist,
       colors: tokens[resolvedMode], // Usar tokens JS centralizados
     }),
-    [mode, resolvedMode, setModeAndPersist]
+    [mode, resolvedMode, setModeAndPersist],
   );
 
   return (
-    <ThemeBridgeContext.Provider value={value}>
-      {children}
-    </ThemeBridgeContext.Provider>
+    <ThemeBridgeContext.Provider value={value}>{children}</ThemeBridgeContext.Provider>
   );
 }
 

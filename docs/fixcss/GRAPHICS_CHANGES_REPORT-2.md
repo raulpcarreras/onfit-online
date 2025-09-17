@@ -2,8 +2,8 @@
 
 _Generated_: 2025-08-23T10:23:18.026567Z
 
-
 ## Summary
+
 - CSS-like files scanned: **4**
 - React files scanned: **392**
 - Files neutralized to restore shadcn defaults: **1**
@@ -11,6 +11,7 @@ _Generated_: 2025-08-23T10:23:18.026567Z
 - Files with Tailwind arbitrary classes `[...]` (report only): **25**
 
 ## Inline styles to migrate (recommendation)
+
 - `apps/native/app/(protected)/admin.tsx` — occurrences: 1 (first lines: [5])
 - `apps/native/app/(protected)/client.tsx` — occurrences: 1 (first lines: [5])
 - `apps/native/app/(protected)/trainer.tsx` — occurrences: 1 (first lines: [5])
@@ -37,6 +38,7 @@ _Generated_: 2025-08-23T10:23:18.026567Z
 - `packages/design-system/ui/calender/index.tsx` — occurrences: 2 (first lines: [203, 238])
 
 ## Tailwind arbitrary class usage (recommendation)
+
 - `apps/web/app/(auth)/login/LoginForm.tsx`
 - `apps/web/app/(protected)/admin/layout-client.tsx`
 - `apps/web/app/(protected)/admin/users/page.tsx`

@@ -12,9 +12,9 @@ We organize our codebase into modules or packages that encapsulate specific func
 
 We adopt a consistent directory structure that separates components, utilities, services, and assets.
 
--   Most components and features can be shared, and thus the code lives in the eg. `packages/design-system` directory, and is then imported into each project.
--   Some components will have web- or native- specific features, and those can be denoted by adding `.native` or `.web` to the filename, and react-native will take care of the rest:
-    -   `button.web.tsx` & `button.native.tsx` can be added to the project in the same folder, and imported into a parent component as `import Button from "@repo/design/ui/button"`. The compiler will correctly import the right component.
+- Most components and features can be shared, and thus the code lives in the eg. `packages/design-system` directory, and is then imported into each project.
+- Some components will have web- or native- specific features, and those can be denoted by adding `.native` or `.web` to the filename, and react-native will take care of the rest:
+    - `button.web.tsx` & `button.native.tsx` can be added to the project in the same folder, and imported into a parent component as `import Button from "@repo/design/ui/button"`. The compiler will correctly import the right component.
 
 #### Component Design
 
@@ -22,8 +22,8 @@ We use atomic design principles to build reusable components. This means startin
 
 We have some helpful folders set up for organizing the shared components in `packages/`
 
--   `api/`: For handling API calls, errors, and responses from the backend.
--   `design-system/`: For any UI primitives (Buttons, Links, Typography, Animations, Cards, etc), react context components, and shared features for individual screens.
+- `api/`: For handling API calls, errors, and responses from the backend.
+- `design-system/`: For any UI primitives (Buttons, Links, Typography, Animations, Cards, etc), react context components, and shared features for individual screens.
 
 ## Best Practices
 
@@ -67,10 +67,10 @@ To keep things organized branches are be prefixed with a category and include th
 
 ##### Categories
 
--   `feat` is for adding, refactoring or removing product features
--   `chore` is for anything else (documentation, formatting, additional tests, etc)
--   `hotfix` is for a temporary solution that may not follow the usual processes (emergency code fixes)
--   `fix` is for fixing a bug (not a breaking change)
+- `feat` is for adding, refactoring or removing product features
+- `chore` is for anything else (documentation, formatting, additional tests, etc)
+- `hotfix` is for a temporary solution that may not follow the usual processes (emergency code fixes)
+- `fix` is for fixing a bug (not a breaking change)
 
 ### Commits & Merging
 
@@ -89,9 +89,9 @@ It's vital to our progress as a team to share code before it is ready. At the le
 
 In order to make reviewing code easier, we prefer that you organize your commits into logical groups that can be reviewed together. This may mean squashing specific commits so that relevant code is well organized. When code review has been completed, additional squashing can be done to simplify the commit history but is not required.
 
--   Use commits to help organize PR reviews
--   Use squash to keep a meaningful commit history
--   Avoid merge commits
+- Use commits to help organize PR reviews
+- Use squash to keep a meaningful commit history
+- Avoid merge commits
 
 ##### Commit Messages
 

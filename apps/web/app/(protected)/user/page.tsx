@@ -8,7 +8,12 @@ import { useRouter } from "next/navigation";
 import { FullScreenLoader } from "@repo/design/components/FullScreenLoader";
 
 import {
-  Dumbbell, Calendar, MessageSquare, CheckCircle2, TrendingUp, Utensils
+  Dumbbell,
+  Calendar,
+  MessageSquare,
+  CheckCircle2,
+  TrendingUp,
+  Utensils,
 } from "lucide-react";
 import { Button } from "@repo/design/components/Button";
 import { Input } from "@repo/design/components/Input";
@@ -47,7 +52,7 @@ export default function UserDashboard() {
   const { user, loading } = useUser();
   const { profile } = useProfile();
   const router = useRouter();
-  const [habitStates, setHabitStates] = useState(habitos.map(h => h.done));
+  const [habitStates, setHabitStates] = useState(habitos.map((h) => h.done));
 
   // Mostrar loader mientras se carga el perfil
   if (loading || !user || !profile) {
@@ -58,8 +63,6 @@ export default function UserDashboard() {
   if (profile.role !== "user") {
     return <FullScreenLoader label="Redirigiendo..." />;
   }
-
-
 
   const session = {
     name: "Full Body – Semana 3 / Día 2",
@@ -99,13 +102,13 @@ export default function UserDashboard() {
           {/* progreso */}
           <div className="mt-4">
             <Progress value={session.progress} showValue />
-            <div className="mt-1 text-xs text-muted-foreground">{session.progress}% completado</div>
+            <div className="mt-1 text-xs text-muted-foreground">
+              {session.progress}% completado
+            </div>
           </div>
 
           <div className="mt-4 flex gap-2">
-            <Button className="px-4 py-2">
-              Iniciar
-            </Button>
+            <Button className="px-4 py-2">Iniciar</Button>
             <Button variant="outline" className="px-4 py-2">
               Ver detalles
             </Button>
@@ -122,13 +125,17 @@ export default function UserDashboard() {
                 <div key={m.key}>
                   <div className="flex justify-between text-sm mb-1">
                     <span className="text-muted-foreground">{m.key}</span>
-                    <span className="text-muted-foreground">{m.current}/{m.target}g</span>
+                    <span className="text-muted-foreground">
+                      {m.current}/{m.target}g
+                    </span>
                   </div>
                   <Progress value={pct} size="sm" />
                 </div>
               );
             })}
-            <div className="mt-2 text-xs text-muted-foreground">Kcal totales: {kcal}% del objetivo</div>
+            <div className="mt-2 text-xs text-muted-foreground">
+              Kcal totales: {kcal}% del objetivo
+            </div>
           </div>
         </Card>
       </div>
@@ -141,10 +148,10 @@ export default function UserDashboard() {
             <div className="font-medium">Próximo evento</div>
             <Calendar className="size-4 text-primary" />
           </div>
-          <div className="mt-2 text-sm text-muted-foreground">Mañana 18:00 — Sesión con Laura</div>
-          <Button className="mt-3 w-full">
-            Abrir calendario
-          </Button>
+          <div className="mt-2 text-sm text-muted-foreground">
+            Mañana 18:00 — Sesión con Laura
+          </div>
+          <Button className="mt-3 w-full">Abrir calendario</Button>
         </Card>
 
         {/* Mensajes recientes */}
@@ -167,9 +174,7 @@ export default function UserDashboard() {
               </div>
             ))}
           </div>
-          <Button className="mt-3 px-4 py-2">
-            Abrir mensajes
-          </Button>
+          <Button className="mt-3 px-4 py-2">Abrir mensajes</Button>
         </Card>
       </div>
 
@@ -185,9 +190,7 @@ export default function UserDashboard() {
               placeholder="kg"
               className="flex-1"
             />
-            <Button className="px-4 py-2">
-              Guardar
-            </Button>
+            <Button className="px-4 py-2">Guardar</Button>
           </div>
         </Card>
 
@@ -196,8 +199,8 @@ export default function UserDashboard() {
           <div className="font-medium">Checklist de hoy</div>
           <div className="mt-3 grid sm:grid-cols-2 gap-2">
             {habitos.map((h, index) => (
-              <ChecklistItem 
-                key={h.key} 
+              <ChecklistItem
+                key={h.key}
                 checked={habitStates[index]}
                 onPress={() => {
                   const newStates = [...habitStates];
@@ -205,8 +208,8 @@ export default function UserDashboard() {
                   setHabitStates(newStates);
                 }}
               >
-                <Checkbox 
-                  checked={habitStates[index]} 
+                <Checkbox
+                  checked={habitStates[index]}
                   onCheckedChange={(checked) => {
                     const newStates = [...habitStates];
                     newStates[index] = checked as boolean;

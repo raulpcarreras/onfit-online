@@ -23,36 +23,35 @@ export function Progress({
   ...props
 }: ProgressProps) {
   const percentage = Math.min(100, Math.max(0, (value / max) * 100));
-  
+
   const sizeClasses = {
     sm: "h-1",
-    md: "h-2", 
-    lg: "h-3"
+    md: "h-2",
+    lg: "h-3",
   };
 
   const variantClasses = {
     default: "bg-primary",
     success: "bg-green-500",
-    warning: "bg-yellow-500", 
-    destructive: "bg-red-500"
+    warning: "bg-yellow-500",
+    destructive: "bg-red-500",
   };
 
   return (
     <View className="w-full space-y-2" {...props}>
-      <View className={cn(
-        "w-full bg-secondary rounded-full overflow-hidden",
-        sizeClasses[size],
-        className
-      )}>
+      <View
+        className={cn(
+          "w-full bg-secondary rounded-full overflow-hidden",
+          sizeClasses[size],
+          className,
+        )}
+      >
         <View
-          className={cn(
-            "h-full rounded-full",
-            variantClasses[variant]
-          )}
+          className={cn("h-full rounded-full", variantClasses[variant])}
           style={{ width: `${percentage}%` }}
         />
       </View>
-      
+
       {showValue && (
         <Text className="text-xs text-muted-foreground text-right">
           {Math.round(percentage)}%

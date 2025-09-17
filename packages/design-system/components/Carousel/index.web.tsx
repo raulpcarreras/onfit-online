@@ -9,4 +9,12 @@ import {
   CarouselPrevious,
 } from "../../ui/carousel";
 
-export { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious };
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+};
+
+export type { CarouselApi };

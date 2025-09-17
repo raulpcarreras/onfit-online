@@ -1,28 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Appearance } from "react-native";
-import { Button } from "../Button";
+import { Button } from "../Button/index.native";
 import { Sun, Moon, Monitor } from "lucide-react-native";
 
 export interface ThemeToggleProps {
   className?: string;
   variant?: "default" | "ghost" | "outline" | "secondary" | "destructive" | "link";
-  size?: "sm" | "md" | "lg" | "icon";
+  size?: "sm" | "md" | "lg";
 }
 
-export function ThemeToggle({ 
-  className, 
-  variant = "ghost", 
+export function ThemeToggle({
+  className,
+  variant = "ghost",
   size = "sm",
-  ...props 
+  ...props
 }: ThemeToggleProps) {
   const [colorScheme, setColorScheme] = useState<"light" | "dark" | null>(
-    Appearance.getColorScheme() || "light"
+    Appearance.getColorScheme() || "light",
   );
 
   useEffect(() => {
-    const subscription = Appearance.addChangeListener(({ colorScheme: newColorScheme }) => {
-      setColorScheme(newColorScheme || "light");
-    });
+    const subscription = Appearance.addChangeListener(
+      ({ colorScheme: newColorScheme }) => {
+        setColorScheme(newColorScheme || "light");
+      },
+    );
 
     return () => subscription?.remove();
   }, []);

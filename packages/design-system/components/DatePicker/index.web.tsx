@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Button } from "../Button";
 import { Calendar } from "../Calendar";
-import { CalendarIcon } from "../../icons/Calendar";
+import { Calendar as CalendarIcon } from "../../icons/Calendar";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -18,11 +14,11 @@ interface DatePickerProps {
   disabled?: boolean;
 }
 
-export const DatePicker = ({ 
-  date, 
-  onSelect, 
+export const DatePicker = ({
+  date,
+  onSelect,
   placeholder = "Seleccionar fecha",
-  disabled = false 
+  disabled = false,
 }: DatePickerProps) => {
   return (
     <Popover>
@@ -37,12 +33,7 @@ export const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={onSelect}
-          initialFocus
-        />
+        <Calendar mode="single" selected={date} onSelect={onSelect} initialFocus />
       </PopoverContent>
     </Popover>
   );

@@ -18,10 +18,7 @@ export const Backdrop: React.FC<BackdropProps> = ({
 }) => {
   return (
     <Pressable
-      className={cn(
-        "absolute inset-0 bg-black/20 dark:bg-black/40",
-        className
-      )}
+      className={cn("absolute inset-0 bg-black/20 dark:bg-black/40", className)}
       onPress={onPress}
       style={style}
       {...props}

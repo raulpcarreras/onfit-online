@@ -13,12 +13,12 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
+  RechartsTooltip as Tooltip,
   Legend,
   ResponsiveContainer,
 } from "../../ui/chart";
 
-export { 
+export {
   LineChart,
   Line,
   AreaChart,

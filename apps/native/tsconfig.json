@@ -8,12 +8,12 @@
     "skipLibCheck": true,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "types": ["nativewind/types", "jest"],
+    "types": ["nativewind/types", "jest", "node"],
     "paths": {
       "@repo/design/*": ["../../packages/design-system/*"],
       "@repo/*": ["../../packages/*"],
       "@/assets/*": ["./assets/*"],
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": [

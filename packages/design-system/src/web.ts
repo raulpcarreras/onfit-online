@@ -1,2 +1,2 @@
 // Entrypoint para web (Next.js)
-export * from './index';
+export * from "../index";

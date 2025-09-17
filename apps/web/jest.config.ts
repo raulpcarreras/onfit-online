@@ -9,4 +9,3 @@ module.exports = createJestConfig({
     ...require("@tooling/jest/next.config"),
     setupFilesAfterEnv: ["./__tests__/jest-setup.ts"],
 });
-

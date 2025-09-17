@@ -14,10 +14,7 @@ export const Backdrop = React.forwardRef<HTMLDivElement, BackdropProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          "absolute inset-0 bg-black/20 dark:bg-black/40",
-          className
-        )}
+        className={cn("absolute inset-0 bg-black/20 dark:bg-black/40", className)}
         onClick={onPress}
         aria-hidden
         {...props}
@@ -25,7 +22,7 @@ export const Backdrop = React.forwardRef<HTMLDivElement, BackdropProps>(
         {children}
       </div>
     );
-  }
+  },
 );
 
 Backdrop.displayName = "Backdrop";

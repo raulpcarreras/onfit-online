@@ -41,16 +41,16 @@ export const Switch = ({
       style={style}
       {...props}
     >
-      <View 
+      <View
         className="w-11 h-6 rounded-full p-0.5"
-        style={{ 
-          backgroundColor: checked ? colors.primary : colors.muted 
+        style={{
+          backgroundColor: checked ? colors.primary : colors.muted,
         }}
       >
         <Animated.View
           className="w-5 h-5 rounded-full"
           style={[
-            { 
+            {
               backgroundColor: colors.background,
               shadowColor: colors.foreground,
               shadowOffset: { width: 0, height: 1 },

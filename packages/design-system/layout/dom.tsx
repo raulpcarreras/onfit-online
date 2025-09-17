@@ -14,18 +14,18 @@ if (!isWeb) {
  * A layout component that provides theme context for DOM-rendered components.
  * This component is primarily intended for use with components that have the `use dom` directive
  * and should generally be avoided in web contexts.
- * 
+ *
  * @component
  * @warning Issues a console warning when used in web environments
- * 
+ *
  * Features:
  * - Provides theme context via next-themes
  * - Automatically syncs with system color scheme
  * - Handles theme transitions
- * 
+ *
  * @param {React.PropsWithChildren<{}>} props - React children to be wrapped with theme context
  * @returns {JSX.Element} Themed layout wrapper
- * 
+ *
  * @example
  * <DomLayout>
  *   <YourComponent />

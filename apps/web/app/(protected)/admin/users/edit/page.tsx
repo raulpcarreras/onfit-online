@@ -1,25 +1,49 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@repo/design/components/Button';
-import { Input } from '@repo/design/components/Input';
-import { Select } from '@repo/design/components/Select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@repo/design/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/design/ui/dialog';
-import { Badge } from '@repo/design/ui/badge';
-import { Label } from '@repo/design/ui/label';
+import { useState, useEffect } from "react";
+import { Button } from "@repo/design/components/Button";
+import { Input } from "@repo/design/components/Input";
+import { Select } from "@repo/design/components/Select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@repo/design/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@repo/design/ui/dialog";
+import { Badge } from "@repo/design/ui/badge";
+import { Label } from "@repo/design/ui/label";
 
-import { Search, Edit, Eye, EyeOff, Save, X, User, Mail, Shield, Calendar } from 'lucide-react';
-import { useUsers } from '@/hooks/useUsers';
+import {
+  Search,
+  Edit,
+  Eye,
+  EyeOff,
+  Save,
+  X,
+  User,
+  Mail,
+  Shield,
+  Calendar,
+} from "lucide-react";
+import { useUsers } from "@/hooks/useUsers";
 
 // Usar el tipo del hook useUsers en lugar de duplicar
-type User = Awaited<ReturnType<typeof useUsers>>['users'][0];
+type User = Awaited<ReturnType<typeof useUsers>>["users"][0];
 
 interface EditUserData {
   id: string;
   email: string;
   full_name: string;
-  role: 'user' | 'trainer' | 'admin';
+  role: "user" | "trainer" | "admin";
   is_super_admin: boolean;
   password?: string;
   confirmPassword?: string;
@@ -27,8 +51,8 @@ interface EditUserData {
 
 export default function EditUsersPage() {
   const { users, loading, error, refreshUsers } = useUsers();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedRole, setSelectedRole] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedRole, setSelectedRole] = useState<string>("all");
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [editData, setEditData] = useState<EditUserData | null>(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -38,12 +62,13 @@ export default function EditUsersPage() {
   const [editSuccess, setEditSuccess] = useState<string | null>(null);
 
   // Filtrar usuarios basado en búsqueda y rol
-  const filteredUsers = users.filter(user => {
-    const email = user.email || '';
-    const fullName = user.full_name || '';
-    const matchesSearch = email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         fullName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = selectedRole === 'all' || user.role === selectedRole;
+  const filteredUsers = users.filter((user) => {
+    const email = user.email || "";
+    const fullName = user.full_name || "";
+    const matchesSearch =
+      email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      fullName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole = selectedRole === "all" || user.role === selectedRole;
     return matchesSearch && matchesRole;
   });
 
@@ -52,12 +77,12 @@ export default function EditUsersPage() {
     setEditingUser(user);
     setEditData({
       id: user.id,
-      email: user.email || '',
-      full_name: user.full_name || '',
+      email: user.email || "",
+      full_name: user.full_name || "",
       role: user.role,
       is_super_admin: user.is_super_admin || false,
-      password: '',
-      confirmPassword: ''
+      password: "",
+      confirmPassword: "",
     });
     setEditError(null);
     setEditSuccess(null);
@@ -78,22 +103,22 @@ export default function EditUsersPage() {
 
     // Validaciones
     if (!editData.full_name.trim()) {
-      setEditError('El nombre completo es obligatorio');
+      setEditError("El nombre completo es obligatorio");
       return;
     }
 
-    if (!editData.email.trim() || !editData.email.includes('@')) {
-      setEditError('El email debe ser válido');
+    if (!editData.email.trim() || !editData.email.includes("@")) {
+      setEditError("El email debe ser válido");
       return;
     }
 
     if (editData.password && editData.password.length < 8) {
-      setEditError('La contraseña debe tener al menos 8 caracteres');
+      setEditError("La contraseña debe tener al menos 8 caracteres");
       return;
     }
 
     if (editData.password && editData.password !== editData.confirmPassword) {
-      setEditError('Las contraseñas no coinciden');
+      setEditError("Las contraseñas no coinciden");
       return;
     }
 
@@ -101,25 +126,25 @@ export default function EditUsersPage() {
     setEditError(null);
 
     try {
-      const response = await fetch('/api/admin/update-user', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editData)
+      const response = await fetch("/api/admin/update-user", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editData),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        setEditSuccess('Usuario actualizado exitosamente');
+        setEditSuccess("Usuario actualizado exitosamente");
         refreshUsers();
         setTimeout(() => {
           cancelEdit();
         }, 2000);
       } else {
-        setEditError(result.error || 'Error al actualizar usuario');
+        setEditError(result.error || "Error al actualizar usuario");
       }
     } catch (error) {
-      setEditError('Error de conexión');
+      setEditError("Error de conexión");
     } finally {
       setIsEditing(false);
     }
@@ -127,22 +152,26 @@ export default function EditUsersPage() {
 
   // Formatear fecha
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
   // Obtener color del badge según rol
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
-      case 'admin': return 'bg-red-100 text-red-800';
-      case 'trainer': return 'bg-blue-100 text-blue-800';
-      case 'user': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "admin":
+        return "bg-red-100 text-red-800";
+      case "trainer":
+        return "bg-blue-100 text-blue-800";
+      case "user":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -176,9 +205,14 @@ export default function EditUsersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Editar Usuarios</h1>
-          <p className="text-gray-600 mt-2">Gestiona y edita los usuarios existentes del sistema</p>
+          <p className="text-gray-600 mt-2">
+            Gestiona y edita los usuarios existentes del sistema
+          </p>
         </div>
-        <Button onPress={() => window.history.back()} className="border border-input bg-background hover:bg-accent hover:text-accent-foreground">
+        <Button
+          onPress={() => window.history.back()}
+          className="border border-input bg-background hover:bg-accent hover:text-accent-foreground"
+        >
           <X className="h-4 w-4 mr-2" />
           Volver
         </Button>
@@ -196,8 +230,8 @@ export default function EditUsersPage() {
               className="pl-10 w-full px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
             />
           </div>
-          <select 
-            value={selectedRole} 
+          <select
+            value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
             className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           >
@@ -250,9 +284,9 @@ export default function EditUsersPage() {
                   <TableCell>
                     <div className="flex items-center space-x-2">
                       <Badge className={getRoleBadgeColor(user.role)}>
-                        {user.role === 'admin' && <Shield className="h-3 w-3 mr-1" />}
-                        {user.role === 'trainer' && <User className="h-3 w-3 mr-1" />}
-                        {user.role === 'user' && <User className="h-3 w-3 mr-1" />}
+                        {user.role === "admin" && <Shield className="h-3 w-3 mr-1" />}
+                        {user.role === "trainer" && <User className="h-3 w-3 mr-1" />}
+                        {user.role === "user" && <User className="h-3 w-3 mr-1" />}
                         {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                       </Badge>
                       {user.is_super_admin && (
@@ -276,15 +310,11 @@ export default function EditUsersPage() {
                   <TableCell>
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="h-3 w-3 mr-1" />
-                      {user.updated_at ? formatDate(user.updated_at) : 'N/A'}
+                      {user.updated_at ? formatDate(user.updated_at) : "N/A"}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      onPress={() => startEdit(user)}
-                      size="sm"
-                      variant="outline"
-                    >
+                    <Button onPress={() => startEdit(user)} size="sm" variant="outline">
                       <Edit className="h-4 w-4 mr-1" />
                       Editar
                     </Button>
@@ -302,7 +332,7 @@ export default function EditUsersPage() {
           <DialogHeader>
             <DialogTitle>Editar Usuario: {editingUser?.full_name}</DialogTitle>
           </DialogHeader>
-          
+
           {editData && (
             <div className="space-y-6">
               {/* Mensajes de estado */}
@@ -311,7 +341,7 @@ export default function EditUsersPage() {
                   <p className="text-red-800 text-sm">{editError}</p>
                 </div>
               )}
-              
+
               {editSuccess && (
                 <div className="bg-green-50 border border-green-200 rounded-md p-4">
                   <p className="text-green-800 text-sm">{editSuccess}</p>
@@ -326,11 +356,13 @@ export default function EditUsersPage() {
                   </label>
                   <Input
                     value={editData.full_name}
-                    onChange={(e) => setEditData({ ...editData, full_name: e.target.value })}
+                    onChange={(e) =>
+                      setEditData({ ...editData, full_name: e.target.value })
+                    }
                     placeholder="Nombre completo"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Email
@@ -342,14 +374,19 @@ export default function EditUsersPage() {
                     type="email"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Rol
                   </label>
                   <Select
                     value={editData.role}
-                    onChange={(v: string) => setEditData({ ...editData, role: v as 'user' | 'trainer' | 'admin' })}
+                    onChange={(v: string) =>
+                      setEditData({
+                        ...editData,
+                        role: v as "user" | "trainer" | "admin",
+                      })
+                    }
                     options={[
                       { label: "Usuario", value: "user" },
                       { label: "Entrenador", value: "trainer" },
@@ -358,15 +395,15 @@ export default function EditUsersPage() {
                     placeholder="Selecciona un rol"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Super Admin
                   </label>
                   <Select
                     value={editData.is_super_admin.toString()}
-                    onChange={(value: string) => 
-                      setEditData({ ...editData, is_super_admin: value === 'true' })
+                    onChange={(value: string) =>
+                      setEditData({ ...editData, is_super_admin: value === "true" })
                     }
                     options={[
                       { label: "No", value: "false" },
@@ -379,7 +416,9 @@ export default function EditUsersPage() {
 
               {/* Cambio de contraseña */}
               <div className="border-t pt-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Cambiar Contraseña</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-4">
+                  Cambiar Contraseña
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -387,9 +426,11 @@ export default function EditUsersPage() {
                     </label>
                     <div className="relative">
                       <Input
-                        type={showPassword ? 'text' : 'password'}
-                        value={editData.password || ''}
-                        onChange={(e) => setEditData({ ...editData, password: e.target.value })}
+                        type={showPassword ? "text" : "password"}
+                        value={editData.password || ""}
+                        onChange={(e) =>
+                          setEditData({ ...editData, password: e.target.value })
+                        }
                         placeholder="Dejar vacío para no cambiar"
                       />
                       <Button
@@ -399,20 +440,26 @@ export default function EditUsersPage() {
                         className="absolute right-0 top-0 h-full px-3"
                         onPress={() => setShowPassword(!showPassword)}
                       >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Confirmar Contraseña
                     </label>
                     <div className="relative">
                       <Input
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        value={editData.confirmPassword || ''}
-                        onChange={(e) => setEditData({ ...editData, confirmPassword: e.target.value })}
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={editData.confirmPassword || ""}
+                        onChange={(e) =>
+                          setEditData({ ...editData, confirmPassword: e.target.value })
+                        }
                         placeholder="Confirmar nueva contraseña"
                       />
                       <Button
@@ -422,7 +469,11 @@ export default function EditUsersPage() {
                         className="absolute right-0 top-0 h-full px-3"
                         onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                       >
-                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -434,11 +485,7 @@ export default function EditUsersPage() {
 
               {/* Acciones */}
               <div className="flex justify-end space-x-3 pt-6 border-t">
-                <Button
-                  onPress={cancelEdit}
-                  variant="outline"
-                  disabled={isEditing}
-                >
+                <Button onPress={cancelEdit} variant="outline" disabled={isEditing}>
                   Cancelar
                 </Button>
                 <Button

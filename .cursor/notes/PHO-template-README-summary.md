@@ -4,11 +4,13 @@
 > **Fuente**: https://github.com/divineniiquaye/pho-monorepo
 
 ## ¿Qué trae?
+
 - Next.js 15 (web) + Expo SDK 53 (native) con **Turborepo** y **pnpm**.
 - TypeScript, TailwindCSS/NativeWind, Expo Router, React Query, React Hook Form, i18n.
 - Estructura limpia de `apps/` y `packages/` + tooling (ESLint/Jest/TypeScript).
 
 ## Crear un proyecto nuevo (comando original)
+
 ```bash
 npx pho-monorepo@latest init my-app
 ```
@@ -16,6 +18,7 @@ npx pho-monorepo@latest init my-app
 > Nota: en ONFIT ya partimos de esta base, por lo que no es necesario volver a ejecutar el init.
 
 ## Estructura típica
+
 ```
 apps/
   web/        # Next.js (App Router)
@@ -29,6 +32,7 @@ pnpm-workspace.yaml
 ```
 
 ## Comandos útiles (pnpm)
+
 ```bash
 # Listar paquetes / scripts
 pnpm -r ls --depth -1
@@ -50,9 +54,10 @@ pnpm --filter native run android
 ```
 
 ## Consejos rápidos
+
 - **No cambies** de gestor (mantén **pnpm**). Commitea `pnpm-lock.yaml`.
 - En **native**, mantén **React 18.x** (Expo 53). No fuerces React 19.
-- Si ves *“Cannot find native module …”*, instala Dev Client (`expo run:ios|android`).
+- Si ves _“Cannot find native module …”_, instala Dev Client (`expo run:ios|android`).
 - Si aparece el warning `DEP0169 url.parse`, puedes ignorarlo o ejecutar con `NODE_OPTIONS=--no-deprecation`.
 
 ---

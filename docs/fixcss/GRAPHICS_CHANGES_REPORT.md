@@ -5,32 +5,38 @@
 Este informe documenta los cambios realizados para asegurar que los componentes de **shadcn/ui** se vean con su aspecto **por defecto**, minimizando CSS personalizado que pudiera sobrescribir estilos.
 
 ## Resumen
+
 - Archivos CSS/SCSS/LESS editados: **2**
-  - apps/web/app/globals.css
-  - apps/web/app/styles/utilities.css
+    - apps/web/app/globals.css
+    - apps/web/app/styles/utilities.css
 
 ## Criterios aplicados
+
 - Se han mantenido intactos los **tokens** y el **global reset** del diseño:
-  - `packages/design-system/tokens/**`
-  - `packages/design-system/tailwind/global.css`
+    - `packages/design-system/tokens/**`
+    - `packages/design-system/tailwind/global.css`
 - En el resto de ficheros CSS/SCSS/LESS:
-  - Se conservaron **@tailwind**, **@import** y otras `@rules` técnicas.
-  - El resto de reglas se encapsularon en un *scope inactivo*:  
-    `:where(html.__unused_overrides__) { ... }`  
-    (esto neutraliza los overrides sin borrar el código).
+    - Se conservaron **@tailwind**, **@import** y otras `@rules` técnicas.
+    - El resto de reglas se encapsularon en un _scope inactivo_:  
+      `:where(html.__unused_overrides__) { ... }`  
+      (esto neutraliza los overrides sin borrar el código).
 
 ## Hallazgos en CSS
+
 ### apps/web/app/globals.css
+
 - Cambiado: **True**
 - Selectores sospechosos detectados: `\.btn\b, button\b`
 
 ### apps/web/app/styles/utilities.css
+
 - Cambiado: **True**
 - Selectores sospechosos detectados: `\.btn\b`
 
-
 ## Hallazgos en código (no modificados)
+
 Se detectaron patrones a considerar para futuras refactorizaciones (sin cambios automáticos):
+
 - apps/native/app/(protected)/admin.tsx: inline `style={{...}}`
 - apps/native/app/(protected)/client.tsx: inline `style={{...}}`
 - apps/native/app/(protected)/trainer.tsx: inline `style={{...}}`
@@ -77,6 +83,7 @@ Se detectaron patrones a considerar para futuras refactorizaciones (sin cambios 
 - packages/design-system/ui/calender/index.tsx: inline `style={{...}}`
 
 ## Siguientes pasos sugeridos
+
 - Migrar estilos `inline` y `[arbitrary]` a **variantes** y **tokens**.
 - Revisar wrappers de componentes para que sólo acepten `className` y variantes, evitando CSS ad-hoc.
-- Documentar *Theme Bridge* y convenciones de tokens en la guía de diseño.
+- Documentar _Theme Bridge_ y convenciones de tokens en la guía de diseño.

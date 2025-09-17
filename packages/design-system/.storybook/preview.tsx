@@ -1,21 +1,21 @@
-import type { Preview } from '@storybook/react';
-import React from 'react';
+import type { Preview } from "@storybook/react";
+import React from "react";
 
 // ✅ importa tus tokens + tailwind una vez aquí (los mismos que usas en la app)
-import '../.storybook/preview.css'; // Tailwind + tokens HSL
+import "../.storybook/preview.css"; // Tailwind + tokens HSL
 
 // ✅ tu ThemeProvider web real
-import { ThemeProvider } from '../providers/theme/ThemeProvider.web';
+import { ThemeProvider } from "../providers/theme/ThemeProvider.web";
 
 export const globalTypes = {
   theme: {
-    description: 'Global theme',
-    defaultValue: 'light',              // 👈 valor inicial
+    description: "Global theme",
+    defaultValue: "light", // 👈 valor inicial
     toolbar: {
-      icon: 'mirror',
+      icon: "mirror",
       items: [
-        { value: 'light', title: 'Light' },
-        { value: 'dark', title: 'Dark' },
+        { value: "light", title: "Light" },
+        { value: "dark", title: "Dark" },
       ],
       dynamicTitle: true,
     },
@@ -25,12 +25,12 @@ export const globalTypes = {
 const preview: Preview = {
   decorators: [
     (Story, context) => {
-      const theme = context.globals.theme as 'light' | 'dark';
+      const theme = context.globals.theme as "light" | "dark";
 
       // 👉 sincroniza la clase en <html> del iframe para que Tailwind/vars funcionen
       React.useEffect(() => {
         const root = document.documentElement;
-        root.classList.remove('light', 'dark');
+        root.classList.remove("light", "dark");
         root.classList.add(theme);
       }, [theme]);
 
@@ -50,7 +50,7 @@ const preview: Preview = {
       // Opción A: deshabilitarlo por completo
       disable: true,
     },
-    layout: 'centered',
+    layout: "centered",
     controls: { expanded: true },
   },
 };

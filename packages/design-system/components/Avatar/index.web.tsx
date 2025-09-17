@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Avatar as UIAvatar,
-  AvatarFallback,
-  AvatarImage,
-} from "../../ui/avatar";
+import { Avatar as UIAvatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { cn } from "../../lib/utils";
 
 export interface AvatarProps {
@@ -24,16 +20,12 @@ export const Avatar = React.forwardRef<any, AvatarProps>(
     };
 
     return (
-      <UIAvatar
-        ref={ref}
-        className={cn(sizeClasses[size], className)}
-        {...props}
-      >
+      <UIAvatar ref={ref} className={cn(sizeClasses[size], className)} {...props}>
         {src && <AvatarImage src={src} />}
         <AvatarFallback>{fallback}</AvatarFallback>
       </UIAvatar>
     );
-  }
+  },
 );
 
 Avatar.displayName = "Avatar";

@@ -17,9 +17,14 @@ export type InputIconProps = {
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "auto";
 };
 
-export function Input({ variant = "outline", size = "md", children, ...props }: InputProps) {
+export function Input({
+  variant = "outline",
+  size = "md",
+  children,
+  ...props
+}: InputProps) {
   const { colors } = useThemeBridge();
-  
+
   const variantClasses = {
     outline: "border border-input rounded-lg",
     underlined: "border-b border-input",
@@ -36,11 +41,11 @@ export function Input({ variant = "outline", size = "md", children, ...props }: 
   };
 
   return (
-    <View 
+    <View
       className={cn(
         "flex-row items-center overflow-hidden",
         variantClasses[variant],
-        sizeClasses[size]
+        sizeClasses[size],
       )}
       style={{
         backgroundColor: variant === "underlined" ? "transparent" : `${colors.muted}99`,
@@ -55,7 +60,7 @@ export function Input({ variant = "outline", size = "md", children, ...props }: 
 
 export function InputField(props: InputFieldProps) {
   const { colors } = useThemeBridge();
-  
+
   return (
     <TextInput
       placeholderTextColor={colors["muted-foreground"]}

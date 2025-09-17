@@ -21,9 +21,11 @@
 ## 2) Enums
 
 ### `onfit.user_role`
+
 Valores: `user`, `trainer`, `admin`
 
 > **Nota**: Si no existe aún, crear con:
+
 ```sql
 create type onfit.user_role as enum ('user', 'trainer', 'admin');
 ```
@@ -33,6 +35,7 @@ create type onfit.user_role as enum ('user', 'trainer', 'admin');
 ## 3) Funciones utilitarias
 
 ### 3.1 `onfit.update_modified_column()`
+
 Actualiza `updated_at` automáticamente en `UPDATE`.
 
 ```sql
@@ -46,6 +49,7 @@ $$;
 ```
 
 ### 3.2 `onfit.handle_new_user()`
+
 Inserta un row en `onfit.profiles` cuando se crea un usuario en `auth.users`.
 
 ```sql
@@ -83,6 +87,7 @@ for each row execute procedure onfit.handle_new_user();
 ## 4) Tablas
 
 ### 4.1 `onfit.profiles` (ya creada)
+
 **Propósito**: Perfil base del usuario (app-level).
 
 ```sql
@@ -103,6 +108,7 @@ for each row execute function onfit.update_modified_column();
 ```
 
 **Índices recomendados**:
+
 ```sql
 create index if not exists profiles_email_idx on onfit.profiles (email);
 create index if not exists profiles_role_idx  on onfit.profiles (role);
@@ -115,6 +121,7 @@ create index if not exists profiles_role_idx  on onfit.profiles (role);
 ## 5) Vistas
 
 ### 5.1 `onfit.public_profiles`
+
 **Propósito**: Exponer **sólo campos no sensibles** a clientes autenticados (y opcionalmente no autenticados).
 
 ```sql
@@ -180,11 +187,13 @@ revoke insert on onfit.profiles from anon, authenticated;
 ### 6.2 `onfit.public_profiles` (view)
 
 **Opción A (recomendada)**: Permitir `SELECT` a todos los autenticados
+
 ```sql
 grant select on onfit.public_profiles to authenticated;
 ```
 
 **Opción B**: Hacerla pública
+
 ```sql
 grant select on onfit.public_profiles to anon;
 ```
@@ -291,11 +300,11 @@ SUPABASE_ANON_KEY=...
 ## 11) Notas operativas
 
 - **Admin bootstrap**: Promociona un usuario a admin con:
-  ```sql
-  update onfit.profiles
-  set role = 'admin'
-  where email = 'tu-admin@onfit.online';
-  ```
+    ```sql
+    update onfit.profiles
+    set role = 'admin'
+    where email = 'tu-admin@onfit.online';
+    ```
 - **Email en `profiles`**: Es **cache** de `auth.users.email` para acceso rápido. En flujos de cambio de email, sincroniza o lee siempre de `auth.users` cuando necesites máxima verdad.
 - **Auditoría**: Si más adelante quieres trails, crea `onfit.audit_log` con RLS sólo admin.
 - **Evolución**: Añade tablas (`workouts`, `plans`, `payments`) bajo el **mismo patrón**: `created_at/updated_at`, RLS self/admin, vistas públicas para datos no sensibles.

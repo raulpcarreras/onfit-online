@@ -9,19 +9,19 @@ Esta guía explica **cómo está montado el sistema de diseño**, **dónde va ca
 ## 0) Principios
 
 1. **Fuente única de verdad** para estilos:
-   - **Tokens** (`packages/design-system/tokens/…`)
-   - **Tailwind preset + config** (`packages/design-system/tailwind/…`)
-   - **Componentes del DS** (`packages/design-system/components/**` y `packages/design-system/ui/**`)
+    - **Tokens** (`packages/design-system/tokens/…`)
+    - **Tailwind preset + config** (`packages/design-system/tailwind/…`)
+    - **Componentes del DS** (`packages/design-system/components/**` y `packages/design-system/ui/**`)
 2. **Nada de CSS ad-hoc en apps** (web/native). En web, solo se permite:
-   - `@tailwind base; @tailwind components; @tailwind utilities;`
-   - Importar **tokens** y (opcional) **global.css** del DS.
-   - Reglas mínimas de _theme bridge_ (color-scheme y helpers).
+    - `@tailwind base; @tailwind components; @tailwind utilities;`
+    - Importar **tokens** y (opcional) **global.css** del DS.
+    - Reglas mínimas de _theme bridge_ (color-scheme y helpers).
 3. **En React Native**
-   - Usa **NativeWind** (`className`) + **componentes del DS**.
-   - Evita `StyleSheet` y `style={{…}}` salvo casos MUY puntuales (performance o APIs nativas).
+    - Usa **NativeWind** (`className`) + **componentes del DS**.
+    - Evita `StyleSheet` y `style={{…}}` salvo casos MUY puntuales (performance o APIs nativas).
 4. **shadcn/ui look por defecto**
-   - No sobreescribas estilos base de shadcn.
-   - Cualquier personalización debe hacerse con **variants (CVA)** en el componente del DS, nunca con CSS suelto.
+    - No sobreescribas estilos base de shadcn.
+    - Cualquier personalización debe hacerse con **variants (CVA)** en el componente del DS, nunca con CSS suelto.
 
 ---
 
@@ -68,10 +68,12 @@ apps/
 - **Native (TS export)**: `packages/design-system/tokens/index.ts`
 
 ### Buen uso
+
 - En web: utilízalos vía **Tailwind** (clases generadas) o como `var(--token)` si hace falta.
 - En native: accede a tokens vía helpers del DS o usa clases de NativeWind que ya mapean a tokens.
 
 ### Nunca
+
 - No hardcodees colores/espaciados en apps. Siempre pasa por **tokens + DS**.
 
 ---
@@ -83,6 +85,7 @@ apps/
 - **Clases “platform-aware”** en los componentes del DS: `web:`, `native:` ya preparados en CVA.
 
 ### Regla
+
 - **Apps** no definen su propio tailwind config con overrides visuales. Importan el del DS.
 
 ---
@@ -93,16 +96,20 @@ apps/
 - Añadir variantes → siempre en el **componente del DS**, nunca en la app.
 
 ### Ejemplo (resumen conceptual)
+
 ```ts
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md transition-colors",
-  {
-    variants: {
-      variant: { default: "bg-primary text-primary-foreground", ghost: "bg-transparent" },
-      size: { sm: "h-8 px-3", md: "h-10 px-4" }
+    "inline-flex items-center justify-center rounded-md transition-colors",
+    {
+        variants: {
+            variant: {
+                default: "bg-primary text-primary-foreground",
+                ghost: "bg-transparent",
+            },
+            size: { sm: "h-8 px-3", md: "h-10 px-4" },
+        },
+        defaultVariants: { variant: "default", size: "md" },
     },
-    defaultVariants: { variant: "default", size: "md" }
-  }
 );
 ```
 
@@ -111,9 +118,9 @@ const buttonVariants = cva(
 ## 5) Theme Provider & Theme Bridge
 
 - **Web**: `ThemeProvider.web.tsx` + `tokens/index.css`
-  - Usa `:root { … }` y `.dark { … }` para **color-scheme** y variables.
+    - Usa `:root { … }` y `.dark { … }` para **color-scheme** y variables.
 - **Native**: `ThemeProvider.native.tsx`
-  - Expone el mismo **contrato de tokens** para RN, y NativeWind aplica clases mapeadas.
+    - Expone el mismo **contrato de tokens** para RN, y NativeWind aplica clases mapeadas.
 
 > Objetivo: **mismo aspecto** (shadcn por defecto) y **mismos nombres** (tokens/variants) en ambas plataformas.
 
@@ -158,11 +165,11 @@ const buttonVariants = cva(
 
 ## 10) Flujo para añadir/editar un componente
 
-1) Diseñar API (props, variants, states) en `packages/design-system/ui/…`  
-2) Implementar CVA + platform-aware classes (`web:` / `native:`)  
-3) Exponer tokens necesarios (si es nuevo)  
-4) Escribir ejemplos en `packages/design-system/components/example/…`  
-5) Reemplazar usos en `apps/**` para quitar estilos ad-hoc  
+1. Diseñar API (props, variants, states) en `packages/design-system/ui/…`
+2. Implementar CVA + platform-aware classes (`web:` / `native:`)
+3. Exponer tokens necesarios (si es nuevo)
+4. Escribir ejemplos en `packages/design-system/components/example/…`
+5. Reemplazar usos en `apps/**` para quitar estilos ad-hoc
 
 ---
 
@@ -170,9 +177,9 @@ const buttonVariants = cva(
 
 - **Lint rules** (sugerido): bloquear `style={{…}}` salvo whitelist y detectar `.css` fuera del DS.
 - **PR checklist**:
-  - ¿Se tocan estilos? → Debe ser en **DS**.
-  - ¿Se añadió variante? → Está en CVA + documentación.
-  - ¿Se tocó `apps/web/globals.css`? → Solo tailwind directives + theme bridge.
+    - ¿Se tocan estilos? → Debe ser en **DS**.
+    - ¿Se añadió variante? → Está en CVA + documentación.
+    - ¿Se tocó `apps/web/globals.css`? → Solo tailwind directives + theme bridge.
 - **Snapshot visual** por cada componente UI.
 
 ---
@@ -189,16 +196,16 @@ const buttonVariants = cva(
 
 ```tsx
 // apps/web/app/layout.tsx
-import '@repo/design/tokens/index.css'
-import '@repo/design/tailwind/global.css' // base y resets mínimos DS
+import "@repo/design/tokens/index.css";
+import "@repo/design/tailwind/global.css"; // base y resets mínimos DS
 // (Opcional) './globals.css' solo si está mínimo (ver abajo)
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="es" suppressHydrationWarning>
-      <body>{children}</body>
-    </html>
-  )
+    return (
+        <html lang="es" suppressHydrationWarning>
+            <body>{children}</body>
+        </html>
+    );
 }
 ```
 
@@ -209,8 +216,12 @@ export default function RootLayout({ children }) {
 @tailwind utilities;
 
 /* Theme bridge adicional si lo necesitas */
-:root { color-scheme: light; }
-.dark { color-scheme: dark; }
+:root {
+    color-scheme: light;
+}
+.dark {
+    color-scheme: dark;
+}
 ```
 
 ---
@@ -219,21 +230,25 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // apps/native/features/auth/LoginScreen.tsx (ejemplo conceptual)
-import { View, Text } from 'react-native'
-import { Button } from '@repo/design/ui/button'
-import { Input } from '@repo/design/ui/input'
+import { View, Text } from "react-native";
+import { Button } from "@repo/design/ui/button";
+import { Input } from "@repo/design/ui/input";
 
 export default function LoginScreen() {
-  return (
-    <View className="flex-1 items-center justify-center gap-6 bg-background px-6">
-      <Text className="text-2xl font-semibold text-foreground">Iniciar sesión</Text>
-      <View className="w-full gap-3">
-        <Input placeholder="Email" className="w-full" keyboardType="email-address" />
-        <Input placeholder="Password" className="w-full" secureTextEntry />
-        <Button className="w-full mt-2">Entrar</Button>
-      </View>
-    </View>
-  )
+    return (
+        <View className="flex-1 items-center justify-center gap-6 bg-background px-6">
+            <Text className="text-2xl font-semibold text-foreground">Iniciar sesión</Text>
+            <View className="w-full gap-3">
+                <Input
+                    placeholder="Email"
+                    className="w-full"
+                    keyboardType="email-address"
+                />
+                <Input placeholder="Password" className="w-full" secureTextEntry />
+                <Button className="w-full mt-2">Entrar</Button>
+            </View>
+        </View>
+    );
 }
 ```
 
