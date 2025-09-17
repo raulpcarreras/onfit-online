@@ -27,7 +27,7 @@ const ASSET_URL = "./assets/images";
 const BUILD_NUMBER = "10";
 const VERSION = "0.1.0";
 const SCHEME = "onfit";
-const SLUG = SCHEME;
+const SLUG = "onfit13";
 
 /**
  * 3rd part: Define your env variables schema
