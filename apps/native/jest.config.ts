@@ -1,9 +1,7 @@
-import { Config } from '@jest/types';
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const baseConfig = require("@tooling/jest/expo.config");
 
-const config: Config.InitialOptions = {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    ...require("@tooling/jest/expo.config"),
+module.exports = {
+    ...baseConfig,
     setupFilesAfterEnv: ["./__tests__/jest-setup.ts"],
 };
-
-export default config;
