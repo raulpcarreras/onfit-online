@@ -40,20 +40,18 @@
     "**/expo-router",
     "**/expo-router/**"
   ],
-  "dependencies": {
-    "@inquirer/select": "^4.2.3",
-    "chalk": "^5.4.1",
-    "commander": "^14.0.0"
-  },
   "devDependencies": {
-    "@testing-library/jest-dom": "6.6.3",
+    "@inquirer/select": "^4.3.4",
+    "@testing-library/jest-dom": "6.8.0",
     "@testing-library/react": "16.3.0",
-    "@testing-library/react-native": "13.2.0",
+    "@testing-library/react-native": "13.3.3",
     "@testing-library/user-event": "^14.6.1",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.1",
     "jest-environment-jsdom": "^30.1.2",
     "jest-environment-node": "^30.1.2",
     "prettier": "^3.6.2",
-    "turbo": "^2.5.4"
+    "turbo": "2.5.5"
   },
   "engines": {
     "node": ">=20"

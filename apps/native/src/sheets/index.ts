@@ -10,8 +10,8 @@ sheets
 
 declare module "@repo/bottom-sheet" {
     interface Sheets {
-        example: SheetDefinition;
-        drawer: SheetDefinition;
+        // No modals currently registered
+        [key: string]: never;
     }
 }
 
