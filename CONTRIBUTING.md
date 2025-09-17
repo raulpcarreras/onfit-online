@@ -1,6 +1,6 @@
-# Contributing to Myapp
+# Contributing to ONFIT13
 
-This document provides guidelines and instructions for contributing to the `Myapp` project. This project uses a modern monorepo structure with React, React Native, Expo, NextJS, Tailwind, and Nativewind.
+This document provides guidelines and instructions for contributing to the `ONFIT13` project. This project uses a modern monorepo structure with React 19, React Native, Expo SDK 53, Next.js 15, Tailwind CSS, and NativeWind.
 
 ## Code Structure and Organization
 
@@ -37,7 +37,7 @@ We adopt a coding standard that is enforced using ESLint and Prettier. We ask al
 
 ## Dependency Management
 
-We use Pnpm Workspaces to manage dependencies across the monorepo. This allows for shared dependencies and easier management of package versions.
+We use **pnpm** with workspaces to manage dependencies across the monorepo. This allows for shared dependencies and easier management of package versions. The project uses **pnpm 10.12.4** with Corepack for optimal performance.
 
 #### Shared Dependencies
 
