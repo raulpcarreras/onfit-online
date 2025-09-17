@@ -1,11 +1,11 @@
 # GitHub Actions Documentation: https://docs.github.com/en/actions
-name: Build (IOS,Android,Web)
+name: CI/CD Pipeline - ONFIT13
 on:
     push:
         branches: [develop, main]
-        paths: ["packages/**", "apps/**", "package.json"]
+        paths: ["packages/**", "apps/**", "package.json", "pnpm-lock.yaml"]
     pull_request:
-        paths: ["packages/**", "apps/**", "package.json", ".github/workflows/ci.yml"]
+        paths: ["packages/**", "apps/**", "package.json", "pnpm-lock.yaml", ".github/workflows/ci.yml"]
         types: [opened, reopened, synchronize]
 
     workflow_dispatch:
@@ -88,10 +88,31 @@ jobs:
             - name: 🧪 Test packages
               run: pnpm test all
 
+    security:
+        name: Security Audit
+        runs-on: macos-latest
+
+        steps:
+            - name: 🏗 Setup repository
+              uses: actions/checkout@v4
+
+            - name: 🏗 Setup monorepo
+              uses: ./.github/actions/setup-monorepo
+
+            - name: 🔒 Security Audit
+              run: |
+                  echo "🔍 Running security audit..."
+                  pnpm audit --audit-level moderate
+                  
+            - name: 🔍 Dependency Check
+              run: |
+                  echo "📦 Checking for outdated dependencies..."
+                  pnpm outdated || true
+
     web:
         name: Web Build
         runs-on: macos-latest
-        needs: [filter, lint]
+        needs: [filter, lint, test, security]
         if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && needs.filter.outputs.web == 'true') }}
 
         steps:
@@ -133,7 +154,7 @@ jobs:
     native:
         name: EAS Build
         runs-on: macos-latest
-        needs: [filter, lint]
+        needs: [filter, lint, test, security]
         if: ${{ github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && needs.filter.outputs.native == 'true') }}
 
         steps:
@@ -189,7 +210,7 @@ jobs:
             # In order not to push dev env to production, make sure to set envs in your expo account
             - name: 🚀 OTA Update
               if: ${{ steps.expo.outputs.EAS_BUILD == 'update' }}
-              working-directory: ./apps/mybitstore
+              working-directory: ./apps/native
               run: |
                   eas update --auto --json --non-interactive \
                     --platform ${{ github.event.inputs.platform || 'all' }} \

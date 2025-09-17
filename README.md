@@ -157,6 +157,7 @@ pnpm -F native exec npx expo install --fix
 - ✅ **Build Pipeline** - Todos los builds funcionan (web ✅, native ✅, tooling ✅)
 - ✅ **Seguridad** - Vulnerabilidades resueltas, dependencias actualizadas
 - ✅ **EAS Build** - Configurado para builds en la nube (gratis)
+- ✅ **CI/CD Pipeline** - Pipeline completo implementado (4 workflows)
 
 ## 🎯 Próximos Pasos
 

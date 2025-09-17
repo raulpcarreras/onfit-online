@@ -1,0 +1,132 @@
+name: Dependencies Management - ONFIT13
+
+on:
+    schedule:
+        # Run every Monday at 9 AM UTC
+        - cron: '0 9 * * 1'
+    workflow_dispatch:
+        inputs:
+            update_type:
+                description: 'Type of update to perform'
+                required: true
+                default: 'check'
+                type: choice
+                options:
+                    - check
+                    - update-minor
+                    - update-major
+                    - audit-fix
+
+jobs:
+    dependencies:
+        name: Manage Dependencies
+        runs-on: macos-latest
+
+        steps:
+            - name: 🏗 Setup repository
+              uses: actions/checkout@v4
+
+            - name: 🏗 Setup monorepo
+              uses: ./.github/actions/setup-monorepo
+
+            - name: 🔍 Check Outdated Dependencies
+              id: outdated
+              run: |
+                  echo "📦 Checking for outdated dependencies..."
+                  OUTDATED=$(pnpm outdated --json || echo "{}")
+                  echo "outdated<<EOF" >> $GITHUB_OUTPUT
+                  echo "$OUTDATED" >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+                  
+                  # Count outdated packages
+                  COUNT=$(echo "$OUTDATED" | jq 'length' 2>/dev/null || echo "0")
+                  echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+            - name: 🔒 Security Audit
+              id: audit
+              run: |
+                  echo "🔒 Running security audit..."
+                  AUDIT_RESULT=$(pnpm audit --json || echo "{}")
+                  echo "audit<<EOF" >> $GITHUB_OUTPUT
+                  echo "$AUDIT_RESULT" >> $GITHUB_OUTPUT
+                  echo "EOF" >> $GITHUB_OUTPUT
+                  
+                  # Count vulnerabilities
+                  VULNERABILITIES=$(echo "$AUDIT_RESULT" | jq '.metadata.vulnerabilities.total // 0' 2>/dev/null || echo "0")
+                  echo "vulnerabilities=$VULNERABILITIES" >> $GITHUB_OUTPUT
+
+            - name: 📊 Generate Report
+              run: |
+                  echo "📊 Dependency Report" > dependency-report.md
+                  echo "===================" >> dependency-report.md
+                  echo "" >> dependency-report.md
+                  echo "**Outdated Packages:** ${{ steps.outdated.outputs.count }}" >> dependency-report.md
+                  echo "**Security Vulnerabilities:** ${{ steps.audit.outputs.vulnerabilities }}" >> dependency-report.md
+                  echo "" >> dependency-report.md
+                  
+                  if [[ "${{ steps.outdated.outputs.count }}" -gt 0 ]]; then
+                      echo "## 📦 Outdated Dependencies" >> dependency-report.md
+                      echo "" >> dependency-report.md
+                      echo "${{ steps.outdated.outputs.outdated }}" | jq -r 'to_entries[] | "- **\(.key)**: \(.value.current) → \(.value.latest)"' >> dependency-report.md
+                  fi
+                  
+                  if [[ "${{ steps.audit.outputs.vulnerabilities }}" -gt 0 ]]; then
+                      echo "" >> dependency-report.md
+                      echo "## 🔒 Security Vulnerabilities" >> dependency-report.md
+                      echo "" >> dependency-report.md
+                      echo "⚠️ **${{ steps.audit.outputs.vulnerabilities }} vulnerabilities found**" >> dependency-report.md
+                      echo "" >> dependency-report.md
+                      echo "Run \`pnpm audit fix\` to resolve automatically fixable issues." >> dependency-report.md
+                  fi
+
+            - name: 🔄 Update Dependencies (if requested)
+              if: ${{ github.event.inputs.update_type != 'check' }}
+              run: |
+                  case "${{ github.event.inputs.update_type }}" in
+                      "update-minor")
+                          echo "📦 Updating minor versions..."
+                          pnpm update --recursive
+                          ;;
+                      "update-major")
+                          echo "📦 Updating major versions..."
+                          pnpm update --recursive --latest
+                          ;;
+                      "audit-fix")
+                          echo "🔒 Fixing security vulnerabilities..."
+                          pnpm audit fix
+                          ;;
+                  esac
+
+            - name: 📝 Create Issue (if needed)
+              if: ${{ steps.outdated.outputs.count > 10 || steps.audit.outputs.vulnerabilities > 0 }}
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+                      const report = fs.readFileSync('dependency-report.md', 'utf8');
+                      
+                      const title = `📦 Dependency Update Required - ${new Date().toISOString().split('T')[0]}`;
+                      const body = `## 🔍 Automated Dependency Check\n\n${report}\n\n---\n\n*This issue was automatically generated by the Dependencies Management workflow.*`;
+                      
+                      await github.rest.issues.create({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          title: title,
+                          body: body,
+                          labels: ['dependencies', 'automated']
+                      });
+
+            - name: 💬 Comment on PR (if in PR context)
+              if: ${{ github.event_name == 'pull_request' }}
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+                      const report = fs.readFileSync('dependency-report.md', 'utf8');
+                      
+                      await github.rest.issues.createComment({
+                          issue_number: context.issue.number,
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          body: `## 📦 Dependency Report\n\n${report}`
+                      });
