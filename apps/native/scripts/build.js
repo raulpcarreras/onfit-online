@@ -21,7 +21,14 @@ const envSettings = {
 
 const { appEnv, easEnv } = envSettings[env];
 const additionalArgs = process.argv.slice(3).join(" ");
-const command = `cross-env APP_ENV=${appEnv} EXPO_NO_DOTENV=1 eas build -e ${easEnv} ${additionalArgs}`;
+
+// For development, use expo prebuild instead of eas build
+let command;
+if (env === "development") {
+    command = `cross-env APP_ENV=${appEnv} EXPO_NO_DOTENV=1 expo prebuild --clean`;
+} else {
+    command = `cross-env APP_ENV=${appEnv} EXPO_NO_DOTENV=1 eas build -e ${easEnv} ${additionalArgs}`;
+}
 
 try {
     console.log(`Executing command for ${env} environment:`);

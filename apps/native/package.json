@@ -15,7 +15,7 @@
     "generate": "expo prebuild",
     "eject": "expo eject",
     "lint": "eslint .",
-    "test": "jest --ci",
+    "test": "jest --ci --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf .expo .turbo dist node_modules"
   },

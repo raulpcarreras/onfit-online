@@ -80,7 +80,8 @@
       "scheduler": "^0.25.0",
       "@expo/config-plugins": "~10.1.1",
       "@expo/prebuild-config": "~9.0.0",
-      "@expo/metro-config": "~0.20.0"
+      "@expo/metro-config": "~0.20.0",
+      "vite": "^5.4.20"
     }
   }
 }
