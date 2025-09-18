@@ -2,9 +2,10 @@
 name: CI/CD Pipeline - ONFIT13
 on:
     push:
-        branches: [develop, main]
+        branches: [main]  # Solo main, no develop
         paths: ["packages/**", "apps/**", "package.json", "pnpm-lock.yaml"]
     pull_request:
+        branches: [main]  # Solo PRs hacia main
         paths: ["packages/**", "apps/**", "package.json", "pnpm-lock.yaml", ".github/workflows/ci.yml"]
         types: [opened, reopened, synchronize]
 
