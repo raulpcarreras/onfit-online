@@ -1,6 +1,4 @@
-import type { Config } from "jest";
-
-const config: Config = {
+const config = {
     displayName: "design-system",
     testEnvironment: "jsdom",
     setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
@@ -44,4 +42,4 @@ const config: Config = {
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
 };
 
-export default config;
+module.exports = config;
