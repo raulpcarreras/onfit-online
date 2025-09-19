@@ -1,17 +1,17 @@
 {
-  "timestamp": "2025-09-19T16:16:44.449Z",
+  "timestamp": "2025-09-19T17:11:59.289Z",
   "general": {
     "successRate": "0%",
     "pipelineStatus": "⚠️ Inactivo",
     "securityStatus": "✅ Seguro",
     "currentVersion": "v0.2.18",
-    "lastUpdated": "2025-09-19T16:16:44.449Z"
+    "lastUpdated": "2025-09-19T17:11:59.289Z"
   },
   "git": {
     "branch": "main",
-    "lastCommit": "cf364d2 fix: remove pnpm cache from Node.js setup step",
-    "commitDate": "2025-09-19 08:45:27 +0200",
-    "totalCommits": 71
+    "lastCommit": "8adb557 fix: use Node 20.x in test workflow",
+    "commitDate": "2025-09-19 18:38:51 +0200",
+    "totalCommits": 73
   },
   "pnpm": {
     "outdatedCount": 0,
@@ -35,7 +35,7 @@
     "lastBuild": "Nunca"
   },
   "summary": {
-    "totalCommits": 71,
+    "totalCommits": 73,
     "successRate": "0%",
     "vulnerabilities": 0,
     "outdatedDeps": 0,
