@@ -1,170 +1,97 @@
-# OnFit Monorepo
+# 📊 Dashboard CI/CD - ONFIT13
 
-Monorepo profesional con **Next.js 15** para web y **Expo SDK 53** para nativo, gestionado con **pnpm**.
+Este dashboard proporciona métricas en tiempo real del pipeline CI/CD del proyecto ONFIT13.
 
-## 🚀 Stack Tecnológico
+## 🚀 Acceso al Dashboard
 
-- **Gestor**: pnpm (Corepack)
-- **Node**: 20/22
-- **Web**: Next.js 15 + Tailwind CSS 3.4
-- **Native**: Expo SDK 53 + NativeWind 4 + Reanimated 3 + Expo Router
-- **Design System**: Componentes compartidos para ambas plataformas
+**URL del Dashboard:** https://raulpcarreras.github.io/onfit/dashboard/
 
-## 📁 Estructura
+## 📊 Métricas Disponibles
 
-```
-onfit/
-├── apps/
-│   ├── web/          # Next.js 15 app
-│   └── native/       # Expo SDK 53 app
-├── packages/
-│   └── design-system/ # Componentes y tokens compartidos
-├── tooling/          # Configuraciones compartidas
-└── supabase/         # Base de datos y migraciones
-```
+### 📈 Métricas Generales
+- **Builds Exitosos** - Porcentaje de builds exitosos
+- **Tiempo Promedio** - Tiempo promedio de ejecución
+- **Último Build** - Fecha y hora del último build
+- **Estado Pipeline** - Estado actual del pipeline
 
-## 🛠️ Comandos Principales
+### 🔒 Seguridad
+- **Vulnerabilidades** - Número de vulnerabilidades detectadas
+- **Dependencias Obsoletas** - Dependencias que necesitan actualización
+- **Última Auditoría** - Fecha de la última auditoría de seguridad
+- **Estado Seguridad** - Estado general de seguridad
 
-### Desarrollo
+### 🧪 Testing
+- **Cobertura Total** - Porcentaje de cobertura de tests
+- **Tests Pasando** - Número de tests que pasan
+- **Tests Fallando** - Número de tests que fallan
+- **Último Test** - Fecha del último test ejecutado
 
-```bash
-# Web
-pnpm web:dev          # Inicia desarrollo web
-pnpm web:build        # Build de producción
+### 🚀 Deployments
+- **Web (Vercel)** - Estado del deployment web
+- **Native (EAS)** - Estado del deployment nativo
+- **Último Deploy** - Fecha del último deployment
+- **Versión Actual** - Versión actual del proyecto
 
-# Native
-pnpm native:start     # Inicia Expo con dev client
-pnpm native:start:go  # Inicia con Expo Go
-pnpm native:run:ios   # Compila y ejecuta en iOS
-pnpm native:run:android # Compila y ejecuta en Android
-```
+### ⚡ Performance
+- **Build Web** - Tiempo de build de la aplicación web
+- **Build Native** - Tiempo de build de la aplicación nativa
+- **Tamaño Web** - Tamaño del build web
+- **Tamaño Native** - Tamaño del build nativo
 
-### Monorepo
+## 🔄 Actualización Automática
 
-```bash
-pnpm lint             # Lint en todas las apps
-pnpm test             # Tests en todas las apps
-pnpm clean            # Limpia todos los builds
-pnpm format           # Formatea código con Prettier
-```
+El dashboard se actualiza automáticamente:
+- **Cada hora** - Actualización programada
+- **En cada push** - Actualización en tiempo real
+- **Manual** - Actualización bajo demanda
 
-## 🔧 Workspaces (pnpm)
+## 🛠️ Configuración
 
-Este monorepo usa **pnpm** con `pnpm-workspace.yaml`:
+### Requisitos
+- Node.js 20+
+- pnpm 10.12.4+
+- GitHub CLI (opcional)
 
-- `apps/*`
-- `packages/*`
-
-> No usamos `workspaces` en `package.json`. Toda la resolución la hace pnpm vía `pnpm-workspace.yaml`.
-
-### Verificar Workspaces
+### Comandos Útiles
 
 ```bash
-# Ver todos los paquetes detectados
-pnpm -w list --depth=1
+# Generar métricas manualmente
+node scripts/generate-metrics.js
 
-# Ver dependencias de una app específica
-pnpm -F web list
-pnpm -F native list
+# Configurar secrets
+./scripts/configure-secrets.sh
+
+# Verificar estado del pipeline
+gh workflow run "Dashboard CI/CD - ONFIT13"
 ```
 
-## 🎨 Tailwind y Estilos
+## 📱 Acceso Móvil
 
-### Tailwind en apps/web
+El dashboard es completamente responsive y se puede acceder desde dispositivos móviles.
 
-La app web usa el preset compartido del design system:
+## 🔧 Troubleshooting
 
-- `import sharedConfig from "@repo/design/tailwind/tailwind.config"`
-- `content` incluye `../../packages/design-system/**/*.tsx`
+### Problemas Comunes
 
-Así garantizamos que las clases usadas por los wrappers del DS se incluyan en la build.
+1. **Dashboard no se actualiza**
+   - Verificar que el workflow esté ejecutándose
+   - Revisar logs en GitHub Actions
 
-### Orden de CSS (web)
+2. **Métricas incorrectas**
+   - Ejecutar `node scripts/generate-metrics.js` manualmente
+   - Verificar configuración de GitHub CLI
 
-1. `@repo/design/tokens/index.css` ← variables HSL canónicas
-2. `./app/globals.css` ← @tailwind base/components/utilities + resets
-3. Cualquier CSS de features/páginas
+3. **Error de permisos**
+   - Verificar que GitHub Pages esté habilitado
+   - Revisar configuración de secrets
 
-> No dupliques tokens en `globals.css`. Si ves "líneas blancas" en tablas, revisa que las **variables** provengan de `tokens/index.css`.
+## 📚 Documentación Adicional
 
-## 📦 Gestión de Dependencias
-
-### Dependencias Compartidas
-
-- **Design System**: `@repo/design` - Componentes y tokens para ambas plataformas
-- **Bottom Sheet**: `@repo/bottom-sheet` - Componente nativo compartido
-
-### Regla de importación de componentes
-
-- ✅ `@repo/design/components/Button` (wrappers del DS)
-- ❌ `@repo/design/ui/button` (shadcn interno, no lo uses desde apps)
-
-Los wrappers mantienen API homogénea (p.ej. `onPress` en web/native).
-
-### Utilidad de clases
-
-Usa **solo** `@repo/design/lib/utils` (re-exporta clsx + tailwind-merge).
-Evita `lib/cn.ts` para no mezclar comportamientos.
-
-### Instalación
-
-```bash
-# Añadir a una app específica
-pnpm -F web add react-query
-
-# Añadir al design system
-pnpm -F @repo/design add clsx
-
-# Añadir al root (solo herramientas de monorepo)
-pnpm -w add -D turbo
-```
-
-## 🚨 Reglas Importantes
-
-- **NO migrar** a Yarn/NPM/Bun
-- **React 19** es compatible con Expo SDK 53 desde diciembre 2024
-- **Usar siempre** `pnpm -F <app>` para instalar en apps específicas
-- **Mantener** dependencias root solo para herramientas de monorepo
-
-## 🔍 Troubleshooting
-
-### Warning DEP0169 (url.parse)
-
-```bash
-# Ya manejado en scripts con NODE_OPTIONS=--no-deprecation
-# Es normal en Node 20/22
-```
-
-### Expo Doctor Issues
-
-```bash
-# Verificar estado de Expo
-pnpm -F native exec npx expo-doctor
-
-# Resolver problemas automáticamente
-pnpm -F native exec npx expo install --fix
-```
-
-## 📊 Estado del Monorepo
-
-**Puntuación**: 10/10 ✅
-
-- ✅ **Dependencias root limpias** - Sin conflictos de versiones
-- ✅ **Scripts unificados** - Formato `plataforma:verbo` consistente
-- ✅ **Workspaces bien configurados** - pnpm-workspace.yaml explícito
-- ✅ **Funcional al 100%** - Builds y runtime funcionan perfectamente
-- ✅ **Configuración profesional** - Listo para producción
-- ✅ **Build Pipeline** - Todos los builds funcionan (web ✅, native ✅, tooling ✅)
-- ✅ **Seguridad** - Vulnerabilidades resueltas, dependencias actualizadas
-- ✅ **EAS Build** - Configurado para builds en la nube (gratis)
-- ✅ **CI/CD Pipeline** - Pipeline completo implementado (4 workflows)
-
-## 🎯 Próximos Pasos
-
-1. **Desarrollo activo** - El monorepo está listo para usar
-2. **Mantener dependencias** - Usar `pnpm -F` para instalaciones
-3. **Actualizar regularmente** - `pnpm update` para mantener catalogs
+- [Pipeline CI/CD](../ci-cd-pipeline.md)
+- [Configuración de Secrets](../configure-secrets.md)
+- [GitHub Actions](https://docs.github.com/en/actions)
 
 ---
 
-**OnFit Monorepo** - Arquitectura profesional y escalable 🚀
+**Última actualización:** $(date)  
+**Versión del dashboard:** 1.0
