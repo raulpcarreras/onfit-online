@@ -11,7 +11,7 @@ const { execSync } = require('child_process');
 
 // Configuración
 const CONFIG = {
-    repo: 'raulpcarreras/onfit',
+    repo: 'raulpcarreras/onfit-online',
     outputDir: 'docs/dashboard/data',
     metricsFile: 'metrics.json'
 };
