@@ -1,11 +1,11 @@
 {
-  "timestamp": "2025-09-21T17:11:07.989Z",
+  "timestamp": "2025-09-21T18:17:28.747Z",
   "general": {
     "successRate": "0%",
     "pipelineStatus": "⚠️ Inactivo",
     "securityStatus": "✅ Seguro",
     "currentVersion": "v0.2.18",
-    "lastUpdated": "2025-09-21T17:11:07.989Z"
+    "lastUpdated": "2025-09-21T18:17:28.746Z"
   },
   "git": {
     "branch": "main",
