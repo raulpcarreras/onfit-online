@@ -48,8 +48,8 @@ jobs:
               if: ${{ matrix.test-type == 'integration' || github.event.inputs.test_type == 'integration' || github.event.inputs.test_type == 'all' }}
               run: |
                   echo "🔗 Running integration tests..."
-                  pnpm test --filter web
-                  pnpm test --filter native
+                  pnpm --filter web test
+                  pnpm --filter native test
 
             - name: 📊 Generate Coverage Report
               if: ${{ github.event.inputs.test_type == 'coverage' || github.event.inputs.test_type == 'all' }}
