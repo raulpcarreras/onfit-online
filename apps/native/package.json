@@ -56,8 +56,8 @@
   "dependencies": {
     "@legendapp/state": "3.0.0-beta.30",
     "@react-native-async-storage/async-storage": "2.1.2",
-    "@repo/bottom-sheet": "workspace:*",
-    "@repo/design": "workspace:*",
+    "@repo/bottom-sheet": "file:../../packages/bottom-sheet",
+    "@repo/design": "file:../../packages/design-system",
     "@sentry/react-native": "6.14.0",
     "@supabase/supabase-js": "^2.55.0",
     "@tanstack/react-query": "5.81.5",
@@ -84,15 +84,16 @@
     "react-native-screens": "~4.11.1",
     "react-native-svg": "15.11.2",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-webview": "13.13.5"
+    "react-native-webview": "13.13.5",
+    "zod": "3.25.67"
   },
   "devDependencies": {
     "@dev-plugins/react-query": "0.3.1",
     "@expo/ngrok": "4.1.3",
-    "@tooling/eslint": "workspace:*",
-    "@tooling/expo-github-cache": "workspace:*",
-    "@tooling/jest": "workspace:*",
-    "@tooling/typescript": "workspace:*",
+    "@tooling/eslint": "file:../../tooling/eslint",
+    "@tooling/expo-github-cache": "file:../../tooling/egc",
+    "@tooling/jest": "file:../../tooling/jest",
+    "@tooling/typescript": "file:../../tooling/typescript",
     "@types/lodash": "4.17.19",
     "@types/node": "24.0.7",
     "@types/numeral": "2.0.5",
