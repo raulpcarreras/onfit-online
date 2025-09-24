@@ -1,17 +1,17 @@
 {
-  "timestamp": "2025-09-24T17:12:39.875Z",
+  "timestamp": "2025-09-24T18:19:40.061Z",
   "general": {
     "successRate": "0%",
     "pipelineStatus": "⚠️ Inactivo",
     "securityStatus": "✅ Seguro",
     "currentVersion": "v0.2.18",
-    "lastUpdated": "2025-09-24T17:12:39.874Z"
+    "lastUpdated": "2025-09-24T18:19:40.061Z"
   },
   "git": {
     "branch": "main",
-    "lastCommit": "b964404 fix: disable Vercel auto-deploy for gh-pages branch",
-    "commitDate": "2025-09-19 20:50:20 +0200",
-    "totalCommits": 74
+    "lastCommit": "6524f66 fix: correct pnpm filter syntax in Testing Pipeline integration tests",
+    "commitDate": "2025-09-24 19:58:57 +0200",
+    "totalCommits": 76
   },
   "pnpm": {
     "outdatedCount": 0,
@@ -35,7 +35,7 @@
     "lastBuild": "Nunca"
   },
   "summary": {
-    "totalCommits": 74,
+    "totalCommits": 76,
     "successRate": "0%",
     "vulnerabilities": 0,
     "outdatedDeps": 0,
